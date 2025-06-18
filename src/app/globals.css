@@ -50,3 +50,65 @@ html {
 		padding: 60px 0;
 	}
 }
+
+/* Исправление прокрутки для мобильных устройств */
+html,
+body {
+	-webkit-overflow-scrolling: touch;
+	overflow-x: hidden;
+	scroll-behavior: smooth;
+}
+
+/* Фикс для iOS Safari */
+body {
+	position: relative;
+	overflow-x: hidden;
+	min-height: 100vh;
+	min-height: -webkit-fill-available;
+}
+
+/* Обеспечиваем правильную высоту viewport на мобильных */
+.min-h-screen {
+	min-height: 100vh;
+	min-height: -webkit-fill-available;
+}
+
+/* Улучшение производительности анимаций */
+* {
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+	-webkit-transform: translateZ(0);
+	transform: translateZ(0);
+}
+
+/* Стили для backdrop-blur на старых браузерах */
+@supports not (backdrop-filter: blur(10px)) {
+	.backdrop-blur-xl {
+		background-color: rgba(255, 255, 255, 0.1);
+	}
+	.backdrop-blur-3xl {
+		background-color: rgba(255, 255, 255, 0.05);
+	}
+}
+
+/* Улучшение скроллинга на мобильных */
+@media (max-width: 768px) {
+	body {
+		-webkit-overflow-scrolling: touch;
+		overflow-scrolling: touch;
+	}
+
+	/* Предотвращение горизонтального скролла */
+	.overflow-x-hidden {
+		overflow-x: hidden !important;
+	}
+}
+
+/* Фикс для бургер-меню на мобильных */
+@media (max-width: 768px) {
+	.mobile-menu-open {
+		overflow: hidden;
+		position: fixed;
+		width: 100%;
+	}
+}

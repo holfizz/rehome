@@ -1,9 +1,8 @@
 'use client'
 
-import { motion, useInView } from 'framer-motion'
+import { motion } from 'framer-motion'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useRef } from 'react'
+import Header from '../../components/Header'
 
 const fadeInUp = {
 	initial: { opacity: 0, y: 60 },
@@ -11,378 +10,283 @@ const fadeInUp = {
 	transition: { duration: 0.8, ease: 'easeOut' },
 }
 
-const stagger = {
-	animate: {
-		transition: {
-			staggerChildren: 0.1,
-		},
-	},
-}
-
-const scaleIn = {
-	initial: { opacity: 0, scale: 0.8 },
-	animate: { opacity: 1, scale: 1 },
-	transition: { duration: 0.6, ease: 'easeOut' },
-}
-
 const projects = [
 	{
 		id: 1,
-		title: 'Минималистичная квартира',
-		location: 'Москва',
+		title: 'Современная квартира',
+		location: 'Казань, ЖК "Солнечный"',
 		area: '85 м²',
-		style: 'Минимализм',
 		year: '2024',
-		description:
-			'Современная квартира в стиле минимализм с акцентом на функциональность и чистоту линий.',
-		images: [
-			'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop&q=80',
+		style: 'Минимализм',
+		image:
 			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop&q=80',
+		images: [
+			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop&q=80',
 		],
-		tags: ['Минимализм', 'Белый', 'Дерево', 'Функциональность'],
+		description:
+			'Современная квартира в стиле минимализм с акцентом на функциональность и комфорт.',
 	},
 	{
 		id: 2,
-		title: 'Современная студия',
-		location: 'Санкт-Петербург',
-		area: '120 м²',
-		style: 'Современный',
+		title: 'Загородный дом',
+		location: 'Казань, коттеджный поселок',
+		area: '180 м²',
 		year: '2024',
-		description:
-			'Открытое пространство с элементами лофта и современными технологиями.',
+		style: 'Скандинавский',
+		image:
+			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
 		images: [
-			'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
 			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop&q=80',
 		],
-		tags: ['Лофт', 'Открытое пространство', 'Технологии', 'Серый'],
+		description:
+			'Уютный загородный дом в скандинавском стиле с натуральными материалами.',
 	},
 	{
 		id: 3,
-		title: 'Семейный дом',
-		location: 'Москва',
-		area: '95 м²',
-		style: 'Скандинавский',
+		title: 'Студия в центре',
+		location: 'Казань, центр города',
+		area: '45 м²',
 		year: '2023',
-		description:
-			'Уютный семейный дом в скандинавском стиле с натуральными материалами.',
+		style: 'Лофт',
+		image:
+			'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop&q=80',
 		images: [
-			'https://images.unsplash.com/photo-1541558869434-2840d308329a?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
 		],
-		tags: ['Скандинавский', 'Дерево', 'Уют', 'Семейный'],
+		description:
+			'Компактная студия в стиле лофт с максимальным использованием пространства.',
 	},
 	{
 		id: 4,
-		title: 'Лофт в центре',
-		location: 'Санкт-Петербург',
-		area: '65 м²',
-		style: 'Лофт',
+		title: 'Семейная квартира',
+		location: 'Казань, Приволжский район',
+		area: '120 м²',
 		year: '2023',
-		description:
-			'Стильный лофт с высокими потолками и индустриальными элементами.',
+		style: 'Современная классика',
+		image:
+			'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop&q=80',
 		images: [
-			'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop&q=80',
 			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
 		],
-		tags: ['Лофт', 'Кирпич', 'Металл', 'Индустриальный'],
+		description:
+			'Элегантная семейная квартира с элементами классики и современными решениями.',
 	},
 	{
 		id: 5,
-		title: 'Элитная квартира',
-		location: 'Москва',
-		area: '150 м²',
-		style: 'Неоклассика',
+		title: 'Пентхаус',
+		location: 'Казань, элитный район',
+		area: '250 м²',
 		year: '2024',
-		description:
-			'Роскошная квартира в стиле неоклассика с дорогими материалами.',
+		style: 'Luxury',
+		image:
+			'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop&q=80',
 		images: [
-			'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop&q=80',
 			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
 		],
-		tags: ['Неоклассика', 'Роскошь', 'Мрамор', 'Золото'],
+		description:
+			'Роскошный пентхаус с панорамными окнами и премиальными материалами.',
 	},
 	{
 		id: 6,
-		title: 'Молодежная студия',
-		location: 'Санкт-Петербург',
-		area: '45 м²',
-		style: 'Современный',
+		title: 'Офисное пространство',
+		location: 'Казань, бизнес-центр',
+		area: '300 м²',
 		year: '2023',
-		description:
-			'Компактная студия для молодой пары с умными решениями хранения.',
-		images: [
-			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop&q=80',
+		style: 'Корпоративный',
+		image:
 			'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop&q=80',
+		images: [
+			'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
+			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
 		],
-		tags: ['Компактность', 'Хранение', 'Молодежный', 'Яркие акценты'],
+		description:
+			'Современное офисное пространство с зонированием и эргономичными решениями.',
 	},
 ]
 
 export default function Portfolio() {
-	const ref = useRef(null)
-	const isInView = useInView(ref, { once: true })
-
 	return (
-		<div className='min-h-screen bg-black text-white overflow-x-hidden'>
-			{/* Header */}
-			<motion.header
-				initial={{ opacity: 0, y: -50 }}
-				animate={{ opacity: 1, y: 0 }}
-				transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
-				className='fixed top-4 left-4 right-4 z-50 bg-white/5 backdrop-blur-3xl border border-white/20 rounded-[2rem] shadow-[0_8px_32px_rgba(255,255,255,0.1)]'
-			>
-				<div className='flex items-center justify-between px-8 md:px-12 py-4 md:py-5'>
-					<Link href='/' className='flex items-center space-x-4'>
-						<div className='w-10 h-10 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/30'>
-							<span className='text-white font-light text-lg'>R</span>
-						</div>
-						<span className='text-2xl md:text-3xl font-extralight tracking-[0.02em] text-white/95'>
-							REHOME
-						</span>
-					</Link>
-
-					<nav className='hidden md:flex items-center space-x-8'>
-						<Link
-							href='/'
-							className='text-sm font-light text-white/80 hover:text-white transition-colors'
-						>
-							Главная
-						</Link>
-						<Link
-							href='/portfolio'
-							className='text-sm font-light text-white transition-colors'
-						>
-							Портфолио
-						</Link>
-						<Link
-							href='/services'
-							className='text-sm font-light text-white/80 hover:text-white transition-colors'
-						>
-							Услуги
-						</Link>
-						<Link
-							href='/contact'
-							className='text-sm font-light text-white/80 hover:text-white transition-colors'
-						>
-							Контакты
-						</Link>
-					</nav>
-
-					<motion.a
-						href='https://t.me/holfizz'
-						target='_blank'
-						rel='noopener noreferrer'
-						whileHover={{ scale: 1.02, y: -1 }}
-						whileTap={{ scale: 0.98 }}
-						transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-						className='hidden md:block bg-white/15 backdrop-blur-xl text-white px-6 py-2.5 rounded-full text-sm font-light border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all'
-					>
-						Обсудить
-					</motion.a>
-				</div>
-			</motion.header>
+		<div
+			className='min-h-screen bg-black text-white overflow-x-hidden'
+			style={{
+				WebkitOverflowScrolling: 'touch',
+				overflowY: 'auto',
+			}}
+		>
+			<Header />
 
 			{/* Hero Section */}
-			<section className='relative pt-32 pb-20 md:pt-40 md:pb-32 bg-gradient-to-br from-black via-slate-900 to-black flex items-center justify-center overflow-hidden'>
+			<section className='relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden'>
 				<div className='absolute inset-0'>
 					<Image
-						src='https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=1080&fit=crop&q=80'
+						src='https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&h=1080&fit=crop&q=80'
 						alt='Portfolio background'
 						fill
 						className='object-cover opacity-20'
 					/>
-					<div className='absolute inset-0 bg-black/60' />
+					<div className='absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/80' />
 				</div>
 
-				<div className='relative z-10 container mx-auto px-6 text-center max-w-4xl'>
+				<div className='relative z-10 container mx-auto px-4 md:px-6 text-center max-w-4xl'>
 					<motion.h1
-						initial={{ opacity: 0, y: 60 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 1, delay: 0.3 }}
-						className='text-5xl md:text-7xl lg:text-8xl font-thin mb-8 tracking-tighter text-white'
+						variants={fadeInUp}
+						initial='initial'
+						animate='animate'
+						className='text-4xl md:text-6xl lg:text-7xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'
 					>
-						ПОРТФОЛИО
+						Портфолио
 					</motion.h1>
 					<motion.p
-						initial={{ opacity: 0, y: 30 }}
-						animate={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.8, delay: 0.6 }}
-						className='text-xl md:text-2xl text-white/80 max-w-3xl mx-auto font-light leading-relaxed'
+						variants={fadeInUp}
+						initial='initial'
+						animate='animate'
+						transition={{ delay: 0.2 }}
+						className='text-lg md:text-xl text-white/80 mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed font-light'
 					>
-						Наши лучшие проекты в области дизайна интерьеров
+						Каждый проект — это уникальная история создания идеального
+						пространства для жизни
 					</motion.p>
 				</div>
 			</section>
 
 			{/* Projects Grid */}
-			<motion.section
-				ref={ref}
-				initial='initial'
-				animate={isInView ? 'animate' : 'initial'}
-				variants={stagger}
-				className='py-20 md:py-32 bg-gradient-to-br from-black via-gray-900 to-black'
-			>
-				<div className='container mx-auto px-6 max-w-7xl'>
-					<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12'>
-						{projects.map(project => (
+			<section className='py-16 md:py-24 relative'>
+				<div className='container mx-auto px-4 md:px-6'>
+					<div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
+						{projects.map((project, index) => (
 							<motion.div
 								key={project.id}
-								variants={scaleIn}
-								whileHover={{ scale: 1.02, y: -8 }}
-								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+								initial={{ opacity: 0, y: 40 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.6, delay: index * 0.1 }}
+								viewport={{ once: true }}
+								whileHover={{ y: -10, scale: 1.02 }}
 								className='group cursor-pointer'
 							>
-								<div className='bg-white/8 backdrop-blur-3xl rounded-3xl border border-white/20 shadow-[0_8px_32px_rgba(255,255,255,0.1)] hover:bg-white/12 hover:border-white/30 transition-all duration-300 overflow-hidden'>
-									<div className='relative h-64 md:h-80 overflow-hidden'>
+								<div className='bg-white/5 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-white/10 hover:border-white/20 transition-all overflow-hidden'>
+									<div className='relative overflow-hidden'>
 										<Image
-											src={project.images[0]}
+											src={project.image}
 											alt={project.title}
-											fill
-											className='object-cover group-hover:scale-105 transition-transform duration-500'
+											width={400}
+											height={300}
+											className='w-full h-48 md:h-64 object-cover transition-transform duration-700 group-hover:scale-110'
 										/>
-										<div className='absolute inset-0 bg-gradient-to-t from-black/50 to-transparent' />
-										<div className='absolute top-4 right-4 bg-white/20 backdrop-blur-xl rounded-full px-3 py-1 text-xs text-white border border-white/30'>
+										<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500' />
+										<div className='absolute top-4 right-4 bg-white/20 backdrop-blur-xl rounded-full px-3 py-1 text-xs font-light text-white'>
 											{project.year}
 										</div>
 									</div>
-
 									<div className='p-6 md:p-8'>
-										<div className='flex items-center justify-between mb-4'>
-											<h3 className='text-xl md:text-2xl font-semibold text-white'>
+										<div className='flex items-center justify-between mb-3'>
+											<h3 className='text-lg md:text-xl font-light text-white'>
 												{project.title}
 											</h3>
-											<div className='text-white/60 text-sm'>
+											<span className='text-sm text-white/60 bg-white/10 px-3 py-1 rounded-full'>
 												{project.area}
-											</div>
+											</span>
 										</div>
-
-										<div className='flex items-center text-white/70 text-sm mb-4'>
-											<svg
-												className='w-4 h-4 mr-2'
-												fill='currentColor'
-												viewBox='0 0 24 24'
-											>
-												<path d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z' />
-											</svg>
+										<p className='text-sm text-white/70 mb-3'>
 											{project.location}
-										</div>
-
-										<p className='text-white/70 text-sm mb-6 leading-relaxed'>
+										</p>
+										<p className='text-sm text-white/80 mb-4 leading-relaxed'>
 											{project.description}
 										</p>
-
-										<div className='flex flex-wrap gap-2 mb-6'>
-											{project.tags.map((tag, tagIndex) => (
-												<span
-													key={tagIndex}
-													className='bg-white/10 backdrop-blur-xl text-white/80 px-3 py-1 rounded-full text-xs border border-white/20'
-												>
-													{tag}
-												</span>
-											))}
+										<div className='flex items-center justify-between'>
+											<span className='text-xs text-white/60 bg-white/10 px-3 py-1 rounded-full'>
+												{project.style}
+											</span>
+											<motion.button
+												whileHover={{ scale: 1.05 }}
+												whileTap={{ scale: 0.95 }}
+												className='text-xs text-white/80 hover:text-white transition-colors'
+											>
+												Подробнее →
+											</motion.button>
 										</div>
-
-										<motion.button
-											whileHover={{ scale: 1.02 }}
-											whileTap={{ scale: 0.98 }}
-											className='w-full bg-white/10 backdrop-blur-xl text-white py-3 rounded-2xl text-sm font-light border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all'
-										>
-											Подробнее
-										</motion.button>
 									</div>
 								</div>
 							</motion.div>
 						))}
 					</div>
 				</div>
-			</motion.section>
+			</section>
 
 			{/* CTA Section */}
-			<motion.section
-				initial='initial'
-				whileInView='animate'
-				viewport={{ once: true }}
-				variants={fadeInUp}
-				className='py-20 md:py-32 bg-gradient-to-br from-black via-slate-800 to-black text-center'
-			>
-				<div className='container mx-auto px-6 max-w-4xl'>
-					<h2 className='text-4xl md:text-6xl font-thin mb-8 tracking-tighter text-white'>
-						ГОТОВЫ НАЧАТЬ?
-					</h2>
-					<p className='text-xl text-white/80 mb-12 font-light'>
-						Создадим уникальный дизайн специально для вас
-					</p>
-					<Link href='/contact'>
-						<motion.button
-							whileHover={{ scale: 1.02, y: -2 }}
-							whileTap={{ scale: 0.98 }}
-							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-							className='bg-white/15 backdrop-blur-xl text-white px-12 py-4 rounded-3xl text-lg font-light border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.1)]'
-						>
-							Обсудить проект
-						</motion.button>
-					</Link>
-				</div>
-			</motion.section>
+			<section className='py-16 md:py-24 relative'>
+				<div className='absolute inset-0 bg-gradient-to-br from-gray-800 via-neutral-800 to-stone-800' />
 
-			{/* Footer */}
-			<motion.footer
-				initial='initial'
-				whileInView='animate'
-				viewport={{ once: true }}
-				variants={fadeInUp}
-				className='py-16 bg-gradient-to-t from-black via-gray-950 to-black border-t border-white/10'
-			>
-				<div className='container mx-auto px-6'>
-					<div className='flex flex-col items-center justify-center text-center space-y-8'>
-						<Link href='/' className='flex items-center space-x-4'>
-							<div className='w-12 h-12 bg-white/20 backdrop-blur-xl rounded-2xl flex items-center justify-center border border-white/30'>
-								<span className='text-white font-light text-xl'>R</span>
-							</div>
-							<span className='text-3xl font-extralight tracking-tight text-white/95'>
-								REHOME
-							</span>
-						</Link>
+				<div className='container mx-auto px-4 md:px-6 relative z-10'>
+					<motion.div
+						initial={{ opacity: 0, y: 60 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8 }}
+						viewport={{ once: true }}
+						className='text-center max-w-4xl mx-auto'
+					>
+						<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
+							Хотите такой же проект?
+						</h2>
+						<p className='text-base md:text-lg text-white/80 mb-8 md:mb-12 leading-relaxed font-light'>
+							Обсудим ваши идеи и создадим уникальное пространство специально
+							для вас
+						</p>
 
-						<div className='flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8'>
-							<a
-								href='tel:88002228569'
-								className='flex items-center space-x-3 bg-white/5 backdrop-blur-xl rounded-2xl px-6 py-3 border border-white/10 hover:bg-white/10 transition-all'
+						<div className='flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center'>
+							<motion.a
+								href='/contact'
+								whileHover={{ scale: 1.02, y: -2 }}
+								whileTap={{ scale: 0.98 }}
+								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+								className='bg-white text-black px-6 md:px-8 py-3 md:py-4 rounded-full font-medium text-sm md:text-base hover:bg-gray-100 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.3)] w-full sm:w-auto text-center'
 							>
-								<span className='text-white/80 font-light'>
-									8 800 222-85-69
-								</span>
-							</a>
-							<a
-								href='mailto:hello@rehome.studio'
-								className='flex items-center space-x-3 bg-white/5 backdrop-blur-xl rounded-2xl px-6 py-3 border border-white/10 hover:bg-white/10 transition-all'
-							>
-								<span className='text-white/80 font-light'>
-									hello@rehome.studio
-								</span>
-							</a>
-							<a
+								Начать проект
+							</motion.a>
+							<motion.a
 								href='https://t.me/holfizz'
 								target='_blank'
 								rel='noopener noreferrer'
-								className='flex items-center space-x-3 bg-white/5 backdrop-blur-xl rounded-2xl px-6 py-3 border border-white/10 hover:bg-white/10 transition-all'
+								whileHover={{ scale: 1.02, y: -2 }}
+								whileTap={{ scale: 0.98 }}
+								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+								className='bg-white/10 backdrop-blur-xl text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-light text-sm md:text-base border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all w-full sm:w-auto text-center'
 							>
-								<span className='text-white/80 font-light'>@holfizz</span>
-							</a>
+								Обсудить в Telegram
+							</motion.a>
 						</div>
+					</motion.div>
+				</div>
+			</section>
 
-						<div className='text-white/50 text-lg font-light'>
-							© 2025 REHOME. Дизайн интерьеров.
+			{/* Footer */}
+			<footer className='py-8 md:py-12 border-t border-white/10'>
+				<div className='container mx-auto px-4 md:px-6'>
+					<div className='flex flex-col md:flex-row justify-between items-center gap-4'>
+						<div className='flex items-center space-x-4'>
+							<div className='w-8 h-8 bg-white/20 backdrop-blur-xl rounded-xl flex items-center justify-center border border-white/30'>
+								<span className='text-white font-light text-sm'>R</span>
+							</div>
+							<span className='text-xl font-extralight text-white/95'>
+								REHOME
+							</span>
 						</div>
+						<p className='text-sm text-white/60 font-light text-center md:text-left'>
+							© 2025 REHOME. Студия дизайна интерьеров в Казани
+						</p>
 					</div>
 				</div>
-			</motion.footer>
+			</footer>
 		</div>
 	)
 }
