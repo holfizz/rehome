@@ -2,7 +2,7 @@
 
 import { motion, useInView, useMotionValue, useTransform } from 'framer-motion'
 import Image from 'next/image'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import Header from '../components/Header'
 
 const fadeInUp = {
@@ -19,16 +19,9 @@ const stagger = {
 	},
 }
 
-const scaleIn = {
-	initial: { opacity: 0, scale: 0.8 },
-	animate: { opacity: 1, scale: 1 },
-	transition: { duration: 0.6, ease: 'easeOut' },
-}
-
 export default function Home() {
 	const ref = useRef(null)
 	const isInView = useInView(ref, { once: true })
-	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
 	// Параллакс эффекты
 	const scrollY = useMotionValue(0)
