@@ -223,7 +223,7 @@ export default function Home() {
 								className='mb-6'
 							>
 								<span className='text-xs md:text-sm text-white/70 font-light tracking-[0.2em] uppercase'>
-									Студия дизайна интерьеров с улыбкой :)
+									Студия дизайна интерьеров • Казань • 2025
 								</span>
 							</motion.div>
 
