@@ -70,7 +70,7 @@ export default function Home() {
 
 					<nav className='hidden md:flex items-center space-x-8'>
 						<motion.a
-							href='#'
+							href='/portfolio'
 							whileHover={{ y: -1 }}
 							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 							className='text-sm font-light text-white/80 hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-white/60 after:transition-all after:duration-300 hover:after:w-full'
@@ -78,7 +78,7 @@ export default function Home() {
 							Портфолио
 						</motion.a>
 						<motion.a
-							href='#'
+							href='/services'
 							whileHover={{ y: -1 }}
 							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 							className='text-sm font-light text-white/80 hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-white/60 after:transition-all after:duration-300 hover:after:w-full'
@@ -86,7 +86,7 @@ export default function Home() {
 							Услуги
 						</motion.a>
 						<motion.a
-							href='#'
+							href='/contact'
 							whileHover={{ y: -1 }}
 							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 							className='text-sm font-light text-white/80 hover:text-white transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-white/60 after:transition-all after:duration-300 hover:after:w-full'
@@ -96,14 +96,17 @@ export default function Home() {
 					</nav>
 
 					<div className='flex items-center space-x-4'>
-						<motion.button
+						<motion.a
+							href='https://t.me/holfizz'
+							target='_blank'
+							rel='noopener noreferrer'
 							whileHover={{ scale: 1.02, y: -1 }}
 							whileTap={{ scale: 0.98 }}
 							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 							className='hidden md:block bg-white/15 backdrop-blur-xl text-white px-6 py-2.5 rounded-full text-sm font-light border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all shadow-[inset_0_1px_0_rgba(255,255,255,0.2)]'
 						>
 							Обсудить
-						</motion.button>
+						</motion.a>
 
 						{/* Mobile Menu Button */}
 						<button
@@ -141,26 +144,31 @@ export default function Home() {
 					>
 						<div className='flex flex-col space-y-6'>
 							<a
-								href='#'
+								href='/portfolio'
 								className='text-lg hover:text-gray-300 transition-colors'
 							>
 								Портфолио
 							</a>
 							<a
-								href='#'
+								href='/services'
 								className='text-lg hover:text-gray-300 transition-colors'
 							>
 								Услуги
 							</a>
 							<a
-								href='#'
+								href='/contact'
 								className='text-lg hover:text-gray-300 transition-colors'
 							>
 								Контакты
 							</a>
-							<button className='bg-white text-black px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-100 transition-all text-left'>
+							<a
+								href='https://t.me/holfizz'
+								target='_blank'
+								rel='noopener noreferrer'
+								className='bg-white text-black px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-gray-100 transition-all text-left'
+							>
 								Обсудить
-							</button>
+							</a>
 						</div>
 					</motion.div>
 				)}
@@ -215,7 +223,7 @@ export default function Home() {
 								className='mb-6'
 							>
 								<span className='text-xs md:text-sm text-white/70 font-light tracking-[0.2em] uppercase'>
-									Студия дизайна интерьеров
+									Студия дизайна интерьеров с улыбкой :)
 								</span>
 							</motion.div>
 
@@ -253,7 +261,8 @@ export default function Home() {
 								transition={{ duration: 0.8, delay: 1.6 }}
 								className='flex flex-col sm:flex-row gap-4 justify-center items-center'
 							>
-								<motion.button
+								<motion.a
+									href='/contact'
 									whileHover={{ scale: 1.02, y: -2 }}
 									whileTap={{ scale: 0.98 }}
 									transition={{ type: 'spring', stiffness: 400, damping: 25 }}
@@ -261,8 +270,9 @@ export default function Home() {
 								>
 									<span className='relative z-10'>Начать проект</span>
 									<div className='absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity' />
-								</motion.button>
-								<motion.button
+								</motion.a>
+								<motion.a
+									href='/portfolio'
 									whileHover={{ scale: 1.02, y: -2 }}
 									whileTap={{ scale: 0.98 }}
 									transition={{ type: 'spring', stiffness: 400, damping: 25 }}
@@ -270,7 +280,7 @@ export default function Home() {
 								>
 									<span className='relative z-10'>Посмотреть работы</span>
 									<div className='absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity' />
-								</motion.button>
+								</motion.a>
 							</motion.div>
 						</div>
 					</motion.div>
@@ -287,21 +297,21 @@ export default function Home() {
 				initial='initial'
 				animate={isInView ? 'animate' : 'initial'}
 				variants={stagger}
-				className='py-20 md:py-40 bg-gradient-to-br from-black via-amber-950 to-black flex items-center justify-center relative overflow-hidden'
+				className='py-20 md:py-40 bg-gradient-to-br from-stone-200 via-amber-100 to-stone-100 flex items-center justify-center relative overflow-hidden'
 			>
 				{/* Background Glass Elements */}
-				<div className='absolute top-20 left-10 w-64 h-64 bg-amber-900/10 rounded-full blur-3xl animate-pulse' />
-				<div className='absolute bottom-20 right-10 w-80 h-80 bg-amber-800/5 rounded-full blur-3xl animate-pulse delay-1000' />
-				<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-900/5 rounded-full blur-3xl animate-pulse delay-500' />
+				<div className='absolute top-20 left-10 w-64 h-64 bg-amber-200/20 rounded-full blur-3xl animate-pulse' />
+				<div className='absolute bottom-20 right-10 w-80 h-80 bg-stone-300/15 rounded-full blur-3xl animate-pulse delay-1000' />
+				<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-amber-200/10 rounded-full blur-3xl animate-pulse delay-500' />
 				<div className='container mx-auto px-6 max-w-7xl relative z-10'>
 					<motion.div
 						variants={fadeInUp}
 						className='text-center mb-20 md:mb-32'
 					>
-						<h2 className='text-5xl md:text-7xl lg:text-8xl font-thin mb-8 tracking-tighter text-gray-200'>
+						<h2 className='text-5xl md:text-7xl lg:text-8xl font-thin mb-8 tracking-tighter text-stone-800'>
 							УСЛУГИ И ЦЕНЫ
 						</h2>
-						<p className='text-white/70 text-xl md:text-2xl max-w-4xl mx-auto font-light leading-relaxed'>
+						<p className='text-stone-700 text-xl md:text-2xl max-w-4xl mx-auto font-light leading-relaxed'>
 							Мы предоставляем комплексные услуги по дизайну интерьера — от
 							консультаций до реализации дизайн-проекта «под ключ»
 						</p>
@@ -556,16 +566,16 @@ export default function Home() {
 				whileInView='animate'
 				viewport={{ once: true }}
 				variants={stagger}
-				className='py-20 md:py-32 bg-gradient-to-br from-black via-slate-900 to-black flex items-center justify-center relative overflow-hidden'
+				className='py-20 md:py-32 bg-gradient-to-br from-stone-900 via-neutral-800 to-stone-800 flex items-center justify-center relative overflow-hidden'
 			>
 				{/* Background Elements */}
-				<div className='absolute top-10 right-20 w-72 h-72 bg-slate-800/10 rounded-full blur-3xl animate-pulse' />
-				<div className='absolute bottom-10 left-20 w-64 h-64 bg-slate-700/5 rounded-full blur-3xl animate-pulse delay-700' />
+				<div className='absolute top-10 right-20 w-72 h-72 bg-stone-700/10 rounded-full blur-3xl animate-pulse' />
+				<div className='absolute bottom-10 left-20 w-64 h-64 bg-neutral-600/5 rounded-full blur-3xl animate-pulse delay-700' />
 
 				<div className='container mx-auto px-6 max-w-7xl relative z-10'>
 					<motion.h2
 						variants={fadeInUp}
-						className='text-4xl md:text-6xl lg:text-7xl font-thin text-center mb-16 md:mb-24 tracking-tighter text-gray-200'
+						className='text-4xl md:text-6xl lg:text-7xl font-thin text-center mb-16 md:mb-24 tracking-tighter text-stone-200'
 					>
 						НАШИ РАБОТЫ
 					</motion.h2>
@@ -628,12 +638,12 @@ export default function Home() {
 				whileInView='animate'
 				viewport={{ once: true }}
 				variants={stagger}
-				className='relative py-20 md:py-40 bg-gradient-to-br from-black via-gray-900 to-black flex items-center justify-center overflow-hidden'
+				className='relative py-20 md:py-40 bg-gradient-to-br from-stone-900 via-neutral-800 to-stone-700 flex items-center justify-center overflow-hidden'
 			>
 				{/* Background Elements */}
-				<div className='absolute top-20 left-10 w-80 h-80 bg-gray-800/10 rounded-full blur-3xl animate-pulse' />
-				<div className='absolute bottom-20 right-10 w-96 h-96 bg-gray-700/5 rounded-full blur-3xl animate-pulse delay-1000' />
-				<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gray-800/5 rounded-full blur-3xl animate-pulse delay-500' />
+				<div className='absolute top-20 left-10 w-80 h-80 bg-stone-700/10 rounded-full blur-3xl animate-pulse' />
+				<div className='absolute bottom-20 right-10 w-96 h-96 bg-neutral-600/5 rounded-full blur-3xl animate-pulse delay-1000' />
+				<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-stone-600/5 rounded-full blur-3xl animate-pulse delay-500' />
 
 				<div className='absolute inset-0'>
 					<Image
@@ -648,7 +658,7 @@ export default function Home() {
 				<div className='relative z-10 container mx-auto px-6 text-center max-w-4xl'>
 					<motion.h2
 						variants={fadeInUp}
-						className='text-4xl md:text-6xl lg:text-7xl font-thin mb-12 md:mb-16 tracking-tighter text-gray-200'
+						className='text-4xl md:text-6xl lg:text-7xl font-thin mb-12 md:mb-16 tracking-tighter text-stone-200'
 					>
 						СВЯЗАТЬСЯ
 					</motion.h2>
@@ -684,16 +694,17 @@ export default function Home() {
 						</motion.div>
 					</motion.div>
 
-					<motion.button
+					<motion.a
+						href='/contact'
 						variants={fadeInUp}
 						whileHover={{ scale: 1.02, y: -2 }}
 						whileTap={{ scale: 0.98 }}
 						transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-						className='bg-white/15 backdrop-blur-xl text-white px-12 md:px-20 py-6 md:py-8 rounded-3xl text-xl md:text-2xl font-light border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.1)] relative overflow-hidden group'
+						className='inline-block bg-white/15 backdrop-blur-xl text-white px-12 md:px-20 py-6 md:py-8 rounded-3xl text-xl md:text-2xl font-light border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.1)] relative overflow-hidden group'
 					>
 						<span className='relative z-10'>Обсудить проект</span>
 						<div className='absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-3xl' />
-					</motion.button>
+					</motion.a>
 				</div>
 			</motion.section>
 
@@ -703,14 +714,14 @@ export default function Home() {
 				whileInView='animate'
 				viewport={{ once: true }}
 				variants={fadeInUp}
-				className='py-16 md:py-20 bg-gradient-to-t from-black via-gray-950 to-black border-t border-white/10 flex items-center justify-center relative overflow-hidden'
+				className='py-16 md:py-20 bg-gradient-to-t from-stone-900 via-neutral-900 to-stone-800 border-t border-white/10 flex items-center justify-center relative overflow-hidden'
 			>
 				{/* Background Elements */}
 				<div className='absolute top-0 left-1/4 w-64 h-64 bg-white/2 rounded-full blur-3xl animate-pulse' />
 				<div className='absolute bottom-0 right-1/4 w-48 h-48 bg-white/1 rounded-full blur-3xl animate-pulse delay-1000' />
 
 				<div className='container mx-auto px-6 relative z-10'>
-					<div className='flex flex-col items-center justify-center text-center space-y-6 md:space-y-8'>
+					<div className='flex flex-col items-center justify-center text-center space-y-8 md:space-y-10'>
 						<motion.div
 							whileHover={{ scale: 1.02 }}
 							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
@@ -726,6 +737,63 @@ export default function Home() {
 							</span>
 						</motion.div>
 
+						{/* Contact Links */}
+						<div className='flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8'>
+							<motion.a
+								href='tel:88002228569'
+								whileHover={{ scale: 1.02, y: -1 }}
+								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+								className='flex items-center space-x-3 bg-white/5 backdrop-blur-xl rounded-2xl px-6 py-3 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all'
+							>
+								<svg
+									className='w-5 h-5 text-white/70'
+									fill='currentColor'
+									viewBox='0 0 24 24'
+								>
+									<path d='M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z' />
+								</svg>
+								<span className='text-white/80 font-light'>
+									8 800 222-85-69
+								</span>
+							</motion.a>
+
+							<motion.a
+								href='mailto:hello@rehome.studio'
+								whileHover={{ scale: 1.02, y: -1 }}
+								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+								className='flex items-center space-x-3 bg-white/5 backdrop-blur-xl rounded-2xl px-6 py-3 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all'
+							>
+								<svg
+									className='w-5 h-5 text-white/70'
+									fill='currentColor'
+									viewBox='0 0 24 24'
+								>
+									<path d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z' />
+								</svg>
+								<span className='text-white/80 font-light'>
+									hello@rehome.studio
+								</span>
+							</motion.a>
+
+							<motion.a
+								href='https://t.me/holfizz'
+								target='_blank'
+								rel='noopener noreferrer'
+								whileHover={{ scale: 1.02, y: -1 }}
+								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+								className='flex items-center space-x-3 bg-white/5 backdrop-blur-xl rounded-2xl px-6 py-3 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all'
+							>
+								<svg
+									className='w-5 h-5 text-white/70'
+									fill='currentColor'
+									viewBox='0 0 24 24'
+								>
+									<path d='M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z' />
+								</svg>
+								<span className='text-white/80 font-light'>@holfizz</span>
+							</motion.a>
+						</div>
+
 						<div className='text-white/50 text-base md:text-lg font-light bg-white/5 backdrop-blur-xl rounded-full px-8 py-3 border border-white/10'>
 							© 2025 REHOME. Дизайн интерьеров.
 						</div>
@@ -740,11 +808,14 @@ export default function Home() {
 				transition={{ delay: 2, type: 'spring', stiffness: 260, damping: 20 }}
 				className='fixed bottom-6 md:bottom-8 right-6 md:right-8 z-50'
 			>
-				<motion.button
+				<motion.a
+					href='https://t.me/holfizz'
+					target='_blank'
+					rel='noopener noreferrer'
 					whileHover={{ scale: 1.05, y: -2 }}
 					whileTap={{ scale: 0.95 }}
 					transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-					className='bg-white/15 backdrop-blur-3xl text-white w-16 md:w-18 h-16 md:h-18 rounded-2xl md:rounded-3xl flex items-center justify-center border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.1)] relative overflow-hidden group'
+					className='bg-white/15 backdrop-blur-3xl text-white w-16 md:w-18 h-16 md:h-18 rounded-2xl md:rounded-3xl flex items-center justify-center border border-white/20 hover:bg-white/20 hover:border-white/30 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.1)] relative overflow-hidden group block'
 				>
 					<div className='absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent rounded-2xl md:rounded-3xl pointer-events-none' />
 					<svg
@@ -755,7 +826,7 @@ export default function Home() {
 						<path d='M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z' />
 					</svg>
 					<div className='absolute inset-0 bg-gradient-to-r from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl md:rounded-3xl' />
-				</motion.button>
+				</motion.a>
 			</motion.div>
 		</div>
 	)
