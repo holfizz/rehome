@@ -1,0 +1,52 @@
+@import 'tailwindcss';
+
+/* Base styles */
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background: #000000;
+	color: #ffffff;
+	font-family: 'Geist', system-ui, sans-serif;
+	line-height: 1.6;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+/* Custom utility classes */
+@utility hero-text {
+	font-weight: 100;
+	letter-spacing: 0.05em;
+	line-height: 0.9;
+}
+
+@utility section-spacing {
+	padding: 120px 0;
+}
+
+@utility text-shadow {
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+@utility glass-effect {
+	backdrop-filter: blur(10px);
+	background: rgba(255, 255, 255, 0.1);
+}
+
+@utility luxury-bg {
+	background: linear-gradient(
+		135deg,
+		rgba(0, 0, 0, 0.9) 0%,
+		rgba(0, 0, 0, 0.7) 100%
+	);
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+	.section-spacing {
+		padding: 60px 0;
+	}
+}
