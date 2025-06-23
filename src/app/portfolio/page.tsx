@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import Header from '../../components/Header'
 
 const fadeInUp = {
@@ -13,105 +14,70 @@ const fadeInUp = {
 const projects = [
 	{
 		id: 1,
-		title: 'Современная квартира',
+		title: 'Современная квартира "Элегант"',
 		location: 'Казань, ЖК "Солнечный"',
-		area: '85 м²',
+		area: '95 м²',
 		year: '2024',
-		style: 'Минимализм',
-		image:
-			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
+		style: 'Современный',
+		image: '/assets/case1_ph1.jpg',
 		images: [
-			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop&q=80',
+			'/assets/case1_ph1.jpg',
+			'/assets/case1_ph2.jpg',
+			'/assets/case1_ph3.jpg',
+			'/assets/case1_ph4.jpg',
+			'/assets/case1_ph5.jpg',
+			'/assets/case1_ph6.jpg',
+			'/assets/case1_ph7.jpg',
+			'/assets/case1_ph8.jpg',
+			'/assets/case1_ph9.jpg',
+			'/assets/case1_ph10.jpg',
+			'/assets/case1_ph11.jpg',
+			'/assets/case1_ph12.jpg',
+			'/assets/case1_ph13.jpg',
+			'/assets/case1_ph14.jpg',
+			'/assets/case1_ph15.jpg',
+			'/assets/case1_ph16.jpg',
+			'/assets/case1_ph17.png',
 		],
 		description:
-			'Современная квартира в стиле минимализм с акцентом на функциональность и комфорт.',
+			'Полный проект современной квартиры с продуманной планировкой и стильным дизайном. Каждая деталь создана для комфортной жизни в городском ритме.',
 	},
 	{
 		id: 2,
-		title: 'Загородный дом',
-		location: 'Казань, коттеджный поселок',
-		area: '180 м²',
+		title: 'Квартира "Модерн"',
+		location: 'Казань, центр города',
+		area: '78 м²',
 		year: '2024',
-		style: 'Скандинавский',
-		image:
-			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
+		style: 'Модерн',
+		image: '/assets/case1_ph5.jpg',
 		images: [
-			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop&q=80',
+			'/assets/case1_ph5.jpg',
+			'/assets/case1_ph6.jpg',
+			'/assets/case1_ph7.jpg',
+			'/assets/case1_ph8.jpg',
+			'/assets/case1_ph9.jpg',
 		],
 		description:
-			'Уютный загородный дом в скандинавском стиле с натуральными материалами.',
+			'Стильная квартира в современном стиле с акцентом на функциональность и эстетику. Каждое пространство максимально продумано.',
 	},
 	{
 		id: 3,
-		title: 'Студия в центре',
-		location: 'Казань, центр города',
-		area: '45 м²',
-		year: '2023',
-		style: 'Лофт',
-		image:
-			'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop&q=80',
-		images: [
-			'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
-		],
-		description:
-			'Компактная студия в стиле лофт с максимальным использованием пространства.',
-	},
-	{
-		id: 4,
-		title: 'Семейная квартира',
-		location: 'Казань, Приволжский район',
-		area: '120 м²',
-		year: '2023',
-		style: 'Современная классика',
-		image:
-			'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop&q=80',
-		images: [
-			'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
-		],
-		description:
-			'Элегантная семейная квартира с элементами классики и современными решениями.',
-	},
-	{
-		id: 5,
-		title: 'Пентхаус',
-		location: 'Казань, элитный район',
-		area: '250 м²',
+		title: 'Детские комнаты "Мечта"',
+		location: 'Казань, семейный район',
+		area: '110 м²',
 		year: '2024',
-		style: 'Luxury',
-		image:
-			'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop&q=80',
+		style: 'Детский дизайн',
+		image: '/assets/case2_ph1.jpg',
 		images: [
-			'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
+			'/assets/case2_ph1.jpg',
+			'/assets/case2_ph2.jpg',
+			'/assets/case2_ph3.jpg',
+			'/assets/case2_ph4.jpg',
+			'/assets/case2_ph5.jpg',
+			'/assets/case2_ph6.jpg',
 		],
 		description:
-			'Роскошный пентхаус с панорамными окнами и премиальными материалами.',
-	},
-	{
-		id: 6,
-		title: 'Офисное пространство',
-		location: 'Казань, бизнес-центр',
-		area: '300 м²',
-		year: '2023',
-		style: 'Корпоративный',
-		image:
-			'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop&q=80',
-		images: [
-			'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&h=600&fit=crop&q=80',
-			'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&h=600&fit=crop&q=80',
-		],
-		description:
-			'Современное офисное пространство с зонированием и эргономичными решениями.',
+			'Квартира с тремя уникальными детскими комнатами - для мальчиков и девочек. Каждое пространство создано с учетом детских потребностей и фантазий.',
 	},
 ]
 
@@ -130,7 +96,7 @@ export default function Portfolio() {
 			<section className='relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden'>
 				<div className='absolute inset-0'>
 					<Image
-						src='https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1920&h=1080&fit=crop&q=80'
+						src='/assets/case1_ph3.jpg'
 						alt='Portfolio background'
 						fill
 						className='object-cover opacity-20'
@@ -174,49 +140,51 @@ export default function Portfolio() {
 								whileHover={{ y: -10, scale: 1.02 }}
 								className='group cursor-pointer'
 							>
-								<div className='bg-white/5 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-white/10 hover:border-white/20 transition-all overflow-hidden'>
-									<div className='relative overflow-hidden'>
-										<Image
-											src={project.image}
-											alt={project.title}
-											width={400}
-											height={300}
-											className='w-full h-48 md:h-64 object-cover transition-transform duration-700 group-hover:scale-110'
-										/>
-										<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500' />
-										<div className='absolute top-4 right-4 bg-white/20 backdrop-blur-xl rounded-full px-3 py-1 text-xs font-light text-white'>
-											{project.year}
+								<Link href={`/portfolio/${project.id}`}>
+									<div className='bg-white/5 backdrop-blur-xl rounded-2xl md:rounded-3xl border border-white/10 hover:border-white/20 transition-all overflow-hidden'>
+										<div className='relative overflow-hidden'>
+											<Image
+												src={project.image}
+												alt={project.title}
+												width={400}
+												height={300}
+												className='w-full h-48 md:h-64 object-cover transition-transform duration-700 group-hover:scale-110'
+											/>
+											<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500' />
+											<div className='absolute top-4 right-4 bg-white/20 backdrop-blur-xl rounded-full px-3 py-1 text-xs font-light text-white'>
+												{project.year}
+											</div>
+										</div>
+										<div className='p-6 md:p-8'>
+											<div className='flex items-center justify-between mb-3'>
+												<h3 className='text-lg md:text-xl font-light text-white'>
+													{project.title}
+												</h3>
+												<span className='text-sm text-white/60 bg-white/10 px-3 py-1 rounded-full'>
+													{project.area}
+												</span>
+											</div>
+											<p className='text-sm text-white/70 mb-3'>
+												{project.location}
+											</p>
+											<p className='text-sm text-white/80 mb-4 leading-relaxed'>
+												{project.description}
+											</p>
+											<div className='flex items-center justify-between'>
+												<span className='text-xs text-white/60 bg-white/10 px-3 py-1 rounded-full'>
+													{project.style}
+												</span>
+												<motion.div
+													whileHover={{ scale: 1.05 }}
+													whileTap={{ scale: 0.95 }}
+													className='text-xs text-white/80 hover:text-white transition-colors'
+												>
+													Подробнее →
+												</motion.div>
+											</div>
 										</div>
 									</div>
-									<div className='p-6 md:p-8'>
-										<div className='flex items-center justify-between mb-3'>
-											<h3 className='text-lg md:text-xl font-light text-white'>
-												{project.title}
-											</h3>
-											<span className='text-sm text-white/60 bg-white/10 px-3 py-1 rounded-full'>
-												{project.area}
-											</span>
-										</div>
-										<p className='text-sm text-white/70 mb-3'>
-											{project.location}
-										</p>
-										<p className='text-sm text-white/80 mb-4 leading-relaxed'>
-											{project.description}
-										</p>
-										<div className='flex items-center justify-between'>
-											<span className='text-xs text-white/60 bg-white/10 px-3 py-1 rounded-full'>
-												{project.style}
-											</span>
-											<motion.button
-												whileHover={{ scale: 1.05 }}
-												whileTap={{ scale: 0.95 }}
-												className='text-xs text-white/80 hover:text-white transition-colors'
-											>
-												Подробнее →
-											</motion.button>
-										</div>
-									</div>
-								</div>
+								</Link>
 							</motion.div>
 						))}
 					</div>

@@ -24,10 +24,9 @@ const floatingAnimation = {
 export default function NotFound() {
 	return (
 		<div
-			className='min-h-screen relative overflow-hidden'
+			className='h-screen w-full relative overflow-hidden fixed inset-0'
 			style={{
 				WebkitOverflowScrolling: 'touch',
-				overflowY: 'auto',
 			}}
 		>
 			{/* Simple Dark Orange Gradient Background */}
@@ -35,7 +34,9 @@ export default function NotFound() {
 			<div className='absolute inset-0 bg-gradient-to-tr from-transparent via-orange-900/20 to-transparent' />
 			<div className='absolute inset-0 bg-gradient-to-bl from-transparent via-amber-900/10 to-transparent' />
 
-			<Header />
+			<div className='absolute top-0 left-0 right-0 z-20'>
+				<Header />
+			</div>
 
 			{/* Floating Glass Orbs */}
 			<div className='absolute inset-0 overflow-hidden pointer-events-none'>
@@ -44,27 +45,15 @@ export default function NotFound() {
 						key={i}
 						initial={{
 							opacity: 0,
-							x:
-								typeof window !== 'undefined'
-									? Math.random() * window.innerWidth
-									: Math.random() * 1200,
-							y:
-								typeof window !== 'undefined'
-									? Math.random() * window.innerHeight
-									: Math.random() * 800,
+							x: Math.random() * 100 + '%',
+							y: Math.random() * 100 + '%',
 							scale: 0,
 						}}
 						animate={{
 							opacity: [0.1, 0.3, 0.1],
 							scale: [0.5, 1, 0.5],
-							x:
-								typeof window !== 'undefined'
-									? Math.random() * window.innerWidth
-									: Math.random() * 1200,
-							y:
-								typeof window !== 'undefined'
-									? Math.random() * window.innerHeight
-									: Math.random() * 800,
+							x: Math.random() * 100 + '%',
+							y: Math.random() * 100 + '%',
 						}}
 						transition={{
 							duration: 8 + Math.random() * 4,
@@ -79,7 +68,7 @@ export default function NotFound() {
 			</div>
 
 			{/* Main Content */}
-			<div className='relative z-10 min-h-screen flex items-center justify-center px-4 md:px-6 pt-20'>
+			<div className='relative z-10 h-full flex items-center justify-center px-4 md:px-6'>
 				<div className='text-center max-w-4xl mx-auto'>
 					{/* Giant Glass 404 */}
 					<motion.div
@@ -162,17 +151,13 @@ export default function NotFound() {
 						key={`particle-${i}`}
 						initial={{
 							opacity: 0,
-							x:
-								Math.random() *
-								(typeof window !== 'undefined' ? window.innerWidth : 1200),
-							y: typeof window !== 'undefined' ? window.innerHeight + 100 : 900,
+							x: Math.random() * 100 + '%',
+							y: '110%',
 						}}
 						animate={{
 							opacity: [0, 0.6, 0],
-							y: -100,
-							x:
-								Math.random() *
-								(typeof window !== 'undefined' ? window.innerWidth : 1200),
+							y: '-10%',
+							x: Math.random() * 100 + '%',
 						}}
 						transition={{
 							duration: 8 + Math.random() * 4,

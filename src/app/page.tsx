@@ -2,6 +2,7 @@
 
 import { motion, useInView, useMotionValue, useTransform } from 'framer-motion'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import Header from '../components/Header'
 
@@ -59,7 +60,7 @@ export default function Home() {
 						className='relative w-full h-full'
 					>
 						<Image
-							src='https://images.unsplash.com/photo-1672137233327-37b0c1049e77'
+							src='/assets/case1_ph2.jpg'
 							alt='Luxury Interior Design'
 							fill
 							className='object-cover scale-110'
@@ -162,56 +163,81 @@ export default function Home() {
 				</motion.div>
 			</section>
 
-			{/* About Section */}
+			{/* Combined About & Services Section */}
 			<section className='py-16 md:py-24 lg:py-32 relative overflow-hidden'>
-				{/* Background with subtle pattern */}
-				<div className='absolute inset-0 bg-gradient-to-b from-black via-gray-900/50 to-black' />
-				<div
-					className='absolute inset-0 opacity-5'
-					style={{
-						backgroundImage:
-							'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
-						backgroundSize: '40px 40px',
-					}}
-				/>
+				{/* Multi-point radial gradient background */}
+				<div className='absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-100'></div>
+
+				{/* Радиальные градиенты из разных углов */}
+				<div className='absolute top-0 left-0 w-96 h-96 opacity-40'>
+					<div className='w-full h-full bg-gradient-radial from-blue-100/60 via-blue-50/30 to-transparent rounded-full blur-3xl'></div>
+				</div>
+
+				<div className='absolute top-1/4 right-0 w-80 h-80 opacity-35'>
+					<div className='w-full h-full bg-gradient-radial from-purple-100/50 via-purple-50/25 to-transparent rounded-full blur-3xl'></div>
+				</div>
+
+				<div className='absolute bottom-0 left-1/3 w-72 h-72 opacity-30'>
+					<div className='w-full h-full bg-gradient-radial from-green-100/45 via-green-50/20 to-transparent rounded-full blur-3xl'></div>
+				</div>
+
+				<div className='absolute bottom-1/4 right-1/4 w-64 h-64 opacity-25'>
+					<div className='w-full h-full bg-gradient-radial from-pink-100/40 via-pink-50/15 to-transparent rounded-full blur-3xl'></div>
+				</div>
+
+				<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-20'>
+					<div className='w-full h-full bg-gradient-radial from-gray-200/50 via-gray-100/25 to-transparent rounded-full blur-3xl'></div>
+				</div>
+
+				<div className='absolute top-10 right-1/3 w-56 h-56 opacity-30'>
+					<div className='w-full h-full bg-gradient-radial from-indigo-100/45 via-indigo-50/20 to-transparent rounded-full blur-3xl'></div>
+				</div>
 
 				<div className='container mx-auto px-4 md:px-8 relative z-10'>
+					{/* Philosophy Section */}
 					<motion.div
 						ref={ref}
 						variants={stagger}
 						initial='initial'
 						animate={isInView ? 'animate' : 'initial'}
-						className='max-w-6xl mx-auto'
+						className='max-w-6xl mx-auto mb-20 md:mb-32'
 					>
 						<motion.div
 							variants={fadeInUp}
 							className='text-center mb-12 md:mb-20'
 						>
-							<span className='text-xs md:text-sm text-white/60 font-light tracking-[0.2em] uppercase mb-4 block'>
+							<span className='text-xs md:text-sm text-gray-600 font-light tracking-[0.2em] uppercase mb-4 block'>
 								О студии
 							</span>
-							<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
+							<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-gray-900 tracking-[-0.02em]'>
 								Философия пространства
 							</h2>
-							<p className='text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed font-light'>
+							<p className='text-base md:text-lg text-gray-700 max-w-3xl mx-auto leading-relaxed font-light'>
 								Мы верим, что дом — это не просто место, где вы живете. Это
 								пространство, которое формирует ваше настроение, вдохновляет на
 								новые свершения и дарит ощущение гармонии каждый день.
 							</p>
 						</motion.div>
 
-						<div className='grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16'>
+						<div className='grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12'>
 							<motion.div
 								variants={fadeInUp}
-								className='bg-white/5 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-10 border border-white/10 hover:border-white/20 transition-all group'
+								className='bg-gradient-to-br from-white via-gray-50/50 to-gray-100/30 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-gray-200 hover:border-gray-300 hover:shadow-xl transition-all duration-300 group'
 							>
-								<div className='w-12 h-12 md:w-16 md:h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/15 transition-all'>
-									<span className='text-xl md:text-2xl'>✨</span>
+								<div className='relative overflow-hidden rounded-2xl mb-6 md:mb-8'>
+									<Image
+										src='/assets/case1_ph3.jpg'
+										alt='Индивидуальный подход'
+										width={500}
+										height={300}
+										className='w-full h-48 md:h-56 lg:h-64 object-cover group-hover:scale-105 transition-transform duration-700'
+									/>
+									<div className='absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
 								</div>
-								<h3 className='text-xl md:text-2xl font-light mb-4 text-white'>
+								<h3 className='text-xl md:text-2xl lg:text-3xl font-light mb-4 md:mb-6 text-gray-900'>
 									Индивидуальный подход
 								</h3>
-								<p className='text-sm md:text-base text-white/70 leading-relaxed font-light'>
+								<p className='text-base md:text-lg text-gray-600 leading-relaxed font-light'>
 									Каждый проект начинается с глубокого понимания вашего образа
 									жизни, предпочтений и мечтаний. Мы создаем уникальные решения,
 									которые отражают именно вашу личность.
@@ -220,15 +246,22 @@ export default function Home() {
 
 							<motion.div
 								variants={fadeInUp}
-								className='bg-white/5 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-10 border border-white/10 hover:border-white/20 transition-all group'
+								className='bg-gradient-to-br from-white via-gray-50/50 to-gray-100/30 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-gray-200 hover:border-gray-300 hover:shadow-xl transition-all duration-300 group'
 							>
-								<div className='w-12 h-12 md:w-16 md:h-16 bg-white/10 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-white/15 transition-all'>
-									<span className='text-xl md:text-2xl'>🎨</span>
+								<div className='relative overflow-hidden rounded-2xl mb-6 md:mb-8'>
+									<Image
+										src='/assets/case1_ph7.jpg'
+										alt='Современные решения'
+										width={500}
+										height={300}
+										className='w-full h-48 md:h-56 lg:h-64 object-cover group-hover:scale-105 transition-transform duration-700'
+									/>
+									<div className='absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
 								</div>
-								<h3 className='text-xl md:text-2xl font-light mb-4 text-white'>
+								<h3 className='text-xl md:text-2xl lg:text-3xl font-light mb-4 md:mb-6 text-gray-900'>
 									Современные решения
 								</h3>
-								<p className='text-sm md:text-base text-white/70 leading-relaxed font-light'>
+								<p className='text-base md:text-lg text-gray-600 leading-relaxed font-light'>
 									Используем передовые технологии и материалы, следим за
 									мировыми трендами, но всегда помним о функциональности и
 									комфорте в повседневной жизни.
@@ -236,15 +269,8 @@ export default function Home() {
 							</motion.div>
 						</div>
 					</motion.div>
-				</div>
-			</section>
 
-			{/* Services Section */}
-			<section className='py-16 md:py-24 lg:py-32 relative overflow-hidden'>
-				{/* Background */}
-				<div className='absolute inset-0 bg-gradient-to-br from-amber-900/20 via-orange-900/10 to-yellow-900/20' />
-
-				<div className='container mx-auto px-4 md:px-8 relative z-10'>
+					{/* Process Section */}
 					<motion.div
 						initial={{ opacity: 0, y: 60 }}
 						whileInView={{ opacity: 1, y: 0 }}
@@ -252,72 +278,161 @@ export default function Home() {
 						viewport={{ once: true }}
 						className='text-center mb-12 md:mb-20'
 					>
-						<span className='text-xs md:text-sm text-white/60 font-light tracking-[0.2em] uppercase mb-4 block'>
-							Услуги
+						<span className='text-xs md:text-sm text-gray-600 font-light tracking-[0.2em] uppercase mb-4 block'>
+							Процесс работы
 						</span>
-						<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
-							Что мы делаем
+						<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-gray-900 tracking-[-0.02em]'>
+							Как мы работаем
 						</h2>
+						<p className='text-base md:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed font-light'>
+							Простой и понятный процесс от идеи до воплощения
+						</p>
 					</motion.div>
 
-					<div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8'>
-						{[
-							{
-								title: 'Дизайн-проект',
-								description:
-									'Полный дизайн-проект с 3D-визуализацией, чертежами и спецификациями',
-								icon: '📐',
-							},
-							{
-								title: 'Авторский надзор',
-								description:
-									'Контроль качества выполнения работ и соответствия проекту',
-								icon: '👁️',
-							},
-							{
-								title: 'Подбор мебели',
-								description:
-									'Комплектация интерьера мебелью, декором и аксессуарами',
-								icon: '🪑',
-							},
-							{
-								title: 'Перепланировка',
-								description:
-									'Оптимизация пространства с учетом всех строительных норм',
-								icon: '🏗️',
-							},
-							{
-								title: '3D-визуализация',
-								description: 'Фотореалистичные изображения будущего интерьера',
-								icon: '🎬',
-							},
-							{
-								title: 'Консультации',
-								description:
-									'Экспертные советы по дизайну и организации пространства',
-								icon: '💡',
-							},
-						].map((service, index) => (
-							<motion.div
-								key={index}
-								initial={{ opacity: 0, y: 40 }}
-								whileInView={{ opacity: 1, y: 0 }}
-								transition={{ duration: 0.6, delay: index * 0.1 }}
-								viewport={{ once: true }}
-								whileHover={{ y: -5, scale: 1.02 }}
-								className='bg-white/5 backdrop-blur-xl rounded-2xl md:rounded-3xl p-6 md:p-8 border border-white/10 hover:border-white/20 transition-all group cursor-pointer'
+					<div className='relative max-w-5xl mx-auto'>
+						{/* Connecting line */}
+						<div className='hidden lg:block absolute top-20 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-300 to-transparent'></div>
+
+						<div className='grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12'>
+							{[
+								{
+									number: '01',
+									title: 'Знакомство и концепция',
+									description:
+										'Встречаемся, обсуждаем ваши потребности и создаем уникальную концепцию. Определяем стиль, бюджет и сроки реализации.',
+									duration: '1-2 недели',
+								},
+								{
+									number: '02',
+									title: 'Дизайн-проект',
+									description:
+										'Разрабатываем полный дизайн-проект с 3D-визуализацией, чертежами и спецификациями. Вы видите результат еще до начала работ.',
+									duration: '3-4 недели',
+								},
+								{
+									number: '03',
+									title: 'Реализация',
+									description:
+										'Контролируем ремонт, подбираем мебель и декор. Воплощаем проект в жизнь с авторским надзором до финального результата.',
+									duration: '2-6 месяцев',
+								},
+							].map((step, index) => (
+								<motion.div
+									key={index}
+									initial={{ opacity: 0, y: 40 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.6, delay: index * 0.2 }}
+									viewport={{ once: true }}
+									className='relative'
+								>
+									{/* Step number circle */}
+									<div className='relative mb-6 md:mb-8'>
+										<div className='w-16 h-16 md:w-20 md:h-20 bg-gradient-to-r from-gray-100 to-white border-2 border-gray-300 rounded-full flex items-center justify-center mx-auto shadow-lg'>
+											<span className='text-xl md:text-2xl font-light text-gray-900'>
+												{step.number}
+											</span>
+										</div>
+										{/* Connecting dots for mobile */}
+										{index < 2 && (
+											<div className='lg:hidden absolute top-full left-1/2 transform -translate-x-1/2 mt-4 mb-4'>
+												<div className='flex flex-col items-center space-y-2'>
+													<div className='w-1 h-1 bg-gray-300 rounded-full'></div>
+													<div className='w-1 h-1 bg-gray-300 rounded-full'></div>
+													<div className='w-1 h-1 bg-gray-300 rounded-full'></div>
+												</div>
+											</div>
+										)}
+									</div>
+
+									{/* Content card */}
+									<div className='bg-gradient-to-br from-white via-gray-50/40 to-gray-100/20 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-gray-200 hover:border-gray-300 hover:shadow-xl transition-all duration-300 text-center'>
+										<h3 className='text-lg md:text-xl lg:text-2xl font-light mb-4 md:mb-6 text-gray-900'>
+											{step.title}
+										</h3>
+										<p className='text-sm md:text-base text-gray-600 leading-relaxed font-light mb-4 md:mb-6'>
+											{step.description}
+										</p>
+										<div className='inline-flex items-center justify-center bg-gray-100 rounded-full px-4 py-2'>
+											<span className='text-xs md:text-sm text-gray-700 font-medium'>
+												⏱️ {step.duration}
+											</span>
+										</div>
+									</div>
+								</motion.div>
+							))}
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{/* Children Section */}
+			<section className='py-16 md:py-24 lg:py-32 relative overflow-hidden'>
+				{/* Background */}
+				<div className='absolute inset-0 bg-gradient-to-br from-pink-900/20 via-purple-900/10 to-blue-900/20' />
+
+				<div className='container mx-auto px-4 md:px-8 relative z-10'>
+					<div className='grid lg:grid-cols-2 gap-12 md:gap-16 items-center'>
+						<motion.div
+							initial={{ opacity: 0, x: -60 }}
+							whileInView={{ opacity: 1, x: 0 }}
+							transition={{ duration: 0.8 }}
+							viewport={{ once: true }}
+						>
+							<span className='text-xs md:text-sm text-white/60 font-light tracking-[0.2em] uppercase mb-4 block'>
+								Для всей семьи
+							</span>
+							<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
+								Ваши дети тоже будут счастливы
+							</h2>
+							<p className='text-base md:text-lg text-white/80 mb-6 md:mb-8 leading-relaxed font-light'>
+								Мы создаем детские комнаты, которые становятся волшебными мирами
+								для ваших малышей. Каждое пространство продумано с заботой о
+								безопасности, развитии и комфорте ребенка.
+							</p>
+							<p className='text-base md:text-lg text-white/70 mb-8 leading-relaxed font-light'>
+								Спокойствие родителей начинается с правильно организованного
+								пространства. Наши дизайнерские решения помогают создать
+								гармонию в доме, где каждый член семьи чувствует себя комфортно.
+							</p>
+							<motion.a
+								href='/portfolio'
+								whileHover={{ scale: 1.02, y: -2 }}
+								whileTap={{ scale: 0.98 }}
+								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+								className='inline-block bg-white/10 backdrop-blur-xl text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-light text-sm md:text-base border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all'
 							>
-								<div className='w-12 h-12 md:w-16 md:h-16 bg-amber-500/20 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-500/30 transition-all'>
-									<span className='text-xl md:text-2xl'>{service.icon}</span>
+								Посмотреть детские проекты
+							</motion.a>
+						</motion.div>
+
+						<motion.div
+							initial={{ opacity: 0, x: 60 }}
+							whileInView={{ opacity: 1, x: 0 }}
+							transition={{ duration: 0.8, delay: 0.2 }}
+							viewport={{ once: true }}
+							className='relative'
+						>
+							<div className='relative overflow-hidden rounded-2xl md:rounded-3xl'>
+								<Image
+									src='/assets/case2_ph5.jpg'
+									alt='Детская комната для девочки'
+									width={800}
+									height={600}
+									className='w-full h-72 md:h-84 lg:h-100 object-cover'
+								/>
+								<div className='absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent' />
+								<div className='absolute bottom-6 left-6 right-6'>
+									<div className='bg-white/20 backdrop-blur-xl rounded-xl p-4 border border-white/30'>
+										<h3 className='text-lg md:text-xl font-light mb-2 text-white'>
+											Детская для принцессы
+										</h3>
+										<p className='text-sm text-white/80'>
+											Волшебное пространство для маленькой мечтательницы
+										</p>
+									</div>
 								</div>
-								<h3 className='text-lg md:text-xl font-light mb-3 md:mb-4 text-white'>
-									{service.title}
-								</h3>
-								<p className='text-sm md:text-base text-white/70 leading-relaxed font-light'>
-									{service.description}
-								</p>
-							</motion.div>
-						))}
+							</div>
+						</motion.div>
 					</div>
 				</div>
 			</section>
@@ -347,52 +462,80 @@ export default function Home() {
 						</p>
 					</motion.div>
 
-					<div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16'>
+					<div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16 max-w-6xl mx-auto'>
 						{[
 							{
-								image:
-									'https://images.unsplash.com/photo-1586023492125-27b2c045efd7',
-								title: 'Современная квартира',
-								area: '85 м²',
+								id: 1,
+								image: '/assets/case1_ph2.jpg',
+								title: 'Современная квартира "Элегант"',
+								area: '95 м²',
+								description:
+									'Минималистичный дизайн с акцентом на функциональность',
+								photos: 17,
 							},
 							{
-								image:
-									'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2',
-								title: 'Загородный дом',
-								area: '180 м²',
-							},
-							{
-								image:
-									'https://images.unsplash.com/photo-1564013799919-ab600027ffc6',
-								title: 'Студия в центре',
+								id: 2,
+								image: '/assets/case2_ph1.jpg',
+								title: 'Детские комнаты "Мечта"',
 								area: '45 м²',
+								description: 'Яркие и безопасные пространства для детей',
+								photos: 6,
+							},
+							{
+								id: 3,
+								image: '/assets/case3_ph1.jpg',
+								title: 'Квартира "Уют"',
+								area: '78 м²',
+								description: 'Теплый и комфортный интерьер для семьи',
+								photos: 4,
 							},
 						].map((project, index) => (
 							<motion.div
-								key={index}
+								key={project.id}
 								initial={{ opacity: 0, y: 40 }}
 								whileInView={{ opacity: 1, y: 0 }}
-								transition={{ duration: 0.6, delay: index * 0.1 }}
+								transition={{ duration: 0.6, delay: index * 0.2 }}
 								viewport={{ once: true }}
 								whileHover={{ y: -10, scale: 1.02 }}
 								className='group cursor-pointer'
 							>
-								<div className='relative overflow-hidden rounded-2xl md:rounded-3xl mb-4 md:mb-6'>
-									<Image
-										src={project.image}
-										alt={project.title}
-										width={400}
-										height={300}
-										className='w-full h-48 md:h-64 lg:h-72 object-cover transition-transform duration-700 group-hover:scale-110'
-									/>
-									<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500' />
-								</div>
-								<div className='bg-white/5 backdrop-blur-xl rounded-xl md:rounded-2xl p-4 md:p-6 border border-white/10 group-hover:border-white/20 transition-all'>
-									<h3 className='text-base md:text-lg font-light mb-2 text-white'>
-										{project.title}
-									</h3>
-									<p className='text-sm text-white/70'>{project.area}</p>
-								</div>
+								<Link href={`/portfolio/${project.id}`}>
+									<div className='relative overflow-hidden rounded-2xl md:rounded-3xl mb-4 md:mb-6'>
+										<Image
+											src={project.image}
+											alt={project.title}
+											width={500}
+											height={400}
+											className='w-full h-56 md:h-72 lg:h-80 object-cover transition-transform duration-700 group-hover:scale-110'
+										/>
+										<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500' />
+
+										{/* Photo count badge */}
+										<div className='absolute top-4 right-4 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1'>
+											<span className='text-xs font-medium text-white'>
+												📸 {project.photos} фото
+											</span>
+										</div>
+
+										{/* Hover overlay with description */}
+										<div className='absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-all duration-500'>
+											<div className='bg-white/10 backdrop-blur-xl rounded-xl p-4 border border-white/20 w-full'>
+												<p className='text-sm text-white/90 leading-relaxed'>
+													{project.description}
+												</p>
+											</div>
+										</div>
+									</div>
+									<div className='bg-white/5 backdrop-blur-xl rounded-xl md:rounded-2xl p-4 md:p-6 border border-white/10 group-hover:border-white/20 transition-all'>
+										<h3 className='text-base md:text-lg font-light mb-2 text-white'>
+											{project.title}
+										</h3>
+										<p className='text-sm text-white/70 mb-2'>{project.area}</p>
+										<div className='flex items-center text-xs text-white/60'>
+											<span>Посмотреть проект →</span>
+										</div>
+									</div>
+								</Link>
 							</motion.div>
 						))}
 					</div>
