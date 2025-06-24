@@ -32,6 +32,8 @@
 		"@types/react-dom": "^19",
 		"eslint": "^9",
 		"eslint-config-next": "15.3.3",
+		"imagemin": "^9.0.1",
+		"imagemin-webp": "^8.0.0",
 		"tailwindcss": "^4",
 		"typescript": "^5"
 	}

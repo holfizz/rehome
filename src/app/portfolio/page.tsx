@@ -29,7 +29,7 @@ export default function Portfolio() {
 			<section className='relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden'>
 				<div className='absolute inset-0'>
 					<Image
-						src='/assets/case1_ph3.jpg'
+						src='/assets/case1_ph3.webp'
 						alt='Portfolio background'
 						fill
 						className='object-cover opacity-20'

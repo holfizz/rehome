@@ -5,7 +5,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Header from '../../../components/Header'
 import { getProjectById } from '../../../data/projects'
 
@@ -24,6 +24,61 @@ export default function ProjectDetail() {
 		null
 	)
 
+	const openModal = (index: number) => {
+		setSelectedImageIndex(index)
+		document.body.style.overflow = 'hidden'
+	}
+
+	const closeModal = useCallback(() => {
+		setSelectedImageIndex(null)
+		document.body.style.overflow = 'unset'
+	}, [])
+
+	const nextImage = useCallback(() => {
+		if (selectedImageIndex !== null && project) {
+			setSelectedImageIndex((selectedImageIndex + 1) % project.images.length)
+		}
+	}, [selectedImageIndex, project])
+
+	const prevImage = useCallback(() => {
+		if (selectedImageIndex !== null && project) {
+			setSelectedImageIndex(
+				selectedImageIndex === 0
+					? project.images.length - 1
+					: selectedImageIndex - 1
+			)
+		}
+	}, [selectedImageIndex, project])
+
+	// Обработка клавиш
+	useEffect(() => {
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (selectedImageIndex !== null) {
+				switch (event.key) {
+					case 'Escape':
+						closeModal()
+						break
+					case 'ArrowLeft':
+						prevImage()
+						break
+					case 'ArrowRight':
+						nextImage()
+						break
+				}
+			}
+		}
+
+		document.addEventListener('keydown', handleKeyDown)
+		return () => document.removeEventListener('keydown', handleKeyDown)
+	}, [selectedImageIndex, closeModal, nextImage, prevImage])
+
+	// Очистка при размонтировании компонента
+	useEffect(() => {
+		return () => {
+			document.body.style.overflow = 'unset'
+		}
+	}, [])
+
 	if (!project) {
 		return (
 			<div className='min-h-screen bg-black text-white flex items-center justify-center'>
@@ -38,32 +93,6 @@ export default function ProjectDetail() {
 				</div>
 			</div>
 		)
-	}
-
-	const openModal = (index: number) => {
-		setSelectedImageIndex(index)
-		document.body.style.overflow = 'hidden'
-	}
-
-	const closeModal = () => {
-		setSelectedImageIndex(null)
-		document.body.style.overflow = 'unset'
-	}
-
-	const nextImage = () => {
-		if (selectedImageIndex !== null) {
-			setSelectedImageIndex((selectedImageIndex + 1) % project.images.length)
-		}
-	}
-
-	const prevImage = () => {
-		if (selectedImageIndex !== null) {
-			setSelectedImageIndex(
-				selectedImageIndex === 0
-					? project.images.length - 1
-					: selectedImageIndex - 1
-			)
-		}
 	}
 
 	return (
@@ -294,9 +323,20 @@ export default function ProjectDetail() {
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 						transition={{ duration: 0.3 }}
-						className='fixed inset-0 z-50 bg-black/95 backdrop-blur-xl flex items-center justify-center p-4'
-						onClick={closeModal}
+						className='fixed inset-0 z-50 bg-black/95 backdrop-blur-xl'
+						style={{
+							height: '100vh',
+							width: '100vw',
+							overflow: 'hidden',
+						}}
 					>
+						{/* Backdrop - клик для закрытия */}
+						<div
+							className='absolute inset-0 cursor-pointer'
+							onClick={closeModal}
+						/>
+
+						{/* Navigation Controls */}
 						<button
 							onClick={closeModal}
 							className='absolute top-4 right-4 z-60 w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all text-white'
@@ -318,28 +358,41 @@ export default function ProjectDetail() {
 							<ChevronRight className='w-6 h-6' />
 						</button>
 
-						<motion.div
-							initial={{ scale: 0.8, opacity: 0 }}
-							animate={{ scale: 1, opacity: 1 }}
-							exit={{ scale: 0.8, opacity: 0 }}
-							transition={{ duration: 0.3 }}
-							className='relative max-w-[90vw] max-h-[90vh]'
-							onClick={e => e.stopPropagation()}
-						>
-							<Image
-								src={project.images[selectedImageIndex]}
-								alt={`${project.title} - фото ${selectedImageIndex + 1}`}
-								width={1200}
-								height={800}
-								className='max-w-full max-h-full object-contain rounded-xl'
-							/>
+						{/* Image Container */}
+						<div className='flex items-center justify-center h-full w-full p-4'>
+							<motion.div
+								initial={{ scale: 0.8, opacity: 0 }}
+								animate={{ scale: 1, opacity: 1 }}
+								exit={{ scale: 0.8, opacity: 0 }}
+								transition={{ duration: 0.3 }}
+								className='relative max-w-[90vw] max-h-[90vh] cursor-pointer'
+								onClick={nextImage}
+							>
+								<Image
+									src={project.images[selectedImageIndex]}
+									alt={`${project.title} - фото ${selectedImageIndex + 1}`}
+									width={1600}
+									height={1200}
+									className='max-w-full max-h-full object-contain rounded-xl'
+									priority
+								/>
 
-							<div className='absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-xl rounded-full px-4 py-2 border border-white/20'>
-								<p className='text-white text-sm'>
-									{selectedImageIndex + 1} / {project.images.length}
-								</p>
-							</div>
-						</motion.div>
+								{/* Image Counter */}
+								<div className='absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-xl rounded-full px-4 py-2 border border-white/20'>
+									<p className='text-white text-sm'>
+										{selectedImageIndex + 1} / {project.images.length}
+									</p>
+								</div>
+
+								{/* Hint для навигации */}
+								<div className='absolute top-4 left-1/2 -translate-x-1/2 bg-black/30 backdrop-blur-xl rounded-full px-4 py-2 border border-white/10 opacity-70'>
+									<p className='text-white text-xs'>
+										Клик для следующего фото • ← → для навигации • ESC для
+										закрытия
+									</p>
+								</div>
+							</motion.div>
+						</div>
 					</motion.div>
 				)}
 			</AnimatePresence>
