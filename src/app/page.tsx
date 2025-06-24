@@ -60,7 +60,7 @@ export default function Home() {
 						className='relative w-full h-full'
 					>
 						<Image
-							src='/assets/case1_ph2.jpg'
+							src='/assets/case1_ph2.webp'
 							alt='Luxury Interior Design'
 							fill
 							className='object-cover scale-110'
@@ -226,7 +226,7 @@ export default function Home() {
 							>
 								<div className='relative overflow-hidden rounded-2xl mb-6 md:mb-8'>
 									<Image
-										src='/assets/case1_ph3.jpg'
+										src='/assets/case1_ph3.webp'
 										alt='Индивидуальный подход'
 										width={500}
 										height={300}
@@ -250,7 +250,7 @@ export default function Home() {
 							>
 								<div className='relative overflow-hidden rounded-2xl mb-6 md:mb-8'>
 									<Image
-										src='/assets/case1_ph7.jpg'
+										src='/assets/case1_ph7.webp'
 										alt='Современные решения'
 										width={500}
 										height={300}
@@ -414,7 +414,7 @@ export default function Home() {
 						>
 							<div className='relative overflow-hidden rounded-2xl md:rounded-3xl'>
 								<Image
-									src='/assets/case2_ph5.jpg'
+									src='/assets/case2_ph5.webp'
 									alt='Детская комната для девочки'
 									width={800}
 									height={600}
@@ -466,7 +466,7 @@ export default function Home() {
 						{[
 							{
 								id: 1,
-								image: '/assets/case1_ph2.jpg',
+								image: '/assets/case1_ph2.webp',
 								title: 'Современная квартира "Элегант"',
 								area: '95 м²',
 								description:
@@ -475,7 +475,7 @@ export default function Home() {
 							},
 							{
 								id: 2,
-								image: '/assets/case2_ph1.jpg',
+								image: '/assets/case2_ph1.webp',
 								title: 'Детские комнаты "Мечта"',
 								area: '45 м²',
 								description: 'Яркие и безопасные пространства для детей',
@@ -483,7 +483,7 @@ export default function Home() {
 							},
 							{
 								id: 3,
-								image: '/assets/case3_ph1.jpg',
+								image: '/assets/case3_ph1.webp',
 								title: 'Квартира "Уют"',
 								area: '78 м²',
 								description: 'Теплый и комфортный интерьер для семьи',
