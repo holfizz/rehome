@@ -323,12 +323,7 @@ export default function ProjectDetail() {
 						animate={{ opacity: 1 }}
 						exit={{ opacity: 0 }}
 						transition={{ duration: 0.3 }}
-						className='fixed inset-0 z-50 bg-black/95 backdrop-blur-xl'
-						style={{
-							height: '100vh',
-							width: '100vw',
-							overflow: 'hidden',
-						}}
+						className='fixed top-0 left-0 w-screen h-screen z-50 bg-black/95 backdrop-blur-xl overflow-hidden'
 					>
 						{/* Backdrop - клик для закрытия */}
 						<div
@@ -339,33 +334,33 @@ export default function ProjectDetail() {
 						{/* Navigation Controls */}
 						<button
 							onClick={closeModal}
-							className='absolute top-4 right-4 z-60 w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all text-white'
+							className='fixed top-4 right-4 z-60 w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all text-white'
 						>
 							<X className='w-6 h-6' />
 						</button>
 
 						<button
 							onClick={prevImage}
-							className='absolute left-4 top-1/2 -translate-y-1/2 z-60 w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all text-white'
+							className='fixed left-4 top-1/2 -translate-y-1/2 z-60 w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all text-white'
 						>
 							<ChevronLeft className='w-6 h-6' />
 						</button>
 
 						<button
 							onClick={nextImage}
-							className='absolute right-4 top-1/2 -translate-y-1/2 z-60 w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all text-white'
+							className='fixed right-4 top-1/2 -translate-y-1/2 z-60 w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20 hover:bg-white/20 transition-all text-white'
 						>
 							<ChevronRight className='w-6 h-6' />
 						</button>
 
 						{/* Image Container */}
-						<div className='flex items-center justify-center h-full w-full p-4'>
+						<div className='fixed inset-0 flex items-center justify-center p-4'>
 							<motion.div
 								initial={{ scale: 0.8, opacity: 0 }}
 								animate={{ scale: 1, opacity: 1 }}
 								exit={{ scale: 0.8, opacity: 0 }}
 								transition={{ duration: 0.3 }}
-								className='relative max-w-[90vw] max-h-[90vh] cursor-pointer'
+								className='relative w-full h-full cursor-pointer flex items-center justify-center'
 								onClick={nextImage}
 							>
 								<Image
@@ -373,19 +368,19 @@ export default function ProjectDetail() {
 									alt={`${project.title} - фото ${selectedImageIndex + 1}`}
 									width={1600}
 									height={1200}
-									className='max-w-full max-h-full object-contain rounded-xl'
+									className='max-w-[calc(100vw-2rem)] max-h-[calc(100vh-2rem)] object-contain rounded-xl'
 									priority
 								/>
 
 								{/* Image Counter */}
-								<div className='absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-xl rounded-full px-4 py-2 border border-white/20'>
+								<div className='absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-xl rounded-full px-4 py-2 border border-white/20'>
 									<p className='text-white text-sm'>
 										{selectedImageIndex + 1} / {project.images.length}
 									</p>
 								</div>
 
 								{/* Hint для навигации */}
-								<div className='absolute top-4 left-1/2 -translate-x-1/2 bg-black/30 backdrop-blur-xl rounded-full px-4 py-2 border border-white/10 opacity-70'>
+								<div className='absolute top-8 left-1/2 -translate-x-1/2 bg-black/30 backdrop-blur-xl rounded-full px-4 py-2 border border-white/10 opacity-70'>
 									<p className='text-white text-xs'>
 										Клик для следующего фото • ← → для навигации • ESC для
 										закрытия
