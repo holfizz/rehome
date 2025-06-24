@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
 import Header from '../../components/Header'
+import { getAllProjects } from '../../data/projects'
 
 const fadeInUp = {
 	initial: { opacity: 0, y: 60 },
@@ -11,77 +12,9 @@ const fadeInUp = {
 	transition: { duration: 0.8, ease: 'easeOut' },
 }
 
-const projects = [
-	{
-		id: 1,
-		title: 'Современная квартира "Элегант"',
-		location: 'Казань, ЖК "Солнечный"',
-		area: '95 м²',
-		year: '2024',
-		style: 'Современный',
-		image: '/assets/case1_ph1.jpg',
-		images: [
-			'/assets/case1_ph1.jpg',
-			'/assets/case1_ph2.jpg',
-			'/assets/case1_ph3.jpg',
-			'/assets/case1_ph4.jpg',
-			'/assets/case1_ph5.jpg',
-			'/assets/case1_ph6.jpg',
-			'/assets/case1_ph7.jpg',
-			'/assets/case1_ph8.jpg',
-			'/assets/case1_ph9.jpg',
-			'/assets/case1_ph10.jpg',
-			'/assets/case1_ph11.jpg',
-			'/assets/case1_ph12.jpg',
-			'/assets/case1_ph13.jpg',
-			'/assets/case1_ph14.jpg',
-			'/assets/case1_ph15.jpg',
-			'/assets/case1_ph16.jpg',
-			'/assets/case1_ph17.png',
-		],
-		description:
-			'Полный проект современной квартиры с продуманной планировкой и стильным дизайном. Каждая деталь создана для комфортной жизни в городском ритме.',
-	},
-	{
-		id: 2,
-		title: 'Квартира "Модерн"',
-		location: 'Казань, центр города',
-		area: '78 м²',
-		year: '2024',
-		style: 'Модерн',
-		image: '/assets/case1_ph5.jpg',
-		images: [
-			'/assets/case1_ph5.jpg',
-			'/assets/case1_ph6.jpg',
-			'/assets/case1_ph7.jpg',
-			'/assets/case1_ph8.jpg',
-			'/assets/case1_ph9.jpg',
-		],
-		description:
-			'Стильная квартира в современном стиле с акцентом на функциональность и эстетику. Каждое пространство максимально продумано.',
-	},
-	{
-		id: 3,
-		title: 'Детские комнаты "Мечта"',
-		location: 'Казань, семейный район',
-		area: '110 м²',
-		year: '2024',
-		style: 'Детский дизайн',
-		image: '/assets/case2_ph1.jpg',
-		images: [
-			'/assets/case2_ph1.jpg',
-			'/assets/case2_ph2.jpg',
-			'/assets/case2_ph3.jpg',
-			'/assets/case2_ph4.jpg',
-			'/assets/case2_ph5.jpg',
-			'/assets/case2_ph6.jpg',
-		],
-		description:
-			'Квартира с тремя уникальными детскими комнатами - для мальчиков и девочек. Каждое пространство создано с учетом детских потребностей и фантазий.',
-	},
-]
-
 export default function Portfolio() {
+	const projects = getAllProjects()
+
 	return (
 		<div
 			className='min-h-screen bg-black text-white overflow-x-hidden'
