@@ -10,6 +10,7 @@ body {
 	color: #ffffff;
 	font-family: 'Geist', system-ui, sans-serif;
 	line-height: 1.6;
+	max-height: 100%;
 }
 
 html {
@@ -111,4 +112,23 @@ body {
 		position: fixed;
 		width: 100%;
 	}
+}
+
+/* Стили для модального окна */
+body.modal-open {
+	overflow: hidden;
+	height: 100vh;
+	max-height: 100vh;
+}
+
+/* Обеспечиваем корректную работу модалки */
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100vw;
+	height: 100vh;
+	z-index: 10000;
 }

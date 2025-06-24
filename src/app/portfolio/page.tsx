@@ -93,7 +93,7 @@ export default function Portfolio() {
 												<h3 className='text-lg md:text-xl font-light text-white'>
 													{project.title}
 												</h3>
-												<span className='text-sm text-white/60 bg-white/10 px-3 py-1 rounded-full'>
+												<span className='text-sm w-auto	text-nowrap text-white/60 bg-white/10 px-3 py-1 rounded-full'>
 													{project.area}
 												</span>
 											</div>

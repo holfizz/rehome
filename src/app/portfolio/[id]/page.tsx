@@ -1,6 +1,6 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { ArrowLeft, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -26,12 +26,12 @@ export default function ProjectDetail() {
 
 	const openModal = (index: number) => {
 		setSelectedImageIndex(index)
-		document.body.style.overflow = 'hidden'
+		document.body.classList.add('modal-open')
 	}
 
 	const closeModal = useCallback(() => {
 		setSelectedImageIndex(null)
-		document.body.style.overflow = 'unset'
+		document.body.classList.remove('modal-open')
 	}, [])
 
 	const nextImage = useCallback(() => {
@@ -75,7 +75,7 @@ export default function ProjectDetail() {
 	// Очистка при размонтировании компонента
 	useEffect(() => {
 		return () => {
-			document.body.style.overflow = 'unset'
+			document.body.classList.remove('modal-open')
 		}
 	}, [])
 
@@ -316,87 +316,71 @@ export default function ProjectDetail() {
 			</section>
 
 			{/* Image Modal */}
-			<AnimatePresence>
-				{selectedImageIndex !== null && (
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						transition={{ duration: 0.3 }}
-						className='fixed inset-0 z-[9999] bg-black flex items-center justify-center'
-						style={{
-							position: 'fixed',
-							top: 0,
-							left: 0,
-							right: 0,
-							bottom: 0,
-							zIndex: 9999,
+			{selectedImageIndex !== null && (
+				<div
+					className='modal-overlay bg-black flex items-center justify-center'
+					onClick={closeModal}
+				>
+					{/* Кнопка закрытия */}
+					<button
+						onClick={closeModal}
+						className='absolute top-4 right-4 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors z-10'
+					>
+						<X size={24} />
+					</button>
+
+					{/* Навигация влево */}
+					{project.images.length > 1 && (
+						<button
+							onClick={e => {
+								e.stopPropagation()
+								prevImage()
+							}}
+							className='absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors z-10'
+						>
+							<ChevronLeft size={24} />
+						</button>
+					)}
+
+					{/* Навигация вправо */}
+					{project.images.length > 1 && (
+						<button
+							onClick={e => {
+								e.stopPropagation()
+								nextImage()
+							}}
+							className='absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors z-10'
+						>
+							<ChevronRight size={24} />
+						</button>
+					)}
+
+					{/* Изображение */}
+					<div
+						className='w-full h-full flex items-center justify-center p-16'
+						onClick={e => {
+							e.stopPropagation()
+							nextImage()
 						}}
 					>
-						{/* Backdrop - клик для закрытия */}
-						<div
-							className='absolute inset-0 cursor-pointer'
-							onClick={closeModal}
+						<Image
+							src={project.images[selectedImageIndex]}
+							alt={`${project.title} - фото ${selectedImageIndex + 1}`}
+							width={1200}
+							height={800}
+							className='max-w-full max-h-full object-contain cursor-pointer'
+							priority
 						/>
+					</div>
 
-						{/* Navigation Controls */}
-						<button
-							onClick={closeModal}
-							className='absolute top-6 right-6 z-10 w-14 h-14 bg-black/70 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/30 hover:bg-black/90 hover:border-white/50 transition-all text-white'
-						>
-							<X className='w-7 h-7' />
-						</button>
-
-						<button
-							onClick={prevImage}
-							className='absolute left-6 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-black/70 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/30 hover:bg-black/90 hover:border-white/50 transition-all text-white'
-						>
-							<ChevronLeft className='w-7 h-7' />
-						</button>
-
-						<button
-							onClick={nextImage}
-							className='absolute right-6 top-1/2 -translate-y-1/2 z-10 w-14 h-14 bg-black/70 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/30 hover:bg-black/90 hover:border-white/50 transition-all text-white'
-						>
-							<ChevronRight className='w-7 h-7' />
-						</button>
-
-						{/* Image Container */}
-						<motion.div
-							initial={{ scale: 0.8, opacity: 0 }}
-							animate={{ scale: 1, opacity: 1 }}
-							exit={{ scale: 0.8, opacity: 0 }}
-							transition={{ duration: 0.3 }}
-							className='relative w-full h-full cursor-pointer flex items-center justify-center p-8'
-							onClick={nextImage}
-						>
-							<Image
-								src={project.images[selectedImageIndex]}
-								alt={`${project.title} - фото ${selectedImageIndex + 1}`}
-								width={1600}
-								height={1200}
-								className='max-w-full max-h-full object-contain rounded-lg shadow-2xl'
-								priority
-							/>
-
-							{/* Image Counter */}
-							<div className='absolute bottom-8 left-1/2 -translate-x-1/2 bg-black/70 backdrop-blur-xl rounded-full px-6 py-3 border border-white/30'>
-								<p className='text-white text-sm font-medium'>
-									{selectedImageIndex + 1} / {project.images.length}
-								</p>
-							</div>
-
-							{/* Hint для навигации */}
-							<div className='absolute top-8 left-1/2 -translate-x-1/2 bg-black/50 backdrop-blur-xl rounded-full px-6 py-2 border border-white/20 opacity-80'>
-								<p className='text-white text-xs'>
-									Клик для следующего фото • ← → для навигации • ESC для
-									закрытия
-								</p>
-							</div>
-						</motion.div>
-					</motion.div>
-				)}
-			</AnimatePresence>
+					{/* Счетчик */}
+					<div className='absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/20 rounded-full px-4 py-2'>
+						<span className='text-white text-sm'>
+							{selectedImageIndex + 1} / {project.images.length}
+						</span>
+					</div>
+				</div>
+			)}
 
 			{/* CTA Section */}
 			<section className='py-16 md:py-24 relative'>
