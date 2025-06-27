@@ -22,26 +22,61 @@ export default function Contact() {
 	const [contactInfo, setContactInfo] = useState('')
 	const [showConfetti, setShowConfetti] = useState(false)
 	const [isSubmitted, setIsSubmitted] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
+	const [error, setError] = useState('')
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
 		if (!selectedMethod || !contactInfo) return
 
-		// Показываем конфетти
-		setShowConfetti(true)
-		setIsSubmitted(true)
+		// Валидация перед отправкой
+		const validationError = validateContact(contactInfo, selectedMethod)
+		if (validationError) {
+			setError(validationError)
+			return
+		}
 
-		// Убираем конфетти через 3 секунды
-		setTimeout(() => {
-			setShowConfetti(false)
-		}, 3000)
+		setIsLoading(true)
+		setError('')
 
-		// Сбрасываем форму через 5 секунд
-		setTimeout(() => {
-			setIsSubmitted(false)
-			setSelectedMethod('')
-			setContactInfo('')
-		}, 5000)
+		try {
+			const response = await fetch('/api/telegram', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					method: selectedMethod,
+					contact: contactInfo,
+				}),
+			})
+
+			if (response.ok) {
+				// Показываем конфетти
+				setShowConfetti(true)
+				setIsSubmitted(true)
+
+				// Убираем конфетти через 3 секунды
+				setTimeout(() => {
+					setShowConfetti(false)
+				}, 3000)
+
+				// Сбрасываем форму через 5 секунд
+				setTimeout(() => {
+					setIsSubmitted(false)
+					setSelectedMethod('')
+					setContactInfo('')
+				}, 5000)
+			} else {
+				const errorData = await response.json()
+				setError(errorData.error || 'Произошла ошибка при отправке')
+			}
+		} catch (error) {
+			console.error('Error submitting form:', error)
+			setError('Ошибка сети. Попробуйте еще раз.')
+		} finally {
+			setIsLoading(false)
+		}
 	}
 
 	const getInputPlaceholder = () => {
@@ -68,6 +103,63 @@ export default function Contact() {
 			default:
 				return 'Контактная информация'
 		}
+	}
+
+	// Валидация контактной информации
+	const validateContact = (contact: string, method: string) => {
+		if (!contact.trim()) return 'Поле не может быть пустым'
+
+		if (method === 'phone' || method === 'whatsapp') {
+			const phoneRegex =
+				/^(\+7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/
+			if (!phoneRegex.test(contact.replace(/[\s\-\(\)]/g, ''))) {
+				return 'Введите корректный номер телефона'
+			}
+		}
+
+		if (method === 'telegram') {
+			const telegramRegex =
+				/^(@[a-zA-Z0-9_]{5,32}|(\+7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2})$/
+			if (!telegramRegex.test(contact.replace(/[\s\-\(\)]/g, ''))) {
+				return 'Введите @username или номер телефона'
+			}
+		}
+
+		return null
+	}
+
+	// Форматирование номера телефона при вводе
+	const formatPhoneNumber = (value: string) => {
+		const cleaned = value.replace(/\D/g, '')
+
+		if (cleaned.startsWith('8')) {
+			return '+7' + cleaned.substring(1)
+		}
+
+		if (cleaned.startsWith('7')) {
+			return '+' + cleaned
+		}
+
+		if (cleaned.length > 0 && !cleaned.startsWith('7')) {
+			return '+7' + cleaned
+		}
+
+		return value
+	}
+
+	const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		let value = e.target.value
+
+		if (selectedMethod === 'phone' || selectedMethod === 'whatsapp') {
+			// Автоформатирование для телефонов
+			if (value.length > contactInfo.length) {
+				// Если добавляем символы
+				value = formatPhoneNumber(value)
+			}
+		}
+
+		setContactInfo(value)
+		if (error) setError('') // Очищаем ошибку при изменении
 	}
 
 	return (
@@ -128,10 +220,11 @@ export default function Contact() {
 			<section className='relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden'>
 				<div className='absolute inset-0'>
 					<Image
-						src='https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1920&h=1080&fit=crop&q=80'
+						src='/assets/case1_ph2.webp'
 						alt='Contact background'
 						fill
 						className='object-cover opacity-20'
+						priority
 					/>
 					<div className='absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-black/80' />
 				</div>
@@ -149,10 +242,19 @@ export default function Contact() {
 						variants={fadeInUp}
 						initial='initial'
 						animate='animate'
-						className='text-lg md:text-xl text-white/80 mb-8 md:mb-12 max-w-2xl mx-auto leading-relaxed font-light'
+						className='text-lg md:text-xl text-white/80 mb-4 md:mb-6 max-w-2xl mx-auto leading-relaxed font-light'
 					>
 						Готовы обсудить ваш проект? Выберите удобный способ связи
 					</motion.p>
+					<motion.h2
+						variants={fadeInUp}
+						initial='initial'
+						animate='animate'
+						transition={{ delay: 0.4 }}
+						className='text-base md:text-lg text-white/90 max-w-3xl mx-auto font-light'
+					>
+						Не завершаем проект, пока всё не будет на 100% как вы мечтали
+					</motion.h2>
 				</div>
 			</section>
 
@@ -178,7 +280,7 @@ export default function Contact() {
 									Спасибо за обращение!
 								</h3>
 								<p className='text-white/70 text-sm md:text-base'>
-									Мы свяжемся с вами в ближайшее время
+									Мы получили вашу заявку и свяжемся с вами в ближайшее время
 								</p>
 							</motion.div>
 						) : (
@@ -244,30 +346,45 @@ export default function Contact() {
 										<input
 											type='text'
 											value={contactInfo}
-											onChange={e => setContactInfo(e.target.value)}
+											onChange={handleContactChange}
 											placeholder={getInputPlaceholder()}
 											className='w-full px-4 md:px-6 py-3 md:py-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl md:rounded-2xl text-white placeholder-white/50 focus:border-white/40 focus:outline-none transition-all text-sm md:text-base'
 											required
+											disabled={isLoading}
 										/>
+									</motion.div>
+								)}
+
+								{error && (
+									<motion.div
+										initial={{ opacity: 0, y: 10 }}
+										animate={{ opacity: 1, y: 0 }}
+										className='bg-red-500/20 border border-red-500/30 rounded-xl p-4 text-red-300 text-sm'
+									>
+										{error}
 									</motion.div>
 								)}
 
 								<motion.button
 									type='submit'
-									disabled={!selectedMethod || !contactInfo}
+									disabled={!selectedMethod || !contactInfo || isLoading}
 									whileHover={
-										selectedMethod && contactInfo ? { scale: 1.02, y: -2 } : {}
+										selectedMethod && contactInfo && !isLoading
+											? { scale: 1.02, y: -2 }
+											: {}
 									}
 									whileTap={
-										selectedMethod && contactInfo ? { scale: 0.98 } : {}
+										selectedMethod && contactInfo && !isLoading
+											? { scale: 0.98 }
+											: {}
 									}
 									className={`w-full py-3 md:py-4 rounded-xl md:rounded-2xl font-medium text-sm md:text-base transition-all ${
-										selectedMethod && contactInfo
+										selectedMethod && contactInfo && !isLoading
 											? 'bg-white text-black hover:bg-gray-100 shadow-[0_8px_32px_rgba(255,255,255,0.3)]'
 											: 'bg-white/20 text-white/50 cursor-not-allowed'
 									}`}
 								>
-									Отправить заявку
+									{isLoading ? 'Отправляем...' : 'Отправить заявку'}
 								</motion.button>
 							</form>
 						)}

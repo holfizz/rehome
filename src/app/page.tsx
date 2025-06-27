@@ -51,7 +51,7 @@ export default function Home() {
 		>
 			<Header />
 
-			<section className='relative h-screen flex items-center justify-center overflow-hidden'>
+			<section className='relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-0'>
 				<div className='absolute inset-0'>
 					<motion.div
 						initial={{ opacity: 0, scale: 1.05 }}
@@ -81,7 +81,7 @@ export default function Home() {
 						delay: 0.3,
 						ease: [0.25, 0.46, 0.45, 0.94],
 					}}
-					className='relative z-20 text-center max-w-5xl mx-auto px-4 md:px-8'
+					className='relative z-20 text-center max-w-5xl mx-auto px-4 md:px-8 mt-8 md:mt-0'
 				>
 					{/* Glass Card Container */}
 					<motion.div
