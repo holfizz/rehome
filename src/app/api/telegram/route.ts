@@ -54,8 +54,22 @@ export async function POST(request: NextRequest) {
 			if (method === 'phone' || method === 'whatsapp') {
 				// Убираем все символы кроме цифр и +
 				const cleaned = contact.replace(/[^\d+]/g, '')
+
+				// Если номер уже отформатирован правильно, возвращаем как есть
+				if (
+					contact.startsWith('+7') &&
+					contact.includes(' ') &&
+					contact.includes('-')
+				) {
+					return contact
+				}
+
+				// Если только цифры, форматируем
 				if (cleaned.startsWith('8')) {
 					return '+7' + cleaned.substring(1)
+				}
+				if (cleaned.startsWith('7')) {
+					return '+' + cleaned
 				}
 				return cleaned.startsWith('+') ? cleaned : '+' + cleaned
 			}

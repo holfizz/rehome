@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Header from '../../components/Header'
 
 const fadeInUp = {
@@ -24,6 +24,28 @@ export default function Contact() {
 	const [isSubmitted, setIsSubmitted] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState('')
+	const inputRef = useRef<HTMLInputElement>(null)
+
+	// Автофокус при выборе метода связи
+	useEffect(() => {
+		if (selectedMethod && inputRef.current) {
+			setTimeout(() => {
+				inputRef.current?.focus()
+			}, 300) // Небольшая задержка для анимации
+		}
+	}, [selectedMethod])
+
+	// Автоматически устанавливаем +7 для телефонных полей
+	useEffect(() => {
+		if (
+			(selectedMethod === 'phone' || selectedMethod === 'whatsapp') &&
+			!contactInfo
+		) {
+			setContactInfo('+7 ')
+		} else if (selectedMethod === 'telegram' && contactInfo === '+7 ') {
+			setContactInfo('')
+		}
+	}, [selectedMethod, contactInfo])
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
@@ -82,11 +104,11 @@ export default function Contact() {
 	const getInputPlaceholder = () => {
 		switch (selectedMethod) {
 			case 'whatsapp':
-				return '+7 (999) 123-45-67'
+				return '+7 999 999-99-99'
 			case 'telegram':
-				return '@username или +7 (999) 123-45-67'
+				return '@username или +7 999 999-99-99'
 			case 'phone':
-				return '+7 (999) 123-45-67'
+				return '+7 999 999-99-99'
 			default:
 				return 'Выберите способ связи'
 		}
@@ -110,17 +132,17 @@ export default function Contact() {
 		if (!contact.trim()) return 'Поле не может быть пустым'
 
 		if (method === 'phone' || method === 'whatsapp') {
-			const phoneRegex =
-				/^(\+7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$/
-			if (!phoneRegex.test(contact.replace(/[\s\-\(\)]/g, ''))) {
+			// Убираем все символы кроме цифр
+			const digitsOnly = contact.replace(/\D/g, '')
+			if (digitsOnly.length !== 11 || !digitsOnly.startsWith('7')) {
 				return 'Введите корректный номер телефона'
 			}
 		}
 
 		if (method === 'telegram') {
 			const telegramRegex =
-				/^(@[a-zA-Z0-9_]{5,32}|(\+7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2})$/
-			if (!telegramRegex.test(contact.replace(/[\s\-\(\)]/g, ''))) {
+				/^(@[a-zA-Z0-9_]{5,32}|(\+7|7)\s?\d{3}\s?\d{3}-?\d{2}-?\d{2})$/
+			if (!telegramRegex.test(contact.replace(/[\s\-]/g, ''))) {
 				return 'Введите @username или номер телефона'
 			}
 		}
@@ -128,38 +150,72 @@ export default function Contact() {
 		return null
 	}
 
-	// Форматирование номера телефона при вводе
+	// Форматирование номера телефона
 	const formatPhoneNumber = (value: string) => {
-		const cleaned = value.replace(/\D/g, '')
+		// Убираем все символы кроме цифр
+		const digits = value.replace(/\D/g, '')
 
-		if (cleaned.startsWith('8')) {
-			return '+7' + cleaned.substring(1)
+		// Если пользователь начал вводить с 8, заменяем на 7
+		let formattedDigits = digits
+		if (digits.startsWith('8')) {
+			formattedDigits = '7' + digits.slice(1)
 		}
 
-		if (cleaned.startsWith('7')) {
-			return '+' + cleaned
+		// Если номер не начинается с 7, добавляем 7 в начало
+		if (formattedDigits && !formattedDigits.startsWith('7')) {
+			formattedDigits = '7' + formattedDigits
 		}
 
-		if (cleaned.length > 0 && !cleaned.startsWith('7')) {
-			return '+7' + cleaned
+		// Ограничиваем до 11 цифр
+		formattedDigits = formattedDigits.slice(0, 11)
+
+		// Форматируем в +7 999 999-99-99
+		if (formattedDigits.length >= 1) {
+			let formatted = '+7'
+			if (formattedDigits.length > 1) {
+				formatted += ' ' + formattedDigits.slice(1, 4)
+			}
+			if (formattedDigits.length > 4) {
+				formatted += ' ' + formattedDigits.slice(4, 7)
+			}
+			if (formattedDigits.length > 7) {
+				formatted += '-' + formattedDigits.slice(7, 9)
+			}
+			if (formattedDigits.length > 9) {
+				formatted += '-' + formattedDigits.slice(9, 11)
+			}
+			return formatted
 		}
 
-		return value
+		return '+7 '
 	}
 
 	const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		let value = e.target.value
 
+		// Применяем форматирование только для телефонов
 		if (selectedMethod === 'phone' || selectedMethod === 'whatsapp') {
-			// Автоформатирование для телефонов
-			if (value.length > contactInfo.length) {
-				// Если добавляем символы
-				value = formatPhoneNumber(value)
-			}
+			value = formatPhoneNumber(value)
 		}
 
 		setContactInfo(value)
 		if (error) setError('') // Очищаем ошибку при изменении
+	}
+
+	// Компонент для рендеринга input
+	const renderInput = () => {
+		return (
+			<input
+				type='text'
+				value={contactInfo}
+				onChange={handleContactChange}
+				placeholder={getInputPlaceholder()}
+				className='w-full px-4 md:px-6 py-3 md:py-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl md:rounded-2xl text-white placeholder-white/50 focus:border-white/40 focus:outline-none transition-all text-sm md:text-base'
+				required
+				disabled={isLoading}
+				ref={inputRef}
+			/>
+		)
 	}
 
 	return (
@@ -343,15 +399,7 @@ export default function Contact() {
 										<label className='block text-sm font-light text-white/80'>
 											{getInputLabel()}
 										</label>
-										<input
-											type='text'
-											value={contactInfo}
-											onChange={handleContactChange}
-											placeholder={getInputPlaceholder()}
-											className='w-full px-4 md:px-6 py-3 md:py-4 bg-white/10 backdrop-blur-xl border border-white/20 rounded-xl md:rounded-2xl text-white placeholder-white/50 focus:border-white/40 focus:outline-none transition-all text-sm md:text-base'
-											required
-											disabled={isLoading}
-										/>
+										{renderInput()}
 									</motion.div>
 								)}
 
