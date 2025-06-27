@@ -465,7 +465,7 @@ export default function Home() {
 						</p>
 					</motion.div>
 
-					<div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16 max-w-6xl mx-auto'>
+					<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-12 md:mb-16 max-w-7xl mx-auto'>
 						{[
 							{
 								id: 1,
@@ -479,18 +479,26 @@ export default function Home() {
 							{
 								id: 2,
 								image: '/assets/case2_ph1.webp',
-								title: 'Детские комнаты "Мечта"',
-								area: '45 м²',
+								title: 'Детские комнаты "Семейное счастье"',
+								area: '78 м²',
 								description: 'Яркие и безопасные пространства для детей',
 								photos: 6,
 							},
 							{
 								id: 3,
 								image: '/assets/case3_ph1.webp',
-								title: 'Квартира "Уют"',
-								area: '78 м²',
-								description: 'Теплый и комфортный интерьер для семьи',
+								title: 'Квартира "Сакура"',
+								area: '85 м²',
+								description: 'Нежный японский стиль с цветочными акцентами',
 								photos: 4,
+							},
+							{
+								id: 4,
+								image: '/assets/case4_ph1.webp',
+								title: 'Квартира "Мировое путешествие"',
+								area: '120 м²',
+								description: 'Яркие цвета разных континентов в одном доме',
+								photos: 14,
 							},
 						].map((project, index) => (
 							<motion.div
