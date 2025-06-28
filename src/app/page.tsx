@@ -465,7 +465,7 @@ export default function Home() {
 						</p>
 					</motion.div>
 
-					<div className='grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-12 md:mb-16 max-w-7xl mx-auto'>
+					<div className='grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 md:gap-8 mb-12 md:mb-16 max-w-7xl mx-auto'>
 						{[
 							{
 								id: 1,
@@ -499,6 +499,24 @@ export default function Home() {
 								area: '120 м²',
 								description: 'Яркие цвета разных континентов в одном доме',
 								photos: 14,
+							},
+							{
+								id: 5,
+								image: '/assets/case5_ph1.webp',
+								title: 'Квартира "Геометрия Времени"',
+								area: '105 м²',
+								description:
+									'Современная классика с темным деревом и геометрией',
+								photos: 5,
+							},
+							{
+								id: 6,
+								image: '/assets/case6_ph1.webp',
+								title: 'Квартира "Ретро-Футуризм"',
+								area: '95 м²',
+								description:
+									'Mid-century modern с геометрической мебелью и яркими акцентами',
+								photos: 7,
 							},
 						].map((project, index) => (
 							<motion.div
