@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
+import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 
 const fadeInUp = {
@@ -489,23 +490,7 @@ export default function Contact() {
 			</section>
 
 			{/* Footer */}
-			<footer className='py-8 md:py-12 border-t border-white/10'>
-				<div className='container mx-auto px-4 md:px-6'>
-					<div className='flex flex-col md:flex-row justify-between items-center gap-4'>
-						<div className='flex items-center space-x-4'>
-							<div className='w-8 h-8 bg-white/20 backdrop-blur-xl rounded-xl flex items-center justify-center border border-white/30'>
-								<span className='text-white font-light text-sm'>R</span>
-							</div>
-							<span className='text-xl font-extralight text-white/95'>
-								REHOME
-							</span>
-						</div>
-						<p className='text-sm text-white/60 font-light text-center md:text-left'>
-							© 2025 REHOME. Студия дизайна интерьеров в Казани
-						</p>
-					</div>
-				</div>
-			</footer>
+			<Footer />
 		</div>
 	)
 }

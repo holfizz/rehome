@@ -176,78 +176,44 @@ export default function Header() {
 						</Link>
 					</motion.div>
 
-					<nav className='hidden md:flex items-center space-x-8'>
-						<motion.div
-							whileHover={{ y: -1 }}
-							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+					{/* Navigation */}
+					<nav className='hidden md:flex items-center space-x-8 lg:space-x-12'>
+						<Link
+							href='/'
+							className='text-white/90 hover:text-white text-sm font-light transition-colors'
 						>
-							<Link
-								href='/'
-								className={`text-sm font-light transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-white/60 after:transition-all after:duration-300 hover:after:w-full ${
-									isActive('/')
-										? 'text-white after:w-full'
-										: 'text-white/80 hover:text-white'
-								}`}
-							>
-								Главная
-							</Link>
-						</motion.div>
-						<motion.div
-							whileHover={{ y: -1 }}
-							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+							Главная
+						</Link>
+						<Link
+							href='/portfolio'
+							className='text-white/90 hover:text-white text-sm font-light transition-colors'
 						>
-							<Link
-								href='/portfolio'
-								className={`text-sm font-light transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-white/60 after:transition-all after:duration-300 hover:after:w-full ${
-									isActive('/portfolio')
-										? 'text-white after:w-full'
-										: 'text-white/80 hover:text-white'
-								}`}
-							>
-								Портфолио
-							</Link>
-						</motion.div>
-						<motion.div
-							whileHover={{ y: -1 }}
-							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+							Портфолио
+						</Link>
+						<Link
+							href='/services'
+							className='text-white/90 hover:text-white text-sm font-light transition-colors'
 						>
-							<Link
-								href='#reviews'
-								className={`text-sm font-light transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-white/60 after:transition-all after:duration-300 hover:after:w-full text-white/80 hover:text-white`}
-							>
-								Отзывы
-							</Link>
-						</motion.div>
-						<motion.div
-							whileHover={{ y: -1 }}
-							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+							Услуги
+						</Link>
+						<Link
+							href='/employees'
+							className='text-white/90 hover:text-white text-sm font-light transition-colors'
 						>
-							<Link
-								href='/services'
-								className={`text-sm font-light transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-white/60 after:transition-all after:duration-300 hover:after:w-full ${
-									isActive('/services')
-										? 'text-white after:w-full'
-										: 'text-white/80 hover:text-white'
-								}`}
-							>
-								Услуги
-							</Link>
-						</motion.div>
-						<motion.div
-							whileHover={{ y: -1 }}
-							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+							Сотрудники
+						</Link>
+						<Link
+							href='/reviews'
+							className='text-white/90 hover:text-white text-sm font-light transition-colors'
 						>
-							<Link
-								href='/contact'
-								className={`text-sm font-light transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[1px] after:bg-white/60 after:transition-all after:duration-300 hover:after:w-full ${
-									isActive('/contact')
-										? 'text-white after:w-full'
-										: 'text-white/80 hover:text-white'
-								}`}
-							>
-								Контакты
-							</Link>
-						</motion.div>
+							Отзывы
+						</Link>
+						<Link
+							href='/contact'
+							className='text-white/90 hover:text-white text-sm font-light transition-colors'
+						>
+							Контакты
+						</Link>
 					</nav>
 
 					<div className='flex items-center space-x-4'>
@@ -325,13 +291,6 @@ export default function Header() {
 										Портфолио
 									</Link>
 									<Link
-										href='#reviews'
-										onClick={() => setIsMobileMenuOpen(false)}
-										className='text-lg transition-colors text-white/80 hover:text-white'
-									>
-										Отзывы
-									</Link>
-									<Link
 										href='/services'
 										onClick={() => setIsMobileMenuOpen(false)}
 										className={`text-lg transition-colors ${
@@ -341,6 +300,24 @@ export default function Header() {
 										}`}
 									>
 										Услуги
+									</Link>
+									<Link
+										href='/employees'
+										onClick={() => setIsMobileMenuOpen(false)}
+										className={`text-lg transition-colors ${
+											isActive('/employees')
+												? 'text-white font-medium'
+												: 'text-white/80 hover:text-white'
+										}`}
+									>
+										Сотрудники
+									</Link>
+									<Link
+										href='/reviews'
+										onClick={() => setIsMobileMenuOpen(false)}
+										className='text-lg transition-colors text-white/80 hover:text-white'
+									>
+										Отзывы
 									</Link>
 									<Link
 										href='/contact'

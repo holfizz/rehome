@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 
 const fadeInUp = {
@@ -31,21 +32,23 @@ const services = [
 	{
 		id: 2,
 		title: 'Дизайн-проект',
-		description: 'Детальная разработка интерьера с учетом всех ваших пожеланий',
+		description:
+			'Создаем детальный дизайн-проект с 3D-визуализацией всех помещений. Включает планировочные решения, подбор материалов, освещение и всю техническую документацию для ремонта.',
 		icon: '🎨',
+		image: '/assets/case1_ph7.webp',
 		features: [
 			'Планировочные решения до полного одобрения',
-			'Фотореалистичная 3D-визуализация каждой зоны',
-			'Детальные чертежи для строителей',
-			'Спецификация материалов и мебели',
-			'Неограниченное количество правок до вашего 100% одобрения',
+			'3D-визуализация всех помещений',
+			'Детальные чертежи и схемы',
+			'Подбор материалов и отделки',
+			'Авторский надзор',
+			'Неограниченные правки до утверждения',
 		],
-		price: 'от 3 000 ₽/м²',
-		duration: '30-45 дней',
-		image: '/assets/case1_ph7.webp',
 		emphasis:
-			'Работаем над проектом, пока вы не будете полностью довольны каждой деталью',
-		hasTariffs: true,
+			'Проект доводим до совершенства — работаем до полного утверждения всех деталей.',
+		price: '4 000 ₽/м²',
+		duration: '3-4 недели',
+		hasTariffs: false,
 	},
 	{
 		id: 3,
@@ -85,65 +88,76 @@ const services = [
 	},
 ]
 
+// Тарифы дизайн-проекта
 const tariffs = [
 	{
-		name: 'Базовый',
-		price: '3 000 ₽/м²',
-		features: [
-			'Обмерный план',
-			'Планировочное решение (2 варианта)',
-			'3D-визуализация основных помещений',
-			'Ведомость отделочных материалов',
-			'Развертки стен',
-			'План расстановки мебели',
-		],
-		recommended: false,
-		color: 'from-amber-500/20 to-amber-600/20',
-		textColor: 'text-amber-300',
-	},
-	{
-		name: 'Оптимальный',
+		name: 'Полный дизайн-проект',
 		price: '4 000 ₽/м²',
-		features: [
-			'Всё, что входит в "Базовый"',
-			'Планировочное решение (3 варианта)',
-			'3D-визуализация всех помещений',
-			'План потолков и освещения',
-			'План напольных покрытий',
-			'План расстановки сантехники',
-			'Спецификация мебели и оборудования',
-		],
+		color: 'from-amber-500 to-orange-600',
+		textColor: 'text-white',
 		recommended: true,
-		color: 'from-amber-400/30 to-amber-500/30',
-		textColor: 'text-amber-200',
-	},
-	{
-		name: 'Премиум',
-		price: '5 000 ₽/м²',
 		features: [
-			'Всё, что входит в "Оптимальный"',
-			'Планировочное решение (неограниченно)',
-			'Детальная 3D-визуализация с декором',
-			'Подбор и заказ мебели и материалов',
-			'Авторский надзор (1 выезд в неделю)',
-			'Детальные чертежи нестандартных элементов',
-			'Консультации по всем вопросам 24/7',
+			'Выезд дизайнера и замеры',
+			'Планировочные решения',
+			'3D-визуализация всех помещений',
+			'Подбор отделочных материалов',
+			'Развертки стен с размерами',
+			'Схемы размещения розеток и выключателей',
+			'Схемы освещения',
+			'Ведомость отделочных материалов',
+			'Неограниченные правки до утверждения',
+			'Помощь в выборе мебели',
+			'Консультации на всех этапах ремонта',
 		],
-		recommended: false,
-		color: 'from-amber-300/40 to-amber-400/40',
-		textColor: 'text-amber-100',
 	},
 ]
 
 export default function Services() {
 	return (
 		<div
-			className='min-h-screen bg-black text-white overflow-x-hidden'
+			className='min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white overflow-x-hidden relative'
 			style={{
 				WebkitOverflowScrolling: 'touch',
 				overflowY: 'auto',
 			}}
 		>
+			{/* Background decorative elements */}
+			<div className='absolute inset-0 overflow-hidden pointer-events-none'>
+				{/* Subtle gradient orbs */}
+				<div className='absolute top-0 right-0 w-96 h-96 opacity-10'>
+					<div className='w-full h-full bg-gradient-radial from-amber-500/15 via-orange-500/8 to-transparent rounded-full blur-3xl'></div>
+				</div>
+				<div className='absolute top-1/4 left-0 w-80 h-80 opacity-8'>
+					<div className='w-full h-full bg-gradient-radial from-blue-500/12 via-cyan-500/6 to-transparent rounded-full blur-3xl'></div>
+				</div>
+				<div className='absolute bottom-0 right-1/3 w-72 h-72 opacity-8'>
+					<div className='w-full h-full bg-gradient-radial from-purple-500/10 via-violet-500/5 to-transparent rounded-full blur-3xl'></div>
+				</div>
+				<div className='absolute bottom-1/3 left-1/4 w-64 h-64 opacity-6'>
+					<div className='w-full h-full bg-gradient-radial from-emerald-500/8 via-teal-500/4 to-transparent rounded-full blur-3xl'></div>
+				</div>
+				<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-4'>
+					<div className='w-full h-full bg-gradient-radial from-indigo-500/12 via-blue-500/6 to-transparent rounded-full blur-3xl'></div>
+				</div>
+
+				{/* Mesh pattern overlay */}
+				<div
+					className='absolute inset-0 opacity-[0.015]'
+					style={{
+						backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.2) 1px, transparent 0)`,
+						backgroundSize: '64px 64px',
+					}}
+				></div>
+
+				{/* Subtle geometric shapes */}
+				<div className='absolute top-32 right-32 w-24 h-24 opacity-4'>
+					<div className='w-full h-full bg-gradient-to-br from-white/8 to-white/3 rounded-full blur-xl'></div>
+				</div>
+				<div className='absolute bottom-40 left-32 w-20 h-20 opacity-4'>
+					<div className='w-full h-full bg-gradient-to-tl from-white/6 to-white/2 rounded-lg rotate-12 blur-xl'></div>
+				</div>
+			</div>
+
 			<Header />
 
 			{/* Hero Section */}
@@ -199,9 +213,8 @@ export default function Services() {
 							<motion.div
 								key={service.id}
 								initial={{ opacity: 0, y: 40 }}
-								whileInView={{ opacity: 1, y: 0 }}
+								animate={{ opacity: 1, y: 0 }}
 								transition={{ duration: 0.6, delay: index * 0.2 }}
-								viewport={{ once: true }}
 								whileHover={{ y: -8, scale: 1.02 }}
 								className='bg-white/5 backdrop-blur-xl rounded-2xl md:rounded-3xl overflow-hidden border border-white/10 hover:border-white/20 transition-all group cursor-pointer'
 							>
@@ -269,18 +282,6 @@ export default function Services() {
 											</div>
 										</div>
 									</div>
-
-									{/* View Tariffs Button for Design Service */}
-									{service.hasTariffs && (
-										<div className='mt-6 text-center'>
-											<a
-												href='#tariffs'
-												className='inline-block bg-amber-500/20 hover:bg-amber-500/30 text-white px-6 py-2 rounded-full text-sm transition-all'
-											>
-												Посмотреть тарифы
-											</a>
-										</div>
-									)}
 								</div>
 							</motion.div>
 						))}
@@ -292,86 +293,75 @@ export default function Services() {
 			<section id='tariffs' className='py-16 md:py-24 relative'>
 				<div className='absolute inset-0 bg-gradient-to-br from-gray-900/80 via-gray-800/80 to-gray-900/80' />
 
-				<div className='container mx-auto px-4 md:px-6 relative z-10'>
-					<motion.div
-						initial={{ opacity: 0, y: 60 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.8 }}
-						viewport={{ once: true }}
-						className='text-center mb-12 md:mb-20'
-					>
-						<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
-							Тарифы на дизайн-проект
-						</h2>
-						<p className='text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed font-light'>
-							Выберите оптимальный вариант для вашего проекта
-						</p>
-					</motion.div>
+				<motion.div
+					initial={{ opacity: 0, y: 60 }}
+					animate={{ opacity: 1, y: 0 }}
+					transition={{ duration: 0.8 }}
+					className='text-center mb-12 md:mb-16'
+				>
+					<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
+						Стоимость дизайн-проекта
+					</h2>
+					<p className='text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed font-light'>
+						Один тариф — всё включено. Никаких скрытых платежей и доплат.
+					</p>
+				</motion.div>
 
-					<div className='grid md:grid-cols-3 gap-8 max-w-6xl mx-auto'>
-						{tariffs.map((tariff, index) => (
-							<motion.div
-								key={index}
-								initial={{ opacity: 0, y: 40 }}
-								whileInView={{ opacity: 1, y: 0 }}
-								transition={{ duration: 0.6, delay: index * 0.2 }}
-								viewport={{ once: true }}
-								className={`bg-white/5 backdrop-blur-xl rounded-2xl md:rounded-3xl overflow-hidden border ${
-									tariff.recommended ? 'border-amber-400/50' : 'border-white/10'
-								} hover:border-white/20 transition-all relative`}
-							>
-								{tariff.recommended && (
-									<div className='absolute top-0 left-0 right-0 bg-amber-500/30 text-white text-xs font-medium py-1.5 text-center'>
-										Рекомендуемый
-									</div>
-								)}
+				<div className='max-w-2xl mx-auto'>
+					{tariffs.map((tariff, index) => (
+						<motion.div
+							key={index}
+							initial={{ opacity: 0, y: 40 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.6, delay: 0.3 }}
+							className='bg-white/5 backdrop-blur-xl rounded-2xl md:rounded-3xl overflow-hidden border border-amber-400/30 relative'
+						>
+							<div className='absolute top-0 left-0 right-0 bg-amber-500/20 text-white text-sm font-medium py-2 text-center'>
+								✨ Всё включено
+							</div>
 
+							<div className='p-8 md:p-12 pt-12 md:pt-16'>
 								<div
-									className={`p-6 md:p-8 ${tariff.recommended ? 'pt-10' : ''}`}
+									className={`w-20 h-20 bg-gradient-to-br ${tariff.color} rounded-2xl flex items-center justify-center mb-8 mx-auto shadow-lg`}
 								>
-									<div
-										className={`w-16 h-16 bg-gradient-to-br ${tariff.color} rounded-2xl flex items-center justify-center mb-6 mx-auto`}
-									>
-										<span className={`text-2xl font-light ${tariff.textColor}`}>
-											{index + 1}
-										</span>
-									</div>
-
-									<h3 className='text-xl md:text-2xl font-light mb-2 text-white text-center'>
-										{tariff.name}
-									</h3>
-									<p className='text-2xl md:text-3xl font-light text-amber-300 mb-6 text-center'>
-										{tariff.price}
-									</p>
-
-									<div className='space-y-3 mb-8'>
-										{tariff.features.map((feature, featureIndex) => (
-											<div
-												key={featureIndex}
-												className='flex items-center text-sm text-white/70'
-											>
-												<div className='w-1.5 h-1.5 bg-amber-400 rounded-full mr-3 flex-shrink-0'></div>
-												{feature}
-											</div>
-										))}
-									</div>
-
-									<div className='text-center'>
-										<a
-											href='/contact'
-											className={`inline-block ${
-												tariff.recommended
-													? 'bg-amber-500/40 hover:bg-amber-500/50'
-													: 'bg-white/10 hover:bg-white/15'
-											} text-white px-6 py-3 rounded-full text-sm transition-all`}
-										>
-											Выбрать тариф
-										</a>
-									</div>
+									<span className={`text-3xl font-light ${tariff.textColor}`}>
+										💎
+									</span>
 								</div>
-							</motion.div>
-						))}
-					</div>
+
+								<h3 className='text-2xl md:text-3xl font-light mb-4 text-white text-center'>
+									{tariff.name}
+								</h3>
+								<p className='text-4xl md:text-5xl font-light text-amber-300 mb-8 text-center'>
+									{tariff.price}
+								</p>
+
+								<div className='space-y-4 mb-10'>
+									{tariff.features.map((feature, featureIndex) => (
+										<div
+											key={featureIndex}
+											className='flex items-center text-base text-white/80'
+										>
+											<div className='w-2 h-2 bg-amber-400 rounded-full mr-4 flex-shrink-0'></div>
+											{feature}
+										</div>
+									))}
+								</div>
+
+								<div className='text-center'>
+									<motion.a
+										href='/contact'
+										whileHover={{ scale: 1.02, y: -2 }}
+										whileTap={{ scale: 0.98 }}
+										transition={{ type: 'spring', stiffness: 400, damping: 25 }}
+										className='inline-block bg-gradient-to-r from-amber-500 to-orange-600 text-white px-10 py-4 rounded-full font-medium text-lg hover:from-amber-600 hover:to-orange-700 transition-all shadow-[0_8px_32px_rgba(245,158,11,0.3)] w-full sm:w-auto'
+									>
+										Заказать проект
+									</motion.a>
+								</div>
+							</div>
+						</motion.div>
+					))}
 				</div>
 			</section>
 
@@ -468,9 +458,8 @@ export default function Services() {
 				<div className='container mx-auto px-4 md:px-6 relative z-10'>
 					<motion.div
 						initial={{ opacity: 0, y: 60 }}
-						whileInView={{ opacity: 1, y: 0 }}
-						transition={{ duration: 0.8 }}
-						viewport={{ once: true }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8, delay: 0.5 }}
 						className='text-center max-w-4xl mx-auto'
 					>
 						<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
@@ -508,23 +497,7 @@ export default function Services() {
 			</section>
 
 			{/* Footer */}
-			<footer className='py-8 md:py-12 border-t border-white/10'>
-				<div className='container mx-auto px-4 md:px-6'>
-					<div className='flex flex-col md:flex-row justify-between items-center gap-4'>
-						<div className='flex items-center space-x-4'>
-							<div className='w-8 h-8 bg-white/20 backdrop-blur-xl rounded-xl flex items-center justify-center border border-white/30'>
-								<span className='text-white font-light text-sm'>R</span>
-							</div>
-							<span className='text-xl font-extralight text-white/95'>
-								REHOME
-							</span>
-						</div>
-						<p className='text-sm text-white/60 font-light text-center md:text-left'>
-							© 2025 REHOME. Студия дизайна интерьеров в Казани
-						</p>
-					</div>
-				</div>
-			</footer>
+			<Footer />
 		</div>
 	)
 }

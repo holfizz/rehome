@@ -10,6 +10,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
+import Footer from '../components/Footer'
 import Header from '../components/Header'
 
 const fadeInUp = {
@@ -885,55 +886,7 @@ export default function Home() {
 				</section>
 
 				{/* Footer */}
-				<footer className='py-8 md:py-12 border-t border-white/10 relative'>
-					<div className='container mx-auto px-4 md:px-8'>
-						<div className='grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 items-center'>
-							<div className='flex items-center justify-center md:justify-start space-x-4'>
-								<div className='w-8 h-8 bg-white/20 backdrop-blur-xl rounded-xl flex items-center justify-center border border-white/30'>
-									<span className='text-white font-light text-sm'>R</span>
-								</div>
-								<span className='text-xl font-extralight text-white/95'>
-									REHOME
-								</span>
-							</div>
-
-							<div className='text-center'>
-								<p className='text-sm text-white/60 font-light mb-2'>
-									© 2025 REHOME. Студия дизайна интерьеров в Казани
-								</p>
-								<p className='text-sm text-white/80 font-light'>
-									Москва, Ленинский проспект, 42К5
-								</p>
-							</div>
-
-							<div className='text-center md:text-right'>
-								<div className='space-y-2'>
-									<p className='text-sm text-white/80 font-light'>
-										<a
-											href='https://t.me/m_ilya31'
-											target='_blank'
-											rel='noopener noreferrer'
-											className='hover:text-white transition-colors'
-										>
-											@m_ilya31 - Telegram
-										</a>
-									</p>
-									<p className='text-sm text-white/80 font-light'>
-										<a
-											href='tel:+79274394355'
-											className='hover:text-white transition-colors'
-										>
-											+7 (927) 439-43-55
-										</a>
-									</p>
-									<p className='text-xs text-white/60 font-light'>
-										Телефон / WhatsApp
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</footer>
+				<Footer />
 			</div>
 
 			{/* Fixed Chat Widget - Global */}

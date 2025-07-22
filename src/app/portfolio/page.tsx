@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
+import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import { getAllProjects } from '../../data/projects'
 
@@ -17,12 +18,46 @@ export default function Portfolio() {
 
 	return (
 		<div
-			className='min-h-screen bg-black text-white overflow-x-hidden'
+			className='min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-black text-white overflow-x-hidden relative'
 			style={{
 				WebkitOverflowScrolling: 'touch',
 				overflowY: 'auto',
 			}}
 		>
+			{/* Background decorative elements */}
+			<div className='absolute inset-0 overflow-hidden pointer-events-none'>
+				{/* Subtle gradient orbs */}
+				<div className='absolute top-0 left-0 w-96 h-96 opacity-10'>
+					<div className='w-full h-full bg-gradient-radial from-blue-500/20 via-purple-500/10 to-transparent rounded-full blur-3xl'></div>
+				</div>
+				<div className='absolute top-1/3 right-0 w-80 h-80 opacity-8'>
+					<div className='w-full h-full bg-gradient-radial from-violet-500/15 via-indigo-500/8 to-transparent rounded-full blur-3xl'></div>
+				</div>
+				<div className='absolute bottom-0 left-1/3 w-72 h-72 opacity-8'>
+					<div className='w-full h-full bg-gradient-radial from-emerald-500/12 via-teal-500/6 to-transparent rounded-full blur-3xl'></div>
+				</div>
+				<div className='absolute bottom-1/4 right-1/4 w-64 h-64 opacity-6'>
+					<div className='w-full h-full bg-gradient-radial from-rose-500/10 via-pink-500/5 to-transparent rounded-full blur-3xl'></div>
+				</div>
+
+				{/* Mesh pattern overlay */}
+				<div
+					className='absolute inset-0 opacity-[0.02]'
+					style={{
+						backgroundImage: `radial-gradient(circle at 2px 2px, rgba(255,255,255,0.15) 1px, transparent 0)`,
+						backgroundSize: '48px 48px',
+					}}
+				></div>
+
+				{/* Subtle geometric shapes */}
+				<div className='absolute top-20 left-20 w-32 h-32 opacity-5'>
+					<div className='w-full h-full bg-gradient-to-br from-white/10 to-white/5 rounded-full blur-xl'></div>
+				</div>
+				<div className='absolute bottom-32 right-20 w-24 h-24 opacity-5'>
+					<div className='w-full h-full bg-gradient-to-tl from-white/8 to-white/4 rounded-lg rotate-45 blur-xl'></div>
+				</div>
+			</div>
+
 			<Header />
 
 			{/* Hero Section */}
@@ -171,23 +206,7 @@ export default function Portfolio() {
 			</section>
 
 			{/* Footer */}
-			<footer className='py-8 md:py-12 border-t border-white/10'>
-				<div className='container mx-auto px-4 md:px-6'>
-					<div className='flex flex-col md:flex-row justify-between items-center gap-4'>
-						<div className='flex items-center space-x-4'>
-							<div className='w-8 h-8 bg-white/20 backdrop-blur-xl rounded-xl flex items-center justify-center border border-white/30'>
-								<span className='text-white font-light text-sm'>R</span>
-							</div>
-							<span className='text-xl font-extralight text-white/95'>
-								REHOME
-							</span>
-						</div>
-						<p className='text-sm text-white/60 font-light text-center md:text-left'>
-							© 2025 REHOME. Студия дизайна интерьеров в Казани
-						</p>
-					</div>
-				</div>
-			</footer>
+			<Footer />
 		</div>
 	)
 }
