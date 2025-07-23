@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://rehomekz.vercel.app/sitemap.xml
+
+# Crawl-delay для вежливого сканирования
+Crawl-delay: 1
+
+# Запрещаем индексацию служебных файлов
+Disallow: /api/
+Disallow: /_next/
+Disallow: /favicon.ico
+Disallow: /*.json$
+
+# Разрешаем все остальное
+Allow: /portfolio/
+Allow: /services/
+Allow: /employees/
+Allow: /reviews/
+Allow: /contact/
+Allow: /privacy/
+Allow: /assets/ 

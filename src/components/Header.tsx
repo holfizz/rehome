@@ -218,9 +218,7 @@ export default function Header() {
 
 					<div className='flex items-center space-x-4'>
 						<motion.a
-							href='https://t.me/holfizz'
-							target='_blank'
-							rel='noopener noreferrer'
+							href='/contact'
 							whileHover={{ scale: 1.02, y: -1 }}
 							whileTap={{ scale: 0.98 }}
 							transition={{ type: 'spring', stiffness: 400, damping: 25 }}
@@ -330,15 +328,13 @@ export default function Header() {
 									>
 										Контакты
 									</Link>
-									<a
-										href='https://t.me/holfizz'
-										target='_blank'
-										rel='noopener noreferrer'
+									<Link
+										href='/contact'
 										onClick={() => setIsMobileMenuOpen(false)}
 										className='bg-white/20 backdrop-blur-xl text-white px-8 py-4 rounded-2xl text-lg font-medium hover:bg-white/30 transition-all text-left border border-white/20'
 									>
 										Обсудить
-									</a>
+									</Link>
 								</div>
 							</div>
 						</motion.div>

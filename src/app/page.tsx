@@ -7,11 +7,84 @@ import {
 	useMotionValue,
 	useTransform,
 } from 'framer-motion'
+import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import Footer from '../components/Footer'
 import Header from '../components/Header'
+
+// Structured Data for SEO
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'LocalBusiness',
+	name: 'REHOME - Студия дизайна интерьера',
+	image: 'https://rehomekz.vercel.app/assets/case1_ph2.webp',
+	'@id': 'https://rehomekz.vercel.app',
+	url: 'https://rehomekz.vercel.app',
+	telephone: '+7-927-439-43-55',
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: 'ул. Баумана',
+		addressLocality: 'Казань',
+		postalCode: '420000',
+		addressRegion: 'Республика Татарстан',
+		addressCountry: 'RU',
+	},
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: 55.8304,
+		longitude: 49.0661,
+	},
+	openingHoursSpecification: {
+		'@type': 'OpeningHoursSpecification',
+		dayOfWeek: [
+			'Monday',
+			'Tuesday',
+			'Wednesday',
+			'Thursday',
+			'Friday',
+			'Saturday',
+		],
+		opens: '09:00',
+		closes: '20:00',
+	},
+	sameAs: ['https://t.me/m_ilya31', 'https://wa.me/79274394355'],
+	priceRange: '₽₽₽',
+	servedCuisine: ['Interior Design', 'Home Renovation'],
+	description:
+		'Профессиональный дизайн интерьера и ремонт квартир в Казани. Студия REHOME создает уникальные интерьеры с индивидуальным подходом.',
+	areaServed: {
+		'@type': 'City',
+		name: 'Казань',
+	},
+	hasOfferCatalog: {
+		'@type': 'OfferCatalog',
+		name: 'Услуги дизайна интерьера',
+		itemListElement: [
+			{
+				'@type': 'Offer',
+				itemOffered: {
+					'@type': 'Service',
+					name: 'Дизайн-проект квартиры',
+					description: 'Полный дизайн-проект квартиры с 3D визуализацией',
+				},
+			},
+			{
+				'@type': 'Offer',
+				itemOffered: {
+					'@type': 'Service',
+					name: 'Ремонт под ключ',
+					description: 'Комплексный ремонт квартир под ключ в Казани',
+				},
+			},
+		],
+	},
+	founder: {
+		'@type': 'Person',
+		name: 'Макаров Илья Дмитриевич',
+	},
+}
 
 const fadeInUp = {
 	initial: { opacity: 0, y: 60 },
@@ -111,6 +184,17 @@ export default function Home() {
 
 	return (
 		<>
+			<Head>
+				<script
+					type='application/ld+json'
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+				/>
+				<meta name='geo.region' content='RU-TA' />
+				<meta name='geo.placename' content='Казань' />
+				<meta name='geo.position' content='55.8304;49.0661' />
+				<meta name='ICBM' content='55.8304, 49.0661' />
+				<link rel='canonical' href='https://rehomekz.vercel.app' />
+			</Head>
 			<div
 				className='min-h-screen bg-black text-white overflow-x-hidden'
 				style={{
@@ -137,7 +221,7 @@ export default function Home() {
 						>
 							<Image
 								src='/assets/case1_ph2.webp'
-								alt='Luxury Interior Design'
+								alt='Дизайн интерьера квартиры в Казани - современный ремонт от REHOME'
 								fill
 								className='object-cover scale-110'
 								priority
@@ -200,11 +284,12 @@ export default function Home() {
 									className='mb-8 md:mb-12'
 								>
 									<h2 className='text-base md:text-lg lg:text-xl xl:text-2xl text-white/90 mb-3 md:mb-4 font-light max-w-3xl mx-auto leading-relaxed px-4'>
-										Не завершаем проект, пока всё не будет на 100% как вы
-										мечтали
+										Дизайн интерьера Казань - не завершаем проект, пока всё не
+										будет на 100% как вы мечтали
 									</h2>
 									<p className='text-sm md:text-base text-white/70 max-w-2xl mx-auto font-light leading-relaxed px-4'>
-										Мы доводим каждую деталь до совершенства, чтобы ваш интерьер
+										Профессиональный ремонт квартир в Казани под ключ. Мы
+										доводим каждую деталь до совершенства, чтобы ваш интерьер
 										полностью соответствовал вашим ожиданиям и даже превосходил
 										их.
 									</p>
@@ -223,7 +308,7 @@ export default function Home() {
 										transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 										className='bg-white text-black px-6 md:px-8 py-3 md:py-4 rounded-full font-medium text-sm md:text-base hover:bg-gray-100 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.3)] w-full sm:w-auto text-center'
 									>
-										Начать проект
+										Заказать дизайн-проект
 									</motion.a>
 									<motion.a
 										href='/portfolio'
@@ -232,7 +317,7 @@ export default function Home() {
 										transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 										className='bg-white/10 backdrop-blur-xl text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-light text-sm md:text-base border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all w-full sm:w-auto text-center'
 									>
-										Посмотреть работы
+										Портфолио работ в Казани
 									</motion.a>
 								</motion.div>
 							</div>
@@ -302,16 +387,16 @@ export default function Home() {
 								className='text-center mb-12 md:mb-20'
 							>
 								<span className='text-xs md:text-sm text-gray-700 font-light tracking-[0.2em] uppercase mb-4 block'>
-									О студии
+									Студия дизайна интерьера в Казани
 								</span>
 								<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-gray-900 tracking-[-0.02em]'>
-									Совершенство в каждой детали
+									Дизайн квартир Казань - совершенство в каждой детали
 								</h2>
 								<p className='text-base md:text-lg text-gray-800 max-w-3xl mx-auto leading-relaxed font-light'>
-									Мы верим, что идеальный ремонт создается из тщательно
-									продуманных деталей. Наша команда не останавливается, пока
-									каждый элемент интерьера не будет соответствовать вашему
-									видению на 100%.
+									Мы верим, что идеальный ремонт в Казани создается из тщательно
+									продуманных деталей. Наша команда дизайнеров интерьера не
+									останавливается, пока каждый элемент интерьера не будет
+									соответствовать вашему видению на 100%.
 								</p>
 							</motion.div>
 
@@ -323,7 +408,7 @@ export default function Home() {
 									<div className='relative overflow-hidden rounded-2xl mb-6 md:mb-8'>
 										<Image
 											src='/assets/case1_ph3.webp'
-											alt='Индивидуальный подход'
+											alt='Индивидуальный дизайн интерьера квартиры в Казани'
 											width={500}
 											height={300}
 											className='w-full h-48 md:h-56 lg:h-64 object-cover group-hover:scale-105 transition-transform duration-700'
@@ -331,12 +416,13 @@ export default function Home() {
 										<div className='absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
 									</div>
 									<h3 className='text-xl md:text-2xl lg:text-3xl font-light mb-4 md:mb-6 text-gray-900'>
-										Индивидуальный подход
+										Индивидуальный подход к дизайну
 									</h3>
 									<p className='text-base md:text-lg text-gray-700 leading-relaxed font-light'>
 										Мы внимательно слушаем ваши пожелания и не останавливаемся,
-										пока не найдем идеальное решение. Каждый проект уникален,
-										как и ваше представление об идеальном жилье.
+										пока не найдем идеальное решение для вашего дома в Казани.
+										Каждый дизайн-проект уникален, как и ваше представление об
+										идеальном жилье.
 									</p>
 								</motion.div>
 
@@ -347,7 +433,7 @@ export default function Home() {
 									<div className='relative overflow-hidden rounded-2xl mb-6 md:mb-8'>
 										<Image
 											src='/assets/case1_ph7.webp'
-											alt='Современные решения'
+											alt='Современный дизайн интерьера в Казани - ремонт под ключ'
 											width={500}
 											height={300}
 											className='w-full h-48 md:h-56 lg:h-64 object-cover group-hover:scale-105 transition-transform duration-700'
@@ -355,12 +441,13 @@ export default function Home() {
 										<div className='absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
 									</div>
 									<h3 className='text-xl md:text-2xl lg:text-3xl font-light mb-4 md:mb-6 text-gray-900'>
-										Современные решения
+										Современные решения для Казани
 									</h3>
 									<p className='text-base md:text-lg text-gray-700 leading-relaxed font-light'>
-										Используем передовые технологии и материалы, но никогда не
-										жертвуем комфортом ради тренда. Мы доводим до совершенства
-										каждую деталь, чтобы вы были на 100% довольны результатом.
+										Используем передовые технологии и материалы в ремонте
+										квартир, но никогда не жертвуем комфортом ради тренда. Мы
+										доводим до совершенства каждую деталь, чтобы вы были на 100%
+										довольны результатом.
 									</p>
 								</motion.div>
 							</div>
@@ -375,14 +462,14 @@ export default function Home() {
 							className='text-center mb-12 md:mb-20'
 						>
 							<span className='text-xs md:text-sm text-gray-700 font-light tracking-[0.2em] uppercase mb-4 block'>
-								Процесс работы
+								Как мы работаем в Казани
 							</span>
 							<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-gray-900 tracking-[-0.02em]'>
-								Путь к идеальному результату
+								Ремонт под ключ Казань - путь к идеальному результату
 							</h2>
 							<p className='text-base md:text-lg text-gray-800 max-w-3xl mx-auto leading-relaxed font-light'>
-								Мы не завершаем работу, пока вы не будете полностью довольны
-								каждым аспектом проекта
+								Мы не завершаем работу над дизайн-проектом, пока вы не будете
+								полностью довольны каждым аспектом проекта
 							</p>
 						</motion.div>
 
@@ -394,23 +481,23 @@ export default function Home() {
 								{[
 									{
 										number: '01',
-										title: 'Знакомство и концепция',
+										title: 'Консультация и концепция дизайна',
 										description:
-											'Внимательно изучаем ваши пожелания и создаем концепцию, которая на 100% отражает ваше видение. Работаем над ней, пока вы не будете полностью удовлетворены.',
+											'Внимательно изучаем ваши пожелания по дизайну квартиры в Казани и создаем концепцию, которая на 100% отражает ваше видение. Работаем над ней, пока вы не будете полностью удовлетворены.',
 										duration: '1-2 недели',
 									},
 									{
 										number: '02',
-										title: 'Дизайн-проект',
+										title: 'Дизайн-проект с 3D визуализацией',
 										description:
-											'Разрабатываем детальный проект с 3D-визуализацией. Вносим любые корректировки, пока каждый элемент не будет соответствовать вашим ожиданиям на 100%.',
+											'Разрабатываем детальный дизайн-проект вашей квартиры с 3D-визуализацией. Вносим любые корректировки, пока каждый элемент интерьера не будет соответствовать вашим ожиданиям на 100%.',
 										duration: '3-4 недели',
 									},
 									{
 										number: '03',
-										title: 'Реализация',
+										title: 'Ремонт и реализация в Казани',
 										description:
-											'Когда воплощаем проект, контролируем каждую деталь. Проект считается завершенным только когда вы на 100% довольны результатом.',
+											'Когда воплощаем дизайн-проект, контролируем каждую деталь ремонта. Проект считается завершенным только когда вы на 100% довольны результатом.',
 										duration: '2-6 месяцев',
 									},
 								].map((step, index) => (
@@ -476,21 +563,21 @@ export default function Home() {
 								viewport={{ once: true }}
 							>
 								<span className='text-xs md:text-sm text-white/60 font-light tracking-[0.2em] uppercase mb-4 block'>
-									Для всей семьи
+									Дизайн детских комнат в Казани
 								</span>
 								<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
-									100% счастья для каждого члена семьи
+									Дизайн для всей семьи - 100% счастья каждого
 								</h2>
 								<p className='text-base md:text-lg text-white/80 mb-6 md:mb-8 leading-relaxed font-light'>
-									Мы создаем пространства, где каждый член семьи найдет
+									Мы создаем интерьеры в Казани, где каждый член семьи найдет
 									идеальное место для себя. Детские комнаты продумываются до
 									мельчайших деталей, чтобы полностью соответствовать
 									потребностям и мечтам вашего ребенка.
 								</p>
 								<p className='text-base md:text-lg text-white/70 mb-8 leading-relaxed font-light'>
-									Наша работа завершена только тогда, когда каждый член семьи на
-									100% доволен своим пространством. Мы не останавливаемся на
-									компромиссах.
+									Наша работа над дизайном квартиры завершена только тогда,
+									когда каждый член семьи на 100% доволен своим пространством.
+									Мы не останавливаемся на компромиссах.
 								</p>
 								<motion.a
 									href='/portfolio'
@@ -499,7 +586,7 @@ export default function Home() {
 									transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 									className='inline-block bg-white/10 backdrop-blur-xl text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-light text-sm md:text-base border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all'
 								>
-									Посмотреть детские проекты
+									Детские проекты в Казани
 								</motion.a>
 							</motion.div>
 
@@ -513,7 +600,7 @@ export default function Home() {
 								<div className='relative overflow-hidden rounded-2xl md:rounded-3xl'>
 									<Image
 										src='/assets/case2_ph5.webp'
-										alt='Детская комната для девочки'
+										alt='Дизайн детской комнаты для девочки в Казани - проект REHOME'
 										width={800}
 										height={600}
 										className='w-full h-72 md:h-84 lg:h-100 object-cover'
@@ -522,7 +609,7 @@ export default function Home() {
 									<div className='absolute bottom-6 left-6 right-6'>
 										<div className='bg-white/20 backdrop-blur-xl rounded-xl p-4 border border-white/30'>
 											<h3 className='text-lg md:text-xl font-light mb-2 text-white'>
-												Детская для принцессы
+												Детская для принцессы в Казани
 											</h3>
 											<p className='text-sm text-white/80'>
 												Волшебное пространство для маленькой мечтательницы
@@ -549,14 +636,15 @@ export default function Home() {
 							className='text-center mb-12 md:mb-20'
 						>
 							<span className='text-xs md:text-sm text-white/60 font-light tracking-[0.2em] uppercase mb-4 block'>
-								Портфолио
+								Портфолио дизайна в Казани
 							</span>
 							<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
-								Проекты, доведенные до совершенства
+								Реализованные проекты в Казани - доведенные до совершенства
 							</h2>
 							<p className='text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed font-light'>
 								Каждая работа в нашем портфолио — результат кропотливого
 								внимания к деталям и стремления к 100% удовлетворенности клиента
+								из Казани
 							</p>
 						</motion.div>
 
@@ -565,10 +653,10 @@ export default function Home() {
 								{
 									id: 1,
 									image: '/assets/case1_ph2.webp',
-									title: 'Современная квартира "Элегант"',
+									title: 'Современная квартира "Элегант" в Казани',
 									area: '95 м²',
 									description:
-										'Минималистичный дизайн с акцентом на функциональность',
+										'Минималистичный дизайн интерьера с акцентом на функциональность',
 									photos: 17,
 								},
 								{
@@ -576,7 +664,8 @@ export default function Home() {
 									image: '/assets/case2_ph1.webp',
 									title: 'Детские комнаты "Семейное счастье"',
 									area: '78 м²',
-									description: 'Яркие и безопасные пространства для детей',
+									description:
+										'Яркие и безопасные пространства для детей в Казани',
 									photos: 6,
 								},
 								{
@@ -601,7 +690,7 @@ export default function Home() {
 										<div className='relative overflow-hidden rounded-2xl md:rounded-3xl mb-4 md:mb-6'>
 											<Image
 												src={project.image}
-												alt={project.title}
+												alt={`${project.title} - дизайн интерьера в Казани от REHOME`}
 												width={600}
 												height={450}
 												className='w-full h-64 md:h-80 lg:h-96 object-cover transition-transform duration-700 group-hover:scale-110'
@@ -654,7 +743,7 @@ export default function Home() {
 								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 								className='inline-flex items-center bg-gradient-to-r from-white/15 to-white/10 backdrop-blur-xl text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-medium text-base md:text-lg border border-white/30 hover:from-white/20 hover:to-white/15 hover:border-white/40 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.1)] group'
 							>
-								<span>Смотреть все проекты</span>
+								<span>Все проекты дизайна в Казани</span>
 								<svg
 									className='w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform'
 									fill='none'
@@ -690,14 +779,14 @@ export default function Home() {
 							className='text-center mb-12 md:mb-20'
 						>
 							<span className='text-xs md:text-sm text-white/60 font-light tracking-[0.2em] uppercase mb-4 block'>
-								Отзывы клиентов
+								Отзывы о дизайне интерьера в Казани
 							</span>
 							<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
-								Что говорят наши клиенты
+								Что говорят наши клиенты из Казани
 							</h2>
 							<p className='text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed font-light'>
 								Каждый отзыв — это подтверждение нашего стремления к
-								совершенству
+								совершенству в дизайне интерьера
 							</p>
 						</motion.div>
 
@@ -740,7 +829,7 @@ export default function Home() {
 														<div className='relative w-full'>
 															<Image
 																src={`/assets/reviews/${reviewNumber}.jpg`}
-																alt={`Отзыв клиента ${reviewNumber}`}
+																alt={`Отзыв клиента ${reviewNumber} о дизайне интерьера в Казани - REHOME`}
 																width={1107}
 																height={0}
 																className='w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700 rounded-2xl md:rounded-3xl'
@@ -849,14 +938,14 @@ export default function Home() {
 							className='text-center max-w-4xl mx-auto'
 						>
 							<span className='text-xs md:text-sm text-white/60 font-light tracking-[0.2em] uppercase mb-4 block'>
-								Контакты
+								Заказать дизайн интерьера в Казани
 							</span>
 							<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
-								Готовы создать интерьер вашей мечты?
+								Готовы создать интерьер вашей мечты в Казани?
 							</h2>
 							<p className='text-base md:text-lg text-white/80 mb-8 md:mb-12 leading-relaxed font-light'>
-								Расскажите нам о своем видении, и мы не остановимся, пока оно не
-								будет реализовано на 100%
+								Расскажите нам о своем видении дизайна квартиры, и мы не
+								остановимся, пока оно не будет реализовано на 100%
 							</p>
 
 							<div className='flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center'>
@@ -867,10 +956,10 @@ export default function Home() {
 									transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 									className='bg-white text-black px-6 md:px-8 py-3 md:py-4 rounded-full font-medium text-sm md:text-base hover:bg-gray-100 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.3)] w-full sm:w-auto text-center'
 								>
-									Обсудить проект
+									Обсудить дизайн-проект
 								</motion.a>
 								<motion.a
-									href='https://t.me/holfizz'
+									href='https://t.me/m_ilya31'
 									target='_blank'
 									rel='noopener noreferrer'
 									whileHover={{ scale: 1.02, y: -2 }}
@@ -1021,7 +1110,7 @@ export default function Home() {
 						>
 							<Image
 								src={`/assets/reviews/${selectedReview}.jpg`}
-								alt={`Отзыв клиента ${selectedReview}`}
+								alt={`Отзыв клиента ${selectedReview} о дизайне интерьера в Казани - REHOME`}
 								width={1107}
 								height={1200}
 								className='w-auto h-auto max-w-full max-h-[90vh] object-contain'

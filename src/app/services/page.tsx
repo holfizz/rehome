@@ -481,7 +481,7 @@ export default function Services() {
 								Обсудить проект
 							</motion.a>
 							<motion.a
-								href='https://t.me/holfizz'
+								href='https://t.me/m_ilya31'
 								target='_blank'
 								rel='noopener noreferrer'
 								whileHover={{ scale: 1.02, y: -2 }}

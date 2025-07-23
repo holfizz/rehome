@@ -1,21 +1,74 @@
 {
-	"name": "REHOME - Дизайн спален под ключ",
+	"name": "REHOME - Дизайн интерьера Казань",
 	"short_name": "REHOME",
-	"description": "Профессиональный дизайн спален под ключ",
+	"description": "Студия дизайна интерьера REHOME в Казани. Ремонт квартир под ключ с индивидуальным подходом.",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#000000",
-	"theme_color": "#000000",
+	"theme_color": "#938F91",
+	"orientation": "portrait",
+	"scope": "/",
+	"lang": "ru",
+	"categories": ["design", "lifestyle", "business"],
 	"icons": [
 		{
-			"src": "/icon-192x192.png",
-			"sizes": "192x192",
-			"type": "image/png"
+			"src": "/favicon-16x16.png",
+			"sizes": "16x16",
+			"type": "image/png",
+			"purpose": "any maskable"
 		},
 		{
-			"src": "/icon-512x512.png",
+			"src": "/favicon-32x32.png",
+			"sizes": "32x32",
+			"type": "image/png",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/favicon-48x48.png",
+			"sizes": "48x48",
+			"type": "image/png",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/favicon-192x192.png",
+			"sizes": "192x192",
+			"type": "image/png",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/favicon-512x512.png",
 			"sizes": "512x512",
-			"type": "image/png"
+			"type": "image/png",
+			"purpose": "any maskable"
+		},
+		{
+			"src": "/favicon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any maskable"
+		}
+	],
+	"shortcuts": [
+		{
+			"name": "Портфолио",
+			"short_name": "Портфолио",
+			"description": "Посмотреть наши работы",
+			"url": "/portfolio",
+			"icons": [{ "src": "/favicon-192x192.png", "sizes": "192x192" }]
+		},
+		{
+			"name": "Услуги",
+			"short_name": "Услуги",
+			"description": "Наши услуги дизайна",
+			"url": "/services",
+			"icons": [{ "src": "/favicon-192x192.png", "sizes": "192x192" }]
+		},
+		{
+			"name": "Контакты",
+			"short_name": "Контакты",
+			"description": "Связаться с нами",
+			"url": "/contact",
+			"icons": [{ "src": "/favicon-192x192.png", "sizes": "192x192" }]
 		}
 	]
 }

@@ -266,15 +266,13 @@ export default function Reviews() {
 								Начать проект
 							</motion.a>
 							<motion.a
-								href='https://t.me/holfizz'
-								target='_blank'
-								rel='noopener noreferrer'
+								href='/contact'
 								whileHover={{ scale: 1.02, y: -2 }}
 								whileTap={{ scale: 0.98 }}
 								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
 								className='bg-white/10 backdrop-blur-xl text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-light text-sm md:text-base border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all w-full sm:w-auto text-center'
 							>
-								Обсудить в Telegram
+								Обсудить проект
 							</motion.a>
 						</div>
 					</motion.div>

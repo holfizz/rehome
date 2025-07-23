@@ -206,6 +206,12 @@ export default function Footer({ theme = 'dark' }: FooterProps) {
 						>
 							Контакты
 						</Link>
+						<Link
+							href='/privacy'
+							className={`text-sm ${classes.link} transition-colors`}
+						>
+							Политика конфиденциальности
+						</Link>
 					</div>
 				</motion.div>
 			</div>
