@@ -352,14 +352,14 @@ export default function Home() {
 					</div>
 
 					{/* Content */}
-					<div className='relative z-10 text-center max-w-6xl mx-auto'>
+					<div className='relative z-10 text-center max-w-6xl mx-auto mt-20 md:mt-0'>
 						<motion.div
 							initial={{ opacity: 0, y: 40 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.8, delay: 0.8 }}
 							className='mb-8'
 						>
-							<h1 className='text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-white tracking-tight leading-tight'>
+							<h1 className='text-4xl md:text-7xl lg:text-8xl font-bold mb-6 text-white tracking-tight leading-none md:leading-tight'>
 								ПРЕВРАЩАЕМ ИДЕИ
 								<br />В РЕАЛЬНОСТЬ
 							</h1>
