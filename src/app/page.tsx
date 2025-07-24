@@ -434,9 +434,9 @@ export default function Home() {
 									viewport={{ once: true }}
 									className='group'
 								>
-									<div className='relative overflow-hidden rounded-3xl md:rounded-[2rem] border border-white/10 p-6 md:p-8 transition-all duration-500 hover:scale-105 hover:border-white/30'>
+									<div className='relative overflow-hidden rounded-3xl md:rounded-[2rem] border border-white/10 p-6 md:p-8'>
 										{/* Прозрачный фон */}
-										<div className='absolute inset-0 bg-white/5 backdrop-blur-xl group-hover:bg-white/10 transition-all duration-500'></div>
+										<div className='absolute inset-0 bg-white/5 backdrop-blur-xl'></div>
 
 										{/* Контент */}
 										<div className='relative z-10 text-center'>
@@ -446,7 +446,7 @@ export default function Home() {
 												whileInView={{ scale: 1, rotate: 0 }}
 												transition={{ duration: 0.6, delay: stat.delay + 0.1 }}
 												viewport={{ once: true }}
-												className='text-4xl md:text-5xl mb-4 group-hover:scale-110 transition-transform duration-300'
+												className='text-4xl md:text-5xl mb-4'
 											>
 												{stat.icon}
 											</motion.div>
@@ -457,7 +457,7 @@ export default function Home() {
 												whileInView={{ scale: 1, opacity: 1 }}
 												transition={{ duration: 0.8, delay: stat.delay + 0.2 }}
 												viewport={{ once: true }}
-												className='text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-white group-hover:text-white/90 transition-all duration-500'
+												className='text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-white'
 											>
 												{stat.number}
 											</motion.div>
@@ -468,15 +468,15 @@ export default function Home() {
 												whileInView={{ opacity: 1 }}
 												transition={{ duration: 0.6, delay: stat.delay + 0.4 }}
 												viewport={{ once: true }}
-												className='text-sm md:text-base text-white/80 font-light leading-relaxed group-hover:text-white/90 transition-colors duration-300'
+												className='text-sm md:text-base text-white/80 font-light leading-relaxed'
 											>
 												{stat.label}
 											</motion.p>
 										</div>
 
 										{/* Декоративные элементы */}
-										<div className='absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-white/5 to-transparent rounded-full translate-x-10 -translate-y-10 group-hover:translate-x-8 group-hover:-translate-y-8 transition-transform duration-500'></div>
-										<div className='absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-white/3 to-transparent rounded-full -translate-x-8 translate-y-8 group-hover:-translate-x-6 group-hover:translate-y-6 transition-transform duration-500'></div>
+										<div className='absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-white/5 to-transparent rounded-full translate-x-10 -translate-y-10'></div>
+										<div className='absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-white/3 to-transparent rounded-full -translate-x-8 translate-y-8'></div>
 									</div>
 								</motion.div>
 							))}
@@ -529,14 +529,14 @@ export default function Home() {
 									whileInView={{ opacity: 1, y: 0 }}
 									transition={{ duration: 0.6, delay: index * 0.2 }}
 									viewport={{ once: true }}
-									className='bg-white/5 backdrop-blur-xl rounded-[2rem] overflow-hidden border border-white/10 hover:border-white/20 transition-all group'
+									className='bg-white/5 backdrop-blur-xl rounded-[2rem] overflow-hidden border border-white/10 group'
 								>
 									<div className='relative h-64 overflow-hidden'>
 										<Image
 											src={service.image}
 											alt={service.title}
 											fill
-											className='object-cover group-hover:scale-105 transition-transform duration-700'
+											className='object-cover'
 										/>
 										<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
 									</div>
@@ -772,10 +772,10 @@ export default function Home() {
 												src={project.image}
 												alt={project.title}
 												fill
-												className='object-cover group-hover:scale-105 transition-transform duration-700'
+												className='object-cover'
 											/>
-											<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-											<div className='absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
+											<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0' />
+											<div className='absolute bottom-3 left-3 right-3 opacity-0'>
 												<h3 className='text-white font-medium text-sm md:text-base'>
 													{project.title}
 												</h3>
