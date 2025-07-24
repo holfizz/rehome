@@ -67,7 +67,7 @@ export default function Footer({ theme = 'dark' }: FooterProps) {
 						<p
 							className={`text-sm ${classes.textSecondary} leading-relaxed max-w-xs`}
 						>
-							Студия дизайна интерьеров в Казани. Создаем пространства, в
+							Студия дизайна интерьеров в Москве. Создаем пространства, в
 							которых хочется жить.
 						</p>
 					</motion.div>
@@ -143,9 +143,9 @@ export default function Footer({ theme = 'dark' }: FooterProps) {
 									<span className='text-sm'>📍</span>
 								</div>
 								<div className='text-sm leading-relaxed'>
-									<p>г. Казань,</p>
-									<p>ул. Пушкина, 25</p>
-									<p>офис 301</p>
+									<p>г. Москва,</p>
+									<p>Нахимовский пр-т, 56</p>
+									<p>ЮЗАО, р-н Академический</p>
 								</div>
 							</div>
 							<div
@@ -181,7 +181,7 @@ export default function Footer({ theme = 'dark' }: FooterProps) {
 					>
 						© 2025 REHOME. Все права защищены.
 					</p>
-					<div className='flex items-center space-x-6'>
+					<div className='flex flex-wrap items-center justify-center md:justify-end gap-3 md:gap-6'>
 						<Link
 							href='/portfolio'
 							className={`text-sm ${classes.link} transition-colors`}
@@ -208,7 +208,7 @@ export default function Footer({ theme = 'dark' }: FooterProps) {
 						</Link>
 						<Link
 							href='/privacy'
-							className={`text-sm ${classes.link} transition-colors`}
+							className={`text-sm ${classes.link} transition-colors text-center`}
 						>
 							Политика конфиденциальности
 						</Link>

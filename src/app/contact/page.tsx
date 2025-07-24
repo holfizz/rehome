@@ -27,16 +27,14 @@ export default function Contact() {
 	const [error, setError] = useState('')
 	const inputRef = useRef<HTMLInputElement>(null)
 
-	// Автофокус при выборе метода связи
 	useEffect(() => {
 		if (selectedMethod && inputRef.current) {
 			setTimeout(() => {
 				inputRef.current?.focus()
-			}, 300) // Небольшая задержка для анимации
+			}, 300)
 		}
 	}, [selectedMethod])
 
-	// Автоматически устанавливаем +7 для телефонных полей
 	useEffect(() => {
 		if (
 			(selectedMethod === 'phone' || selectedMethod === 'whatsapp') &&
@@ -52,7 +50,6 @@ export default function Contact() {
 		e.preventDefault()
 		if (!selectedMethod || !contactInfo) return
 
-		// Валидация перед отправкой
 		const validationError = validateContact(contactInfo, selectedMethod)
 		if (validationError) {
 			setError(validationError)

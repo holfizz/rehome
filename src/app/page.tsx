@@ -1,12 +1,6 @@
 'use client'
 
-import {
-	AnimatePresence,
-	motion,
-	useInView,
-	useMotionValue,
-	useTransform,
-} from 'framer-motion'
+import { motion } from 'framer-motion'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -86,101 +80,191 @@ const structuredData = {
 	},
 }
 
-const fadeInUp = {
-	initial: { opacity: 0, y: 60 },
-	animate: { opacity: 1, y: 0 },
-	transition: { duration: 0.8, ease: 'easeOut' },
-}
-
-const stagger = {
-	animate: {
-		transition: {
-			staggerChildren: 0.1,
-		},
-	},
-}
-
 export default function Home() {
-	const ref = useRef(null)
-	const isInView = useInView(ref, { once: true })
-
-	// Параллакс эффекты
-	const scrollY = useMotionValue(0)
-	const scrollParallax = useTransform(scrollY, [0, 1000], [0, -200])
-
-	// Reviews slider state
-	const [currentReviewSlide, setCurrentReviewSlide] = useState(0)
-	const reviewsPerSlide = 3
-	const reviewsPerSlideMobile = 1
-	const totalReviews = 10
-	const totalSlides = Math.ceil(totalReviews / reviewsPerSlide)
-	const totalSlidesMobile = Math.ceil(totalReviews / reviewsPerSlideMobile)
-
 	// Chat widget state
 	const [isChatOpen, setIsChatOpen] = useState(false)
 
-	// Modal state for reviews
-	const [selectedReview, setSelectedReview] = useState<number | null>(null)
-
-	// Mobile detection
-	const [isMobile, setIsMobile] = useState(false)
-
-	useEffect(() => {
-		const checkMobile = () => {
-			setIsMobile(window.innerWidth < 768)
-		}
-
-		checkMobile()
-		window.addEventListener('resize', checkMobile)
-
-		return () => window.removeEventListener('resize', checkMobile)
-	}, [])
+	// Contact form state
+	const [selectedMethod, setSelectedMethod] = useState('')
+	const [contactInfo, setContactInfo] = useState('')
+	const [showConfetti, setShowConfetti] = useState(false)
+	const [isSubmitted, setIsSubmitted] = useState(false)
+	const [isLoading, setIsLoading] = useState(false)
+	const [error, setError] = useState('')
+	const inputRef = useRef<HTMLInputElement>(null)
 
 	useEffect(() => {
-		const handleScroll = () => {
-			scrollY.set(window.scrollY)
+		if (selectedMethod && inputRef.current) {
+			setTimeout(() => {
+				inputRef.current?.focus()
+			}, 300)
+		}
+	}, [selectedMethod])
+
+	useEffect(() => {
+		if (
+			(selectedMethod === 'phone' || selectedMethod === 'whatsapp') &&
+			!contactInfo
+		) {
+			setContactInfo('+7 ')
+		} else if (selectedMethod === 'telegram' && contactInfo === '+7 ') {
+			setContactInfo('')
+		}
+	}, [selectedMethod, contactInfo])
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault()
+		if (!selectedMethod || !contactInfo) return
+
+		const validationError = validateContact(contactInfo, selectedMethod)
+		if (validationError) {
+			setError(validationError)
+			return
 		}
 
-		window.addEventListener('scroll', handleScroll)
+		setIsLoading(true)
+		setError('')
 
-		return () => {
-			window.removeEventListener('scroll', handleScroll)
+		try {
+			const response = await fetch('/api/telegram', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					method: selectedMethod,
+					contact: contactInfo,
+				}),
+			})
+
+			if (response.ok) {
+				setShowConfetti(true)
+				setIsSubmitted(true)
+
+				setTimeout(() => {
+					setShowConfetti(false)
+				}, 3000)
+
+				setTimeout(() => {
+					setIsSubmitted(false)
+					setSelectedMethod('')
+					setContactInfo('')
+				}, 5000)
+			} else {
+				const errorData = await response.json()
+				setError(errorData.error || 'Произошла ошибка при отправке')
+			}
+		} catch (error) {
+			console.error('Error submitting form:', error)
+			setError('Ошибка сети. Попробуйте еще раз.')
+		} finally {
+			setIsLoading(false)
 		}
-	}, [scrollY])
-
-	const nextReviewSlide = () => {
-		const maxSlides = isMobile ? totalSlidesMobile : totalSlides
-		setCurrentReviewSlide(prev => (prev + 1) % maxSlides)
 	}
 
-	const prevReviewSlide = () => {
-		const maxSlides = isMobile ? totalSlidesMobile : totalSlides
-		setCurrentReviewSlide(prev => (prev - 1 + maxSlides) % maxSlides)
-	}
-
-	const getReviewsForSlide = (slideIndex: number) => {
-		const perSlide = isMobile ? reviewsPerSlideMobile : reviewsPerSlide
-		const startIndex = slideIndex * perSlide
-		const reviews = []
-		for (let i = 1; i <= totalReviews; i++) {
-			reviews.push(i)
+	const getInputPlaceholder = () => {
+		switch (selectedMethod) {
+			case 'whatsapp':
+				return '+7 999 999-99-99'
+			case 'telegram':
+				return '@username или +7 999 999-99-99'
+			case 'phone':
+				return '+7 999 999-99-99'
+			default:
+				return 'Выберите способ связи'
 		}
-		return reviews.slice(startIndex, startIndex + perSlide)
 	}
 
-	// Different widths for reviews (in percentages)
-	const reviewWidths = [
-		'w-[280px]', // All reviews same width on desktop
-		'w-[280px]',
-		'w-[280px]',
-		'w-[280px]',
-		'w-[280px]',
-		'w-[280px]',
-		'w-[280px]',
-		'w-[280px]',
-		'w-[280px]',
-		'w-[280px]',
-	]
+	const getInputLabel = () => {
+		switch (selectedMethod) {
+			case 'whatsapp':
+				return 'Ваш номер WhatsApp'
+			case 'telegram':
+				return 'Ваш Telegram'
+			case 'phone':
+				return 'Ваш номер телефона'
+			default:
+				return 'Контактная информация'
+		}
+	}
+
+	const validateContact = (contact: string, method: string) => {
+		if (!contact.trim()) return 'Поле не может быть пустым'
+
+		if (method === 'phone' || method === 'whatsapp') {
+			const digitsOnly = contact.replace(/\D/g, '')
+			if (digitsOnly.length !== 11 || !digitsOnly.startsWith('7')) {
+				return 'Введите корректный номер телефона'
+			}
+		}
+
+		if (method === 'telegram') {
+			const telegramRegex =
+				/^(@[a-zA-Z0-9_]{5,32}|(\+7|7)\s?\d{3}\s?\d{3}-?\d{2}-?\d{2})$/
+			if (!telegramRegex.test(contact.replace(/[\s\-]/g, ''))) {
+				return 'Введите @username или номер телефона'
+			}
+		}
+
+		return null
+	}
+
+	const formatPhoneNumber = (value: string) => {
+		const digits = value.replace(/\D/g, '')
+		let formattedDigits = digits
+		if (digits.startsWith('8')) {
+			formattedDigits = '7' + digits.slice(1)
+		}
+		if (formattedDigits && !formattedDigits.startsWith('7')) {
+			formattedDigits = '7' + formattedDigits
+		}
+		formattedDigits = formattedDigits.slice(0, 11)
+
+		if (formattedDigits.length >= 1) {
+			let formatted = '+7'
+			if (formattedDigits.length > 1) {
+				formatted += ' ' + formattedDigits.slice(1, 4)
+			}
+			if (formattedDigits.length > 4) {
+				formatted += ' ' + formattedDigits.slice(4, 7)
+			}
+			if (formattedDigits.length > 7) {
+				formatted += '-' + formattedDigits.slice(7, 9)
+			}
+			if (formattedDigits.length > 9) {
+				formatted += '-' + formattedDigits.slice(9, 11)
+			}
+			return formatted
+		}
+
+		return '+7 '
+	}
+
+	const handleContactChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		let value = e.target.value
+
+		if (selectedMethod === 'phone' || selectedMethod === 'whatsapp') {
+			value = formatPhoneNumber(value)
+		}
+
+		setContactInfo(value)
+		if (error) setError('')
+	}
+
+	const renderInput = () => {
+		return (
+			<input
+				type='text'
+				value={contactInfo}
+				onChange={handleContactChange}
+				placeholder={getInputPlaceholder()}
+				className='w-full px-6 md:px-8 py-4 md:py-5 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl md:rounded-3xl text-white placeholder-white/50 focus:border-white/40 focus:outline-none transition-all text-sm md:text-base'
+				required
+				disabled={isLoading}
+				ref={inputRef}
+			/>
+		)
+	}
 
 	return (
 		<>
@@ -200,9 +284,52 @@ export default function Home() {
 				style={{
 					WebkitOverflowScrolling: 'touch',
 					overflowY: 'auto',
-					height: '100vh',
 				}}
 			>
+				{/* Confetti Animation */}
+				{showConfetti && (
+					<div className='fixed inset-0 z-50 pointer-events-none'>
+						{[...Array(50)].map((_, i) => (
+							<motion.div
+								key={i}
+								initial={{
+									opacity: 1,
+									y: -100,
+									x:
+										typeof window !== 'undefined'
+											? Math.random() * window.innerWidth
+											: Math.random() * 1200,
+									rotate: 0,
+									scale: 1,
+								}}
+								animate={{
+									opacity: 0,
+									y:
+										typeof window !== 'undefined'
+											? window.innerHeight + 100
+											: 800,
+									rotate: 360,
+									scale: 0,
+								}}
+								transition={{
+									duration: 3,
+									delay: Math.random() * 0.5,
+									ease: 'easeOut',
+								}}
+								className={`absolute w-3 h-3 ${
+									[
+										'bg-yellow-400',
+										'bg-pink-400',
+										'bg-blue-400',
+										'bg-green-400',
+										'bg-purple-400',
+									][i % 5]
+								} rounded-full`}
+							/>
+						))}
+					</div>
+				)}
+
 				<Header />
 
 				{/* Hero Section */}
@@ -210,518 +337,448 @@ export default function Home() {
 					initial={{ opacity: 0 }}
 					animate={{ opacity: 1 }}
 					transition={{ duration: 1, delay: 0.5 }}
-					className='relative pt-56 md:pt-48 pb-20 px-4 overflow-hidden'
+					className='relative h-screen flex items-center justify-center px-4 overflow-hidden'
 				>
+					{/* Background Image */}
 					<div className='absolute inset-0'>
+						<Image
+							src='/assets/case1_ph2.webp'
+							alt='Дизайн интерьера квартиры в Казани - современный ремонт от REHOME'
+							fill
+							className='object-cover'
+							priority
+						/>
+						<div className='absolute inset-0 bg-black/50' />
+					</div>
+
+					{/* Content */}
+					<div className='relative z-10 text-center max-w-6xl mx-auto'>
 						<motion.div
-							initial={{ opacity: 0, scale: 1.05 }}
-							animate={{ opacity: 1, scale: 1 }}
-							transition={{ duration: 2, ease: [0.25, 0.46, 0.45, 0.94] }}
-							className='relative w-full h-full'
+							initial={{ opacity: 0, y: 40 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.8, delay: 0.8 }}
+							className='mb-8'
 						>
-							<Image
-								src='/assets/case1_ph2.webp'
-								alt='Дизайн интерьера квартиры в Казани - современный ремонт от REHOME'
-								fill
-								className='object-cover scale-110'
-								priority
-							/>
-						</motion.div>
-					</div>
-
-					{/* Liquid Glass Overlay */}
-					<div className='absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/50 z-10' />
-
-					{/* Main Content Glass Container */}
-					<motion.div
-						initial={{ opacity: 0, y: 60, scale: 0.95 }}
-						animate={{ opacity: 1, y: 0, scale: 1 }}
-						transition={{
-							duration: 1.5,
-							delay: 0.3,
-							ease: [0.25, 0.46, 0.45, 0.94],
-						}}
-						className='relative z-20 text-center max-w-5xl mx-auto px-4 md:px-8 mt-8 md:mt-0'
-					>
-						{/* Glass Card Container */}
-						<motion.div
-							style={{ y: scrollParallax }}
-							className='bg-white/5 backdrop-blur-3xl rounded-[2rem] md:rounded-[3rem] border border-white/20 shadow-[0_8px_32px_rgba(255,255,255,0.1)] p-6 md:p-12 lg:p-16 xl:p-20 relative overflow-hidden'
-						>
-							{/* Inner Glass Reflection */}
-							<div className='absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent rounded-[2rem] md:rounded-[3rem] pointer-events-none' />
-
-							{/* Content */}
-							<div className='relative z-10'>
-								<motion.div
-									initial={{ opacity: 0, y: 30 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.8, delay: 0.8 }}
-									className='mb-4 md:mb-6'
-								>
-									<span className='text-xs md:text-sm text-white/70 font-light tracking-[0.2em] uppercase'>
-										Студия дизайна интерьеров • Казань • 2025
-									</span>
-								</motion.div>
-
-								<motion.h1
-									initial={{ opacity: 0, y: 40 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ duration: 1, delay: 1 }}
-									className='text-4xl md:text-7xl lg:text-8xl xl:text-9xl font-thin mb-6 md:mb-8 tracking-[-0.02em] leading-[0.9] text-white'
-									style={{
-										textShadow:
-											'0 0 40px rgba(255,255,255,0.3), 0 0 80px rgba(255,255,255,0.1)',
-									}}
-								>
-									REHOME
-								</motion.h1>
-
-								<motion.div
-									initial={{ opacity: 0, y: 30 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.8, delay: 1.3 }}
-									className='mb-8 md:mb-12'
-								>
-									<h2 className='text-base md:text-lg lg:text-xl xl:text-2xl text-white/90 mb-3 md:mb-4 font-light max-w-3xl mx-auto leading-relaxed px-4'>
-										Дизайн интерьера Казань - не завершаем проект, пока всё не
-										будет на 100% как вы мечтали
-									</h2>
-									<p className='text-sm md:text-base text-white/70 max-w-2xl mx-auto font-light leading-relaxed px-4'>
-										Профессиональный ремонт квартир в Казани под ключ. Мы
-										доводим каждую деталь до совершенства, чтобы ваш интерьер
-										полностью соответствовал вашим ожиданиям и даже превосходил
-										их.
-									</p>
-								</motion.div>
-
-								<motion.div
-									initial={{ opacity: 0, y: 30 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.8, delay: 1.6 }}
-									className='flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center'
-								>
-									<motion.a
-										href='/contact'
-										whileHover={{ scale: 1.02, y: -2 }}
-										whileTap={{ scale: 0.98 }}
-										transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-										className='bg-white text-black px-6 md:px-8 py-3 md:py-4 rounded-full font-medium text-sm md:text-base hover:bg-gray-100 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.3)] w-full sm:w-auto text-center'
-									>
-										Заказать дизайн-проект
-									</motion.a>
-									<motion.a
-										href='/portfolio'
-										whileHover={{ scale: 1.02, y: -2 }}
-										whileTap={{ scale: 0.98 }}
-										transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-										className='bg-white/10 backdrop-blur-xl text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-light text-sm md:text-base border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all w-full sm:w-auto text-center'
-									>
-										Портфолио работ в Казани
-									</motion.a>
-								</motion.div>
-							</div>
-						</motion.div>
-					</motion.div>
-				</motion.section>
-
-				{/* Combined About & Services Section */}
-				<section className='py-16 md:py-24 lg:py-32 relative overflow-hidden'>
-					{/* Enhanced gradient background */}
-					<div className='absolute inset-0 bg-gradient-to-br from-gray-200 via-slate-300 to-gray-200'></div>
-
-					{/* Subtle mesh pattern overlay */}
-					<div
-						className='absolute inset-0 opacity-[0.02]'
-						style={{
-							backgroundImage: `radial-gradient(circle at 2px 2px, rgba(0,0,0,0.15) 1px, transparent 0)`,
-							backgroundSize: '32px 32px',
-						}}
-					></div>
-
-					{/* Enhanced radial gradients */}
-					<div className='absolute top-0 left-0 w-96 h-96 opacity-20'>
-						<div className='w-full h-full bg-gradient-radial from-blue-400/30 via-blue-300/15 to-transparent rounded-full blur-3xl'></div>
-					</div>
-
-					<div className='absolute top-1/4 right-0 w-80 h-80 opacity-15'>
-						<div className='w-full h-full bg-gradient-radial from-purple-400/35 via-purple-300/15 to-transparent rounded-full blur-3xl'></div>
-					</div>
-
-					<div className='absolute bottom-0 left-1/3 w-72 h-72 opacity-15'>
-						<div className='w-full h-full bg-gradient-radial from-emerald-400/30 via-emerald-300/15 to-transparent rounded-full blur-3xl'></div>
-					</div>
-
-					<div className='absolute bottom-1/4 right-1/4 w-64 h-64 opacity-15'>
-						<div className='w-full h-full bg-gradient-radial from-rose-400/30 via-rose-300/15 to-transparent rounded-full blur-3xl'></div>
-					</div>
-
-					<div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 opacity-10'>
-						<div className='w-full h-full bg-gradient-radial from-indigo-400/30 via-indigo-300/15 to-transparent rounded-full blur-3xl'></div>
-					</div>
-
-					<div className='absolute top-10 right-1/3 w-56 h-56 opacity-15'>
-						<div className='w-full h-full bg-gradient-radial from-cyan-400/30 via-cyan-300/15 to-transparent rounded-full blur-3xl'></div>
-					</div>
-
-					{/* Subtle geometric shapes */}
-					<div className='absolute top-20 left-20 w-32 h-32 opacity-5'>
-						<div className='w-full h-full bg-gradient-to-br from-gray-500 to-gray-600 rounded-full blur-xl'></div>
-					</div>
-
-					<div className='absolute bottom-32 right-20 w-24 h-24 opacity-5'>
-						<div className='w-full h-full bg-gradient-to-tl from-gray-500 to-gray-600 rounded-lg rotate-45 blur-xl'></div>
-					</div>
-
-					<div className='container mx-auto px-4 md:px-8 relative z-10'>
-						{/* Philosophy Section */}
-						<motion.div
-							ref={ref}
-							variants={stagger}
-							initial='initial'
-							animate={isInView ? 'animate' : 'initial'}
-							className='max-w-6xl mx-auto mb-20 md:mb-32'
-						>
-							<motion.div
-								variants={fadeInUp}
-								className='text-center mb-12 md:mb-20'
-							>
-								<span className='text-xs md:text-sm text-gray-700 font-light tracking-[0.2em] uppercase mb-4 block'>
-									Студия дизайна интерьера в Казани
-								</span>
-								<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-gray-900 tracking-[-0.02em]'>
-									Дизайн квартир Казань - совершенство в каждой детали
-								</h2>
-								<p className='text-base md:text-lg text-gray-800 max-w-3xl mx-auto leading-relaxed font-light'>
-									Мы верим, что идеальный ремонт в Казани создается из тщательно
-									продуманных деталей. Наша команда дизайнеров интерьера не
-									останавливается, пока каждый элемент интерьера не будет
-									соответствовать вашему видению на 100%.
-								</p>
-							</motion.div>
-
-							<div className='grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8 lg:gap-12'>
-								<motion.div
-									variants={fadeInUp}
-									className='bg-white/60 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-gray-300/50 hover:border-gray-400/60 hover:shadow-xl transition-all duration-300 group'
-								>
-									<div className='relative overflow-hidden rounded-2xl mb-6 md:mb-8'>
-										<Image
-											src='/assets/case1_ph3.webp'
-											alt='Индивидуальный дизайн интерьера квартиры в Казани'
-											width={500}
-											height={300}
-											className='w-full h-48 md:h-56 lg:h-64 object-cover group-hover:scale-105 transition-transform duration-700'
-										/>
-										<div className='absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-									</div>
-									<h3 className='text-xl md:text-2xl lg:text-3xl font-light mb-4 md:mb-6 text-gray-900'>
-										Индивидуальный подход к дизайну
-									</h3>
-									<p className='text-base md:text-lg text-gray-700 leading-relaxed font-light'>
-										Мы внимательно слушаем ваши пожелания и не останавливаемся,
-										пока не найдем идеальное решение для вашего дома в Казани.
-										Каждый дизайн-проект уникален, как и ваше представление об
-										идеальном жилье.
-									</p>
-								</motion.div>
-
-								<motion.div
-									variants={fadeInUp}
-									className='bg-white/60 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-gray-300/50 hover:border-gray-400/60 hover:shadow-xl transition-all duration-300 group'
-								>
-									<div className='relative overflow-hidden rounded-2xl mb-6 md:mb-8'>
-										<Image
-											src='/assets/case1_ph7.webp'
-											alt='Современный дизайн интерьера в Казани - ремонт под ключ'
-											width={500}
-											height={300}
-											className='w-full h-48 md:h-56 lg:h-64 object-cover group-hover:scale-105 transition-transform duration-700'
-										/>
-										<div className='absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
-									</div>
-									<h3 className='text-xl md:text-2xl lg:text-3xl font-light mb-4 md:mb-6 text-gray-900'>
-										Современные решения для Казани
-									</h3>
-									<p className='text-base md:text-lg text-gray-700 leading-relaxed font-light'>
-										Используем передовые технологии и материалы в ремонте
-										квартир, но никогда не жертвуем комфортом ради тренда. Мы
-										доводим до совершенства каждую деталь, чтобы вы были на 100%
-										довольны результатом.
-									</p>
-								</motion.div>
-							</div>
-						</motion.div>
-
-						{/* Process Section */}
-						<motion.div
-							initial={{ opacity: 0, y: 60 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.8 }}
-							viewport={{ once: true }}
-							className='text-center mb-12 md:mb-20'
-						>
-							<span className='text-xs md:text-sm text-gray-700 font-light tracking-[0.2em] uppercase mb-4 block'>
-								Как мы работаем в Казани
-							</span>
-							<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-gray-900 tracking-[-0.02em]'>
-								Ремонт под ключ Казань - путь к идеальному результату
-							</h2>
-							<p className='text-base md:text-lg text-gray-800 max-w-3xl mx-auto leading-relaxed font-light'>
-								Мы не завершаем работу над дизайн-проектом, пока вы не будете
-								полностью довольны каждым аспектом проекта
+							<h1 className='text-5xl md:text-7xl lg:text-8xl font-bold mb-6 text-white tracking-tight leading-tight'>
+								ПРЕВРАЩАЕМ ИДЕИ
+								<br />В РЕАЛЬНОСТЬ
+							</h1>
+							<p className='text-lg md:text-xl lg:text-2xl text-white/90 mb-8 font-light'>
+								Создаем интерьеры, которые меняют жизнь к лучшему
+								<br />
+								Ремонт и дизайн квартир в Казани
 							</p>
 						</motion.div>
 
-						<div className='relative max-w-5xl mx-auto'>
-							{/* Connecting line */}
-							<div className='hidden lg:block absolute top-20 left-1/2 transform -translate-x-1/2 w-full h-0.5 bg-gradient-to-r from-transparent via-gray-400/40 to-transparent'></div>
+						<motion.div
+							initial={{ opacity: 0, y: 30 }}
+							animate={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.8, delay: 1.2 }}
+						>
+							<motion.a
+								href='#contact'
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}
+								className='inline-block bg-white/10 backdrop-blur-xl text-white px-12 py-5 rounded-full font-medium text-lg border border-white/30 hover:bg-white/20 hover:border-white/50 transition-all'
+							>
+								Узнать стоимость проекта
+							</motion.a>
+						</motion.div>
+					</div>
+				</motion.section>
 
-							<div className='grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12'>
-								{[
-									{
-										number: '01',
-										title: 'Консультация и концепция дизайна',
-										description:
-											'Внимательно изучаем ваши пожелания по дизайну квартиры в Казани и создаем концепцию, которая на 100% отражает ваше видение. Работаем над ней, пока вы не будете полностью удовлетворены.',
-										duration: '1-2 недели',
-									},
-									{
-										number: '02',
-										title: 'Дизайн-проект с 3D визуализацией',
-										description:
-											'Разрабатываем детальный дизайн-проект вашей квартиры с 3D-визуализацией. Вносим любые корректировки, пока каждый элемент интерьера не будет соответствовать вашим ожиданиям на 100%.',
-										duration: '3-4 недели',
-									},
-									{
-										number: '03',
-										title: 'Ремонт и реализация в Казани',
-										description:
-											'Когда воплощаем дизайн-проект, контролируем каждую деталь ремонта. Проект считается завершенным только когда вы на 100% довольны результатом.',
-										duration: '2-6 месяцев',
-									},
-								].map((step, index) => (
-									<motion.div
-										key={index}
-										initial={{ opacity: 0, y: 40 }}
-										whileInView={{ opacity: 1, y: 0 }}
-										transition={{ duration: 0.6, delay: index * 0.2 }}
-										viewport={{ once: true }}
-										className='relative'
-									>
-										{/* Step number circle */}
-										<div className='relative mb-6 md:mb-8'>
-											<div className='w-16 h-16 md:w-20 md:h-20 bg-gradient-to-r from-white/80 to-white/60 border-2 border-gray-400/40 rounded-full flex items-center justify-center mx-auto shadow-lg backdrop-blur-xl'>
-												<span className='text-xl md:text-2xl font-light text-gray-900'>
-													{step.number}
-												</span>
-											</div>
-											{/* Connecting dots for mobile */}
-											{index < 2 && (
-												<div className='lg:hidden absolute top-full left-1/2 transform -translate-x-1/2 mt-4 mb-4'>
-													<div className='flex flex-col items-center space-y-2'>
-														<div className='w-1 h-1 bg-gray-400/60 rounded-full'></div>
-														<div className='w-1 h-1 bg-gray-400/60 rounded-full'></div>
-														<div className='w-1 h-1 bg-gray-400/60 rounded-full'></div>
-													</div>
-												</div>
-											)}
+				{/* Statistics Section */}
+				<section className='py-16 md:py-24 relative'>
+					<div className='container mx-auto px-4 md:px-8'>
+						<motion.div
+							initial={{ opacity: 0, y: 40 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.8 }}
+							viewport={{ once: true }}
+							className='text-center mb-16'
+						>
+							<h2 className='text-4xl md:text-5xl lg:text-6xl font-light mb-4 text-white'>
+								Наши достижения
+							</h2>
+							<p className='text-lg text-white/80 max-w-2xl mx-auto leading-relaxed font-light'>
+								Реальные цифры наших проектов
+							</p>
+						</motion.div>
+
+						<div className='grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8'>
+							{[
+								{
+									number: '1663',
+									label: 'м² отремонтировано',
+									delay: 0,
+									icon: '🏠',
+								},
+								{
+									number: '18',
+									label: 'завершенных проектов',
+									delay: 0.1,
+									icon: '✨',
+								},
+								{
+									number: '78М₽',
+									label: 'общий бюджет проектов',
+									delay: 0.2,
+									icon: '💰',
+								},
+							].map((stat, index) => (
+								<motion.div
+									key={index}
+									initial={{ opacity: 0, y: 40 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.8, delay: stat.delay }}
+									viewport={{ once: true }}
+									className='group'
+								>
+									<div className='relative overflow-hidden rounded-3xl md:rounded-[2rem] border border-white/10 p-6 md:p-8 transition-all duration-500 hover:scale-105 hover:border-white/30'>
+										{/* Прозрачный фон */}
+										<div className='absolute inset-0 bg-white/5 backdrop-blur-xl group-hover:bg-white/10 transition-all duration-500'></div>
+
+										{/* Контент */}
+										<div className='relative z-10 text-center'>
+											{/* Иконка */}
+											<motion.div
+												initial={{ scale: 0, rotate: -180 }}
+												whileInView={{ scale: 1, rotate: 0 }}
+												transition={{ duration: 0.6, delay: stat.delay + 0.1 }}
+												viewport={{ once: true }}
+												className='text-4xl md:text-5xl mb-4 group-hover:scale-110 transition-transform duration-300'
+											>
+												{stat.icon}
+											</motion.div>
+
+											{/* Число */}
+											<motion.div
+												initial={{ scale: 0.5, opacity: 0 }}
+												whileInView={{ scale: 1, opacity: 1 }}
+												transition={{ duration: 0.8, delay: stat.delay + 0.2 }}
+												viewport={{ once: true }}
+												className='text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-white group-hover:text-white/90 transition-all duration-500'
+											>
+												{stat.number}
+											</motion.div>
+
+											{/* Подпись */}
+											<motion.p
+												initial={{ opacity: 0 }}
+												whileInView={{ opacity: 1 }}
+												transition={{ duration: 0.6, delay: stat.delay + 0.4 }}
+												viewport={{ once: true }}
+												className='text-sm md:text-base text-white/80 font-light leading-relaxed group-hover:text-white/90 transition-colors duration-300'
+											>
+												{stat.label}
+											</motion.p>
 										</div>
 
-										{/* Content card */}
-										<div className='bg-white/60 backdrop-blur-xl rounded-3xl p-6 md:p-8 border border-gray-300/50 hover:border-gray-400/60 hover:shadow-xl transition-all duration-300 text-center'>
-											<h3 className='text-lg md:text-xl lg:text-2xl font-light mb-4 md:mb-6 text-gray-900'>
-												{step.title}
-											</h3>
-											<p className='text-sm md:text-base text-gray-700 leading-relaxed font-light mb-4 md:mb-6'>
-												{step.description}
-											</p>
-											<div className='inline-flex items-center justify-center bg-gray-200/80 backdrop-blur-sm rounded-full px-4 py-2 border border-gray-300/60'>
-												<span className='text-xs md:text-sm text-gray-800 font-medium'>
-													⏱️ {step.duration}
-												</span>
-											</div>
-										</div>
-									</motion.div>
-								))}
-							</div>
+										{/* Декоративные элементы */}
+										<div className='absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-white/5 to-transparent rounded-full translate-x-10 -translate-y-10 group-hover:translate-x-8 group-hover:-translate-y-8 transition-transform duration-500'></div>
+										<div className='absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-white/3 to-transparent rounded-full -translate-x-8 translate-y-8 group-hover:-translate-x-6 group-hover:translate-y-6 transition-transform duration-500'></div>
+									</div>
+								</motion.div>
+							))}
 						</div>
 					</div>
 				</section>
 
-				{/* Children Section */}
-				<section className='py-16 md:py-24 lg:py-32 relative overflow-hidden'>
-					{/* Background */}
-					<div className='absolute inset-0 bg-gradient-to-br from-pink-900/20 via-purple-900/10 to-blue-900/20' />
+				{/* Services Section */}
+				<section className='py-16 md:py-24 relative'>
+					<div className='container mx-auto px-4 md:px-8'>
+						<motion.div
+							initial={{ opacity: 0, y: 40 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.8 }}
+							viewport={{ once: true }}
+							className='text-center mb-16'
+						>
+							<h2 className='text-4xl md:text-5xl lg:text-6xl font-light mb-8 text-white'>
+								Наши услуги
+							</h2>
+							<p className='text-lg text-white/80 max-w-3xl mx-auto leading-relaxed font-light'>
+								Полный цикл работ от идеи до реализации
+							</p>
+						</motion.div>
 
-					<div className='container mx-auto px-4 md:px-8 relative z-10'>
-						<div className='grid lg:grid-cols-2 gap-12 md:gap-16 items-center'>
+						<div className='grid md:grid-cols-3 gap-8 max-w-6xl mx-auto'>
+							{[
+								{
+									title: '3D-визуализация',
+									description:
+										'Создание трехмерных моделей будущих интерьеров для наглядной демонстрации клиентам и облегчения процесса согласования проекта.',
+									image: '/assets/case7_ph15.webp',
+								},
+								{
+									title: 'Авторский надзор',
+									description:
+										'Контроль за выполнением работ на объекте, внесение корректировок и решение возникающих вопросов для обеспечения высокого качества результата.',
+									image: '/assets/case4_ph8.webp',
+								},
+								{
+									title: 'Сервис после сдачи проекта',
+									description:
+										'Предоставление консультаций и поддержки после завершения проекта, помощь в уходе за интерьером и поддержание его в первоначальном виде.',
+									image: '/assets/case1_ph12.webp',
+								},
+							].map((service, index) => (
+								<motion.div
+									key={index}
+									initial={{ opacity: 0, y: 40 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.6, delay: index * 0.2 }}
+									viewport={{ once: true }}
+									className='bg-white/5 backdrop-blur-xl rounded-[2rem] overflow-hidden border border-white/10 hover:border-white/20 transition-all group'
+								>
+									<div className='relative h-64 overflow-hidden'>
+										<Image
+											src={service.image}
+											alt={service.title}
+											fill
+											className='object-cover group-hover:scale-105 transition-transform duration-700'
+										/>
+										<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent' />
+									</div>
+									<div className='p-6 md:p-8'>
+										<h3 className='text-xl md:text-2xl font-light mb-4 text-white'>
+											{service.title}
+										</h3>
+										<p className='text-white/80 font-light leading-relaxed'>
+											{service.description}
+										</p>
+									</div>
+								</motion.div>
+							))}
+						</div>
+					</div>
+				</section>
+
+				{/* About Section */}
+				<section className='py-16 md:py-24 relative'>
+					<div className='container mx-auto px-4 md:px-8'>
+						<div className='grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto'>
 							<motion.div
-								initial={{ opacity: 0, x: -60 }}
+								initial={{ opacity: 0, x: -40 }}
 								whileInView={{ opacity: 1, x: 0 }}
 								transition={{ duration: 0.8 }}
 								viewport={{ once: true }}
+								className='relative'
 							>
-								<span className='text-xs md:text-sm text-white/60 font-light tracking-[0.2em] uppercase mb-4 block'>
-									Дизайн детских комнат в Казани
-								</span>
-								<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
-									Дизайн для всей семьи - 100% счастья каждого
-								</h2>
-								<p className='text-base md:text-lg text-white/80 mb-6 md:mb-8 leading-relaxed font-light'>
-									Мы создаем интерьеры в Казани, где каждый член семьи найдет
-									идеальное место для себя. Детские комнаты продумываются до
-									мельчайших деталей, чтобы полностью соответствовать
-									потребностям и мечтам вашего ребенка.
-								</p>
-								<p className='text-base md:text-lg text-white/70 mb-8 leading-relaxed font-light'>
-									Наша работа над дизайном квартиры завершена только тогда,
-									когда каждый член семьи на 100% доволен своим пространством.
-									Мы не останавливаемся на компромиссах.
-								</p>
-								<motion.a
-									href='/portfolio'
-									whileHover={{ scale: 1.02, y: -2 }}
-									whileTap={{ scale: 0.98 }}
-									transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-									className='inline-block bg-white/10 backdrop-blur-xl text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-light text-sm md:text-base border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all'
-								>
-									Детские проекты в Казани
-								</motion.a>
+								<div className='relative overflow-hidden rounded-3xl'>
+									<Image
+										src='/employee/1.jpg'
+										alt='Команда REHOME - дизайнеры интерьера в Казани'
+										width={600}
+										height={400}
+										className='w-full h-auto object-cover'
+									/>
+								</div>
 							</motion.div>
 
 							<motion.div
-								initial={{ opacity: 0, x: 60 }}
+								initial={{ opacity: 0, x: 40 }}
 								whileInView={{ opacity: 1, x: 0 }}
 								transition={{ duration: 0.8, delay: 0.2 }}
 								viewport={{ once: true }}
-								className='relative'
 							>
-								<div className='relative overflow-hidden rounded-2xl md:rounded-3xl'>
-									<Image
-										src='/assets/case2_ph5.webp'
-										alt='Дизайн детской комнаты для девочки в Казани - проект REHOME'
-										width={800}
-										height={600}
-										className='w-full h-72 md:h-84 lg:h-100 object-cover'
-									/>
-									<div className='absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent' />
-									<div className='absolute bottom-6 left-6 right-6'>
-										<div className='bg-white/20 backdrop-blur-xl rounded-xl p-4 border border-white/30'>
-											<h3 className='text-lg md:text-xl font-light mb-2 text-white'>
-												Детская для принцессы в Казани
-											</h3>
-											<p className='text-sm text-white/80'>
-												Волшебное пространство для маленькой мечтательницы
-											</p>
-										</div>
-									</div>
-								</div>
+								<h2 className='text-4xl md:text-5xl lg:text-6xl font-light mb-8 text-white'>
+									О НАС
+								</h2>
+								<p className='text-lg text-white/90 mb-6 leading-relaxed font-light'>
+									Проектируем и воплощаем жилые и коммерческие интерьеры с 2020
+									года. За это время мы собрали крепкую команду профессионалов и
+									больших мастеров своего дела, на своем опыте построили систему
+									работы с объектами и полностью оцифровали взаимодействие с
+									клиентами
+								</p>
+								<p className='text-lg text-white/90 mb-6 leading-relaxed font-light'>
+									— подробнее о нашем подходе
+								</p>
+								<p className='text-base text-white/80 mb-8 leading-relaxed font-light'>
+									Наш продукт — стильные интерьеры и качественная реализация в
+									срок под ваш бюджет
+								</p>
+								<motion.a
+									href='/about'
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+									className='inline-block bg-white/10 backdrop-blur-xl text-white px-10 py-4 rounded-full font-medium border border-white/30 hover:bg-white/20 transition-all'
+								>
+									Подробнее о команде
+								</motion.a>
 							</motion.div>
 						</div>
 					</div>
 				</section>
 
-				{/* Portfolio Preview Section */}
-				<section className='py-16 md:py-24 lg:py-32 relative overflow-hidden'>
-					{/* Background */}
-					<div className='absolute inset-0 bg-gradient-to-br from-gray-900 via-slate-800 to-neutral-900' />
-
-					<div className='container mx-auto px-4 md:px-8 relative z-10'>
+				{/* Portfolio Section */}
+				<section className='py-16 md:py-24 relative'>
+					<div className='container mx-auto px-4 md:px-8'>
 						<motion.div
-							initial={{ opacity: 0, y: 60 }}
+							initial={{ opacity: 0, y: 40 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.8 }}
 							viewport={{ once: true }}
-							className='text-center mb-12 md:mb-20'
+							className='text-center mb-12 md:mb-16'
 						>
-							<span className='text-xs md:text-sm text-white/60 font-light tracking-[0.2em] uppercase mb-4 block'>
-								Портфолио дизайна в Казани
-							</span>
-							<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
-								Реализованные проекты в Казани - доведенные до совершенства
+							<h2 className='text-3xl md:text-5xl lg:text-6xl font-light mb-4 md:mb-8 text-white leading-tight'>
+								Портфолио
 							</h2>
-							<p className='text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed font-light'>
-								Каждая работа в нашем портфолио — результат кропотливого
-								внимания к деталям и стремления к 100% удовлетворенности клиента
-								из Казани
+							<p className='text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed font-light px-4'>
+								Реализованные проекты в Москве
 							</p>
 						</motion.div>
 
-						<div className='grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16 max-w-6xl mx-auto'>
+						{/* Featured Project with experience block */}
+						<div className='relative mb-12 md:mb-16'>
+							<div className='grid md:grid-cols-3 gap-4 md:gap-6 h-[400px] md:h-[600px]'>
+								{/* Large image */}
+								<div className='md:col-span-1 relative rounded-[2rem] overflow-hidden'>
+									<Image
+										src='/assets/case1_ph1.webp'
+										alt='Современная квартира в Казани'
+										fill
+										className='object-cover'
+									/>
+								</div>
+
+								{/* Grid of smaller images */}
+								<div className='md:col-span-2 grid grid-cols-2 gap-6'>
+									<div className='relative rounded-[2rem] overflow-hidden'>
+										<Image
+											src='/assets/case1_ph3.webp'
+											alt='Дизайн гостиной'
+											fill
+											className='object-cover'
+										/>
+									</div>
+									<div className='relative rounded-[2rem] overflow-hidden'>
+										<Image
+											src='/assets/case1_ph7.webp'
+											alt='Дизайн кухни'
+											fill
+											className='object-cover'
+										/>
+									</div>
+									<div className='relative rounded-[2rem] overflow-hidden'>
+										<Image
+											src='/assets/case1_ph12.webp'
+											alt='Дизайн спальни'
+											fill
+											className='object-cover'
+										/>
+									</div>
+									{/* Experience block */}
+									<div className='relative rounded-[2rem] overflow-hidden bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 flex items-center justify-center p-4 md:p-6'>
+										<div className='text-center'>
+											<h3 className='text-xl md:text-2xl lg:text-3xl font-bold text-white mb-3 md:mb-4 leading-tight'>
+												ИМЕЕМ
+												<br />
+												БОЛЬШОЙ ОПЫТ
+											</h3>
+											<p className='text-xs md:text-sm text-white/80 mb-3 md:mb-4 font-light leading-relaxed'>
+												В ДИЗАЙНЕ ИНТЕРЬЕРОВ
+												<br />И РЕМОНТЕ КВАРТИР
+											</p>
+											<div className='text-xs text-white/60 font-light'>
+												REHOME STUDIO
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						{/* Portfolio Grid - 4 in a row */}
+						<div className='grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-20 lg:mb-40'>
 							{[
-								{
-									id: 1,
-									image: '/assets/case1_ph2.webp',
-									title: 'Современная квартира "Элегант" в Казани',
-									area: '95 м²',
-									description:
-										'Минималистичный дизайн интерьера с акцентом на функциональность',
-									photos: 17,
-								},
 								{
 									id: 2,
 									image: '/assets/case2_ph1.webp',
-									title: 'Детские комнаты "Семейное счастье"',
-									area: '78 м²',
-									description:
-										'Яркие и безопасные пространства для детей в Казани',
-									photos: 6,
+									title: 'Детские комнаты',
+								},
+								{
+									id: 3,
+									image: '/assets/case3_ph1.webp',
+									title: 'Японский стиль',
 								},
 								{
 									id: 4,
 									image: '/assets/case4_ph1.webp',
-									title: 'Квартира "Мировое путешествие"',
-									area: '120 м²',
-									description: 'Яркие цвета разных континентов в одном доме',
-									photos: 14,
+									title: 'Яркие интерьеры',
+								},
+								{
+									id: 5,
+									image: '/assets/case5_ph1.webp',
+									title: 'Современная классика',
+								},
+								{ id: 7, image: '/assets/case7_ph1.webp', title: 'Минимализм' },
+								{
+									id: 8,
+									image: '/assets/case8_ph1.webp',
+									title: 'Джапанди стиль',
+								},
+								{
+									id: 9,
+									image: '/assets/case9_ph1.webp',
+									title: 'Эко-минимализм',
+								},
+								{
+									id: 10,
+									image: '/assets/case10_ph1.webp',
+									title: 'Природные акценты',
+								},
+								{
+									id: 11,
+									image: '/assets/case11_ph1.webp',
+									title: 'Лофт стиль',
+								},
+								{
+									id: 12,
+									image: '/assets/case12_ph1.webp',
+									title: 'Скандинавский минимализм',
+								},
+								{
+									id: 13,
+									image: '/assets/case13_ph1.webp',
+									title: 'Современная классика',
+								},
+								{
+									id: 14,
+									image: '/assets/case14_ph1.webp',
+									title: 'Элегантный модерн',
 								},
 							].map((project, index) => (
 								<motion.div
 									key={project.id}
 									initial={{ opacity: 0, y: 40 }}
 									whileInView={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.6, delay: index * 0.2 }}
+									transition={{ duration: 0.6, delay: index * 0.1 }}
 									viewport={{ once: true }}
-									whileHover={{ y: -10, scale: 1.02 }}
-									className='group cursor-pointer'
+									className={`group cursor-pointer ${
+										// На мобильных: первая колонка (четные индексы 0,2,4,6...) смещена вниз
+										index % 2 === 0 ? 'translate-y-1/2' : ''
+									} ${
+										// На десктопе: каждый второй элемент (1,3,5,7...) смещен вниз, отменяем мобильную логику
+										(index + 1) % 2 === 0
+											? 'lg:translate-y-1/2'
+											: 'lg:translate-y-0'
+									}`}
 								>
 									<Link href={`/portfolio/${project.id}`}>
-										<div className='relative overflow-hidden rounded-2xl md:rounded-3xl mb-4 md:mb-6'>
+										<div className='relative overflow-hidden rounded-3xl md:rounded-[2rem] aspect-square'>
 											<Image
 												src={project.image}
-												alt={`${project.title} - дизайн интерьера в Казани от REHOME`}
-												width={600}
-												height={450}
-												className='w-full h-64 md:h-80 lg:h-96 object-cover transition-transform duration-700 group-hover:scale-110'
+												alt={project.title}
+												fill
+												className='object-cover group-hover:scale-105 transition-transform duration-700'
 											/>
-											<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500' />
-
-											{/* Photo count badge */}
-											<div className='absolute top-4 right-4 bg-black/60 backdrop-blur-sm rounded-full px-3 py-1'>
-												<span className='text-xs font-medium text-white'>
-													📸 {project.photos} фото
-												</span>
-											</div>
-
-											{/* Hover overlay with description */}
-											<div className='absolute inset-0 flex items-end p-6 opacity-0 group-hover:opacity-100 transition-all duration-500'>
-												<div className='bg-white/10 backdrop-blur-xl rounded-xl p-4 border border-white/20 w-full'>
-													<p className='text-sm text-white/90 leading-relaxed'>
-														{project.description}
-													</p>
-												</div>
-											</div>
-										</div>
-										<div className='bg-white/5 backdrop-blur-xl rounded-xl md:rounded-2xl p-4 md:p-6 border border-white/10 group-hover:border-white/20 transition-all'>
-											<h3 className='text-lg md:text-xl font-light mb-2 text-white'>
-												{project.title}
-											</h3>
-											<p className='text-sm text-white/70 mb-3'>
-												{project.area}
-											</p>
-											<div className='flex items-center text-xs text-white/60'>
-												<span>Посмотреть проект →</span>
+											<div className='absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300' />
+											<div className='absolute bottom-3 left-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
+												<h3 className='text-white font-medium text-sm md:text-base'>
+													{project.title}
+												</h3>
 											</div>
 										</div>
 									</Link>
@@ -734,243 +791,255 @@ export default function Home() {
 							whileInView={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.8 }}
 							viewport={{ once: true }}
-							className='text-center'
+							className='text-center mt-[276px]'
 						>
 							<motion.a
 								href='/portfolio'
-								whileHover={{ scale: 1.05, y: -3 }}
+								whileHover={{ scale: 1.05 }}
 								whileTap={{ scale: 0.95 }}
-								transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-								className='inline-flex items-center bg-gradient-to-r from-white/15 to-white/10 backdrop-blur-xl text-white px-8 md:px-10 py-4 md:py-5 rounded-full font-medium text-base md:text-lg border border-white/30 hover:from-white/20 hover:to-white/15 hover:border-white/40 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.1)] group'
+								className='inline-block bg-white/10 backdrop-blur-xl text-white px-12 py-5 rounded-full font-medium border border-white/30 hover:bg-white/20 transition-all'
 							>
-								<span>Все проекты дизайна в Казани</span>
-								<svg
-									className='w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-										d='M17 8l4 4m0 0l-4 4m4-4H3'
-									/>
-								</svg>
+								Все проекты
 							</motion.a>
 						</motion.div>
 					</div>
 				</section>
 
-				{/* Reviews Section */}
-				<section
-					id='reviews'
-					className='py-16 md:py-24 lg:py-32 relative overflow-hidden'
-				>
-					{/* Background */}
-					<div className='absolute inset-0 bg-gradient-to-br from-slate-900 via-gray-900 to-neutral-900' />
-
-					<div className='container mx-auto px-4 md:px-8 relative z-10'>
+				{/* Contact Section */}
+				<section id='contact' className='py-16 md:py-24 relative'>
+					<div className='container mx-auto px-4 md:px-8'>
 						<motion.div
-							initial={{ opacity: 0, y: 60 }}
+							initial={{ opacity: 0, y: 40 }}
 							whileInView={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.8 }}
 							viewport={{ once: true }}
-							className='text-center mb-12 md:mb-20'
+							className='text-center mb-16'
 						>
-							<span className='text-xs md:text-sm text-white/60 font-light tracking-[0.2em] uppercase mb-4 block'>
-								Отзывы о дизайне интерьера в Казани
-							</span>
-							<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
-								Что говорят наши клиенты из Казани
+							<h2 className='text-4xl md:text-5xl lg:text-6xl font-light mb-8 text-white'>
+								Обсудим ваш проект
 							</h2>
-							<p className='text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed font-light'>
-								Каждый отзыв — это подтверждение нашего стремления к
-								совершенству в дизайне интерьера
+							<p className='text-lg text-white/80 max-w-3xl mx-auto leading-relaxed font-light'>
+								Оставьте заявку и мы свяжемся с вами в течение часа
 							</p>
 						</motion.div>
 
-						<div className='relative max-w-7xl mx-auto'>
-							{/* Reviews Slider */}
-							<div className='overflow-hidden'>
-								<motion.div
-									className='flex transition-transform duration-500 ease-in-out'
-									style={{
-										transform: `translateX(-${currentReviewSlide * 100}%)`,
-									}}
-								>
-									{Array.from({
-										length: isMobile ? totalSlidesMobile : totalSlides,
-									}).map((_, slideIndex) => (
-										<div key={slideIndex} className='w-full flex-shrink-0'>
-											<div
-												className={`flex ${
-													isMobile ? 'justify-center' : 'justify-center'
-												} gap-6 md:gap-8 px-4`}
-											>
-												{getReviewsForSlide(slideIndex).map(reviewNumber => (
-													<motion.div
-														key={reviewNumber}
-														initial={{ opacity: 0, y: 40 }}
-														whileInView={{ opacity: 1, y: 0 }}
-														transition={{
-															duration: 0.6,
-															delay:
-																((reviewNumber - 1) % (isMobile ? 1 : 3)) * 0.2,
-														}}
-														viewport={{ once: true }}
-														className={`${
-															isMobile
-																? 'w-[280px]'
-																: reviewWidths[reviewNumber - 1]
-														} group cursor-pointer flex-shrink-0`}
-														onClick={() => setSelectedReview(reviewNumber)}
+						<div className='grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto'>
+							{/* Contact Form */}
+							<motion.div
+								initial={{ opacity: 0, x: -40 }}
+								whileInView={{ opacity: 1, x: 0 }}
+								transition={{ duration: 0.8 }}
+								viewport={{ once: true }}
+								className='bg-white/5 backdrop-blur-3xl rounded-[2rem] border border-white/20 p-8 shadow-[0_8px_32px_rgba(255,255,255,0.1)]'
+							>
+								{isSubmitted ? (
+									<motion.div
+										initial={{ opacity: 0, scale: 0.8 }}
+										animate={{ opacity: 1, scale: 1 }}
+										className='text-center py-8'
+									>
+										<div className='w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6'>
+											<span className='text-2xl'>✅</span>
+										</div>
+										<h3 className='text-xl font-light mb-4 text-white'>
+											Спасибо за обращение!
+										</h3>
+										<p className='text-white/70 text-sm'>
+											Мы получили вашу заявку и свяжемся с вами в ближайшее
+											время
+										</p>
+									</motion.div>
+								) : (
+									<form onSubmit={handleSubmit} className='space-y-6'>
+										<div>
+											<h3 className='text-xl font-light mb-6 text-white text-center'>
+												Как с вами связаться?
+											</h3>
+											<div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
+												{[
+													{
+														id: 'whatsapp',
+														label: 'WhatsApp',
+														icon: '📱',
+														color: 'from-green-500/20 to-green-600/20',
+													},
+													{
+														id: 'telegram',
+														label: 'Telegram',
+														icon: '✈️',
+														color: 'from-blue-500/20 to-blue-600/20',
+													},
+													{
+														id: 'phone',
+														label: 'Телефон',
+														icon: '📞',
+														color: 'from-purple-500/20 to-purple-600/20',
+													},
+												].map(method => (
+													<motion.button
+														key={method.id}
+														type='button'
+														onClick={() => setSelectedMethod(method.id)}
+														whileHover={{ scale: 1.02, y: -2 }}
+														whileTap={{ scale: 0.98 }}
+														className={`p-4 rounded-2xl border transition-all text-center ${
+															selectedMethod === method.id
+																? 'border-white/40 bg-gradient-to-br ' +
+																  method.color
+																: 'border-white/20 bg-white/5 hover:border-white/30'
+														}`}
 													>
-														<div className='relative w-full'>
-															<Image
-																src={`/assets/reviews/${reviewNumber}.jpg`}
-																alt={`Отзыв клиента ${reviewNumber} о дизайне интерьера в Казани - REHOME`}
-																width={1107}
-																height={0}
-																className='w-full h-auto object-cover group-hover:scale-105 transition-transform duration-700 rounded-2xl md:rounded-3xl'
-																style={{ height: 'auto' }}
-															/>
-															{/* Zoom icon */}
-															<div className='absolute top-4 right-4 bg-black/60 backdrop-blur-sm rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300'>
-																<svg
-																	className='w-4 h-4 text-white'
-																	fill='none'
-																	stroke='currentColor'
-																	viewBox='0 0 24 24'
-																>
-																	<path
-																		strokeLinecap='round'
-																		strokeLinejoin='round'
-																		strokeWidth={2}
-																		d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7'
-																	/>
-																</svg>
-															</div>
+														<div className='text-2xl mb-2'>{method.icon}</div>
+														<div className='text-sm font-light text-white'>
+															{method.label}
 														</div>
-													</motion.div>
+													</motion.button>
 												))}
 											</div>
 										</div>
-									))}
-								</motion.div>
-							</div>
 
-							{/* Navigation Controls */}
-							<div className='flex justify-center items-center mt-8 md:mt-12 space-x-4'>
-								<motion.button
-									whileHover={{ scale: 1.05 }}
-									whileTap={{ scale: 0.95 }}
-									onClick={prevReviewSlide}
-									className='bg-white/10 backdrop-blur-xl border border-white/20 rounded-full p-3 md:p-4 hover:bg-white/15 hover:border-white/30 transition-all'
-								>
-									<svg
-										className='w-5 h-5 md:w-6 md:h-6 text-white'
-										fill='none'
-										stroke='currentColor'
-										viewBox='0 0 24 24'
-									>
-										<path
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											strokeWidth={2}
-											d='M15 19l-7-7 7-7'
-										/>
-									</svg>
-								</motion.button>
+										{selectedMethod && (
+											<motion.div
+												initial={{ opacity: 0, y: 20 }}
+												animate={{ opacity: 1, y: 0 }}
+												className='space-y-4'
+											>
+												<label className='block text-sm font-light text-white/80'>
+													{getInputLabel()}
+												</label>
+												{renderInput()}
+											</motion.div>
+										)}
 
-								<div className='flex space-x-2'>
-									{Array.from({
-										length: isMobile ? totalSlidesMobile : totalSlides,
-									}).map((_, index) => (
-										<button
-											key={index}
-											onClick={() => setCurrentReviewSlide(index)}
-											className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
-												index === currentReviewSlide
-													? 'bg-white'
-													: 'bg-white/30 hover:bg-white/50'
+										{error && (
+											<motion.div
+												initial={{ opacity: 0, y: 10 }}
+												animate={{ opacity: 1, y: 0 }}
+												className='bg-red-500/20 border border-red-500/30 rounded-2xl p-4 text-red-300 text-sm'
+											>
+												{error}
+											</motion.div>
+										)}
+
+										<motion.button
+											type='submit'
+											disabled={!selectedMethod || !contactInfo || isLoading}
+											whileHover={
+												selectedMethod && contactInfo && !isLoading
+													? { scale: 1.02, y: -2 }
+													: {}
+											}
+											whileTap={
+												selectedMethod && contactInfo && !isLoading
+													? { scale: 0.98 }
+													: {}
+											}
+											className={`w-full py-5 rounded-full font-medium transition-all ${
+												selectedMethod && contactInfo && !isLoading
+													? 'bg-white text-black hover:bg-gray-100 shadow-[0_8px_32px_rgba(255,255,255,0.3)]'
+													: 'bg-white/20 text-white/50 cursor-not-allowed'
 											}`}
-										/>
-									))}
+										>
+											{isLoading ? 'Отправляем...' : 'Отправить заявку'}
+										</motion.button>
+									</form>
+								)}
+							</motion.div>
+
+							{/* Contact Info & Map */}
+							<motion.div
+								initial={{ opacity: 0, x: 40 }}
+								whileInView={{ opacity: 1, x: 0 }}
+								transition={{ duration: 0.8, delay: 0.2 }}
+								viewport={{ once: true }}
+								className='space-y-8'
+							>
+								{/* Social Links */}
+								<div className='flex space-x-6 text-white/60'>
+									<a
+										href='https://t.me/m_ilya31'
+										target='_blank'
+										rel='noopener noreferrer'
+										className='hover:text-white transition-colors'
+									>
+										TELEGRAM
+									</a>
+									<a
+										href='https://wa.me/79274394355'
+										target='_blank'
+										rel='noopener noreferrer'
+										className='hover:text-white transition-colors'
+									>
+										WHATSAPP
+									</a>
+									<a
+										href='tel:+79274394355'
+										className='hover:text-white transition-colors'
+									>
+										ЗВОНОК
+									</a>
 								</div>
 
-								<motion.button
-									whileHover={{ scale: 1.05 }}
-									whileTap={{ scale: 0.95 }}
-									onClick={nextReviewSlide}
-									className='bg-white/10 backdrop-blur-xl border border-white/20 rounded-full p-3 md:p-4 hover:bg-white/15 hover:border-white/30 transition-all'
-								>
-									<svg
-										className='w-5 h-5 md:w-6 md:h-6 text-white'
-										fill='none'
-										stroke='currentColor'
-										viewBox='0 0 24 24'
+								{/* Office Info */}
+								<div>
+									<h3 className='text-2xl font-light text-white mb-4'>
+										ОФИС
+										<br />
+										МОСКВА
+										<br />
+										НАХИМОВСКИЙ ПР-Т 56
+									</h3>
+									<a
+										href='tel:+79274394355'
+										className='text-2xl md:text-3xl font-light text-white hover:text-white/80 transition-colors'
 									>
-										<path
-											strokeLinecap='round'
-											strokeLinejoin='round'
-											strokeWidth={2}
-											d='M9 5l7 7-7 7'
-										/>
-									</svg>
-								</motion.button>
-							</div>
+										+7 927 439 43 55
+									</a>
+								</div>
+
+								{/* Map */}
+								<div className='relative h-64 rounded-[2rem] overflow-hidden bg-black'>
+									<iframe
+										src='https://yandex.ru/map-widget/v1/?um=constructor%3A7936c044a85417de2051a208d0dd0135890f38077acc012b5d1959c7be4c26bd&amp;source=constructor&amp;lang=ru_RU'
+										width='100%'
+										height='100%'
+										frameBorder='0'
+										className='relative z-10'
+										title='Офис REHOME - Москва, Нахимовский пр-т 56'
+										style={{
+											filter: 'grayscale(1) invert(1)',
+										}}
+									></iframe>
+								</div>
+
+								{/* Documents Link */}
+								<motion.div
+									initial={{ opacity: 0, y: 20 }}
+									whileInView={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.6, delay: 0.4 }}
+									viewport={{ once: true }}
+								>
+									<a
+										href='/assets/rehome_договор.docx'
+										download
+										className='inline-flex items-center text-white/80 hover:text-white transition-colors group'
+									>
+										<svg
+											className='w-5 h-5 mr-2 group-hover:scale-110 transition-transform'
+											fill='currentColor'
+											viewBox='0 0 20 20'
+										>
+											<path
+												fillRule='evenodd'
+												d='M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z'
+												clipRule='evenodd'
+											/>
+										</svg>
+										Скачать договор
+									</a>
+								</motion.div>
+							</motion.div>
 						</div>
-					</div>
-				</section>
-
-				{/* Contact Section */}
-				<section className='py-16 md:py-24 lg:py-32 relative overflow-hidden'>
-					{/* Background */}
-					<div className='absolute inset-0 bg-gradient-to-br from-gray-800 via-neutral-800 to-stone-800' />
-
-					<div className='container mx-auto px-4 md:px-8 relative z-10'>
-						<motion.div
-							initial={{ opacity: 0, y: 60 }}
-							whileInView={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.8 }}
-							viewport={{ once: true }}
-							className='text-center max-w-4xl mx-auto'
-						>
-							<span className='text-xs md:text-sm text-white/60 font-light tracking-[0.2em] uppercase mb-4 block'>
-								Заказать дизайн интерьера в Казани
-							</span>
-							<h2 className='text-3xl md:text-5xl lg:text-6xl font-thin mb-6 md:mb-8 text-white tracking-[-0.02em]'>
-								Готовы создать интерьер вашей мечты в Казани?
-							</h2>
-							<p className='text-base md:text-lg text-white/80 mb-8 md:mb-12 leading-relaxed font-light'>
-								Расскажите нам о своем видении дизайна квартиры, и мы не
-								остановимся, пока оно не будет реализовано на 100%
-							</p>
-
-							<div className='flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center'>
-								<motion.a
-									href='/contact'
-									whileHover={{ scale: 1.02, y: -2 }}
-									whileTap={{ scale: 0.98 }}
-									transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-									className='bg-white text-black px-6 md:px-8 py-3 md:py-4 rounded-full font-medium text-sm md:text-base hover:bg-gray-100 transition-all shadow-[0_8px_32px_rgba(255,255,255,0.3)] w-full sm:w-auto text-center'
-								>
-									Обсудить дизайн-проект
-								</motion.a>
-								<motion.a
-									href='https://t.me/m_ilya31'
-									target='_blank'
-									rel='noopener noreferrer'
-									whileHover={{ scale: 1.02, y: -2 }}
-									whileTap={{ scale: 0.98 }}
-									transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-									className='bg-white/10 backdrop-blur-xl text-white px-6 md:px-8 py-3 md:py-4 rounded-full font-light text-sm md:text-base border border-white/20 hover:bg-white/15 hover:border-white/30 transition-all w-full sm:w-auto text-center'
-								>
-									Написать в Telegram
-								</motion.a>
-							</div>
-						</motion.div>
 					</div>
 				</section>
 
@@ -978,7 +1047,7 @@ export default function Home() {
 				<Footer />
 			</div>
 
-			{/* Fixed Chat Widget - Global */}
+			{/* Fixed Chat Widget */}
 			<div className='fixed bottom-6 right-6 z-[9999]'>
 				<div className='relative'>
 					{/* Contact Options */}
@@ -1090,53 +1159,6 @@ export default function Home() {
 					</motion.button>
 				</div>
 			</div>
-
-			{/* Review Modal */}
-			<AnimatePresence>
-				{selectedReview && (
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-						className='fixed inset-0 bg-black/90 backdrop-blur-sm z-[10000] flex items-center justify-center p-4'
-						onClick={() => setSelectedReview(null)}
-					>
-						<motion.div
-							initial={{ scale: 0.8, opacity: 0 }}
-							animate={{ scale: 1, opacity: 1 }}
-							exit={{ scale: 0.8, opacity: 0 }}
-							className='relative max-w-4xl max-h-[90vh] overflow-hidden rounded-2xl'
-							onClick={e => e.stopPropagation()}
-						>
-							<Image
-								src={`/assets/reviews/${selectedReview}.jpg`}
-								alt={`Отзыв клиента ${selectedReview} о дизайне интерьера в Казани - REHOME`}
-								width={1107}
-								height={1200}
-								className='w-auto h-auto max-w-full max-h-[90vh] object-contain'
-							/>
-							<button
-								onClick={() => setSelectedReview(null)}
-								className='absolute top-4 right-4 bg-black/60 backdrop-blur-sm rounded-full p-2 hover:bg-black/80 transition-colors'
-							>
-								<svg
-									className='w-6 h-6 text-white'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-										d='M6 18L18 6M6 6l12 12'
-									/>
-								</svg>
-							</button>
-						</motion.div>
-					</motion.div>
-				)}
-			</AnimatePresence>
 		</>
 	)
 }
