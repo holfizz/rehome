@@ -1047,16 +1047,36 @@ export default function Home() {
 				<Footer />
 			</div>
 
-			{/* Fixed Chat Widget */}
-			<div className='fixed bottom-6 right-6 z-[9999]'>
-				<div className='relative'>
+			{/* Fixed Chat Widget - Outside main container */}
+			<div
+				className='fixed bottom-6 right-6'
+				style={{
+					position: 'fixed',
+					bottom: '24px',
+					right: '24px',
+					zIndex: 2147483647,
+					pointerEvents: 'auto',
+					isolation: 'isolate',
+				}}
+			>
+				<div
+					className='relative'
+					style={{
+						zIndex: 1000,
+						pointerEvents: 'auto',
+					}}
+				>
 					{/* Contact Options */}
 					{isChatOpen && (
 						<motion.div
 							initial={{ opacity: 0, scale: 0.8, y: 20 }}
 							animate={{ opacity: 1, scale: 1, y: 0 }}
 							exit={{ opacity: 0, scale: 0.8, y: 20 }}
-							className='absolute bottom-16 right-0 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 p-4 space-y-3 min-w-[200px]'
+							className='absolute bottom-16 right-0 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 p-4 space-y-3 min-w-[220px]'
+							style={{
+								zIndex: 1001,
+								pointerEvents: 'auto',
+							}}
 						>
 							<motion.a
 								href='tel:+79274394355'
@@ -1115,6 +1135,48 @@ export default function Home() {
 								</div>
 								<span className='text-white text-sm font-light'>WhatsApp</span>
 							</motion.a>
+
+							<motion.a
+								href='https://vk.com/rehomekz'
+								target='_blank'
+								rel='noopener noreferrer'
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}
+								className='flex items-center space-x-3 bg-white/10 rounded-xl p-3 hover:bg-white/15 transition-all'
+							>
+								<div className='w-8 h-8 bg-blue-700 rounded-full flex items-center justify-center'>
+									<svg
+										className='w-4 h-4 text-white'
+										fill='currentColor'
+										viewBox='0 0 24 24'
+									>
+										<path d='M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.862-.525-2.049-1.714-1.033-1.01-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.441 0 .61.203.78.678.863 2.49 2.303 4.675 2.896 4.675.22 0 .322-.102.322-.66V9.721c-.068-1.186-.695-1.287-.695-1.711 0-.204.17-.407.441-.407h2.744c.373 0 .508.203.508.643v3.473c0 .373.17.508.271.508.22 0 .407-.135.813-.542 1.254-1.406 2.151-3.574 2.151-3.574.119-.254.322-.491.763-.491h1.744c.525 0 .644.271.525.643-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .763.186.236.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.491-.085.744-.576.744z' />
+									</svg>
+								</div>
+								<span className='text-white text-sm font-light'>VKontakte</span>
+							</motion.a>
+
+							<motion.a
+								href='https://t.me/rehomekz'
+								target='_blank'
+								rel='noopener noreferrer'
+								whileHover={{ scale: 1.05 }}
+								whileTap={{ scale: 0.95 }}
+								className='flex items-center space-x-3 bg-white/10 rounded-xl p-3 hover:bg-white/15 transition-all'
+							>
+								<div className='w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center'>
+									<svg
+										className='w-4 h-4 text-white'
+										fill='currentColor'
+										viewBox='0 0 24 24'
+									>
+										<path d='M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 8.16l-1.61 7.56c-.12.56-.44.7-.9.44l-2.52-1.86-1.21 1.17c-.14.14-.25.25-.5.25l.18-2.51 4.56-4.12c.2-.18-.04-.28-.3-.1L9.39 13.17l-2.42-.76c-.52-.16-.53-.52.12-.78l9.46-3.64c.43-.16.8.1.66.61z' />
+									</svg>
+								</div>
+								<span className='text-white text-sm font-light'>
+									Telegram канал
+								</span>
+							</motion.a>
 						</motion.div>
 					)}
 
@@ -1126,6 +1188,11 @@ export default function Home() {
 						transition={{ duration: 0.3 }}
 						onClick={() => setIsChatOpen(!isChatOpen)}
 						className='w-14 h-14 bg-white/10 backdrop-blur-xl rounded-full border border-white/20 flex items-center justify-center hover:bg-white/15 hover:border-white/30 transition-all shadow-lg'
+						style={{
+							position: 'relative',
+							zIndex: 1000,
+							pointerEvents: 'auto',
+						}}
 					>
 						{isChatOpen ? (
 							<svg

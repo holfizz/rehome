@@ -121,6 +121,32 @@ export default function Footer({ theme = 'dark' }: FooterProps) {
 								</div>
 								<span className='text-sm'>WhatsApp</span>
 							</a>
+							<a
+								href='https://vk.com/rehomekz'
+								target='_blank'
+								rel='noopener noreferrer'
+								className={`flex items-center space-x-3 ${classes.link} transition-colors group`}
+							>
+								<div
+									className={`w-8 h-8 ${classes.icon} rounded-lg flex items-center justify-center border transition-all`}
+								>
+									<span className='text-sm'>🔵</span>
+								</div>
+								<span className='text-sm'>VKontakte</span>
+							</a>
+							<a
+								href='https://t.me/rehomekz'
+								target='_blank'
+								rel='noopener noreferrer'
+								className={`flex items-center space-x-3 ${classes.link} transition-colors group`}
+							>
+								<div
+									className={`w-8 h-8 ${classes.icon} rounded-lg flex items-center justify-center border transition-all`}
+								>
+									<span className='text-sm'>📢</span>
+								</div>
+								<span className='text-sm'>Telegram канал</span>
+							</a>
 						</div>
 					</motion.div>
 
