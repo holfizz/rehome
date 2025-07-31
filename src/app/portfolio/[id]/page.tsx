@@ -364,35 +364,9 @@ export default function ProjectDetail() {
 						<X size={24} />
 					</button>
 
-					{/* Навигация влево */}
-					{project.images.length > 1 && (
-						<button
-							onClick={e => {
-								e.stopPropagation()
-								prevImage()
-							}}
-							className='absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors z-10'
-						>
-							<ChevronLeft size={24} />
-						</button>
-					)}
-
-					{/* Навигация вправо */}
-					{project.images.length > 1 && (
-						<button
-							onClick={e => {
-								e.stopPropagation()
-								nextImage()
-							}}
-							className='absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors z-10'
-						>
-							<ChevronRight size={24} />
-						</button>
-					)}
-
 					{/* Изображение */}
 					<div
-						className='w-full h-full flex items-center justify-center p-16'
+						className='w-full h-full flex items-center justify-center'
 						onClick={e => {
 							e.stopPropagation()
 							nextImage()
@@ -401,19 +375,53 @@ export default function ProjectDetail() {
 						<Image
 							src={project.images[selectedImageIndex]}
 							alt={`${project.title} - фото ${selectedImageIndex + 1}`}
-							width={1200}
-							height={800}
-							className='max-w-full max-h-full object-contain cursor-pointer'
+							width={1920}
+							height={1080}
+							className='w-full h-auto object-contain cursor-pointer'
 							priority
 						/>
 					</div>
 
-					{/* Счетчик */}
-					<div className='absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/20 rounded-full px-4 py-2'>
-						<span className='text-white text-sm'>
-							{selectedImageIndex + 1} / {project.images.length}
-						</span>
-					</div>
+					{/* Навигация снизу */}
+					{project.images.length > 1 && (
+						<div className='absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-4 z-10'>
+							{/* Навигация влево */}
+							<button
+								onClick={e => {
+									e.stopPropagation()
+									prevImage()
+								}}
+								className='w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors'
+							>
+								<ChevronLeft size={24} />
+							</button>
+
+							{/* Счетчик */}
+							<div className='bg-white/20 rounded-full px-4 py-2'>
+								<span className='text-white text-sm'>
+									{selectedImageIndex + 1} / {project.images.length}
+								</span>
+							</div>
+
+							{/* Навигация вправо */}
+							<button
+								onClick={e => {
+									e.stopPropagation()
+									nextImage()
+								}}
+								className='w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white hover:bg-white/30 transition-colors'
+							>
+								<ChevronRight size={24} />
+							</button>
+						</div>
+					)}
+
+					{/* Счетчик для одиночного изображения */}
+					{project.images.length === 1 && (
+						<div className='absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/20 rounded-full px-4 py-2'>
+							<span className='text-white text-sm'>1 / 1</span>
+						</div>
+					)}
 				</div>
 			)}
 

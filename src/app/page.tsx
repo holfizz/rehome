@@ -19,16 +19,16 @@ const structuredData = {
 	telephone: '+7-927-439-43-55',
 	address: {
 		'@type': 'PostalAddress',
-		streetAddress: 'ул. Баумана',
-		addressLocality: 'Казань',
-		postalCode: '420000',
-		addressRegion: 'Республика Татарстан',
+		streetAddress: 'Нахимовский пр-т, 56',
+		addressLocality: 'Москва',
+		postalCode: '117218',
+		addressRegion: 'Москва',
 		addressCountry: 'RU',
 	},
 	geo: {
 		'@type': 'GeoCoordinates',
-		latitude: 55.8304,
-		longitude: 49.0661,
+		latitude: 55.6781,
+		longitude: 37.5587,
 	},
 	openingHoursSpecification: {
 		'@type': 'OpeningHoursSpecification',
@@ -47,11 +47,17 @@ const structuredData = {
 	priceRange: '₽₽₽',
 	servedCuisine: ['Interior Design', 'Home Renovation'],
 	description:
-		'Профессиональный дизайн интерьера и ремонт квартир в Казани. Студия REHOME создает уникальные интерьеры с индивидуальным подходом.',
-	areaServed: {
-		'@type': 'City',
-		name: 'Казань',
-	},
+		'Профессиональный дизайн интерьера и ремонт квартир. Офис в Москве, проекты в Казани. Студия REHOME создает уникальные интерьеры с индивидуальным подходом.',
+	areaServed: [
+		{
+			'@type': 'City',
+			name: 'Москва',
+		},
+		{
+			'@type': 'City',
+			name: 'Казань',
+		},
+	],
 	hasOfferCatalog: {
 		'@type': 'OfferCatalog',
 		name: 'Услуги дизайна интерьера',
@@ -273,10 +279,10 @@ export default function Home() {
 					type='application/ld+json'
 					dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
 				/>
-				<meta name='geo.region' content='RU-TA' />
-				<meta name='geo.placename' content='Казань' />
-				<meta name='geo.position' content='55.8304;49.0661' />
-				<meta name='ICBM' content='55.8304, 49.0661' />
+				<meta name='geo.region' content='RU-MOW' />
+				<meta name='geo.placename' content='Москва' />
+				<meta name='geo.position' content='55.6781;37.5587' />
+				<meta name='ICBM' content='55.6781, 37.5587' />
 				<link rel='canonical' href='https://rehomekz.vercel.app' />
 			</Head>
 			<div
@@ -387,100 +393,353 @@ export default function Home() {
 					</div>
 				</motion.section>
 
-				{/* Statistics Section */}
-				<section className='py-16 md:py-24 relative'>
-					<div className='container mx-auto px-4 md:px-8'>
+				{/* Main Story Section */}
+				<section className='py-16 md:py-32 relative'>
+					<div className='container mx-auto px-4 md:px-8 max-w-4xl'>
+						{/* Problem Statement */}
 						<motion.div
 							initial={{ opacity: 0, y: 40 }}
 							whileInView={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.8 }}
+							transition={{ duration: 0.8, delay: 0.2 }}
 							viewport={{ once: true }}
-							className='text-center mb-16'
+							className='mb-16 md:mb-24'
 						>
-							<h2 className='text-4xl md:text-5xl lg:text-6xl font-light mb-4 text-white'>
-								Наши достижения
-							</h2>
-							<p className='text-lg text-white/80 max-w-2xl mx-auto leading-relaxed font-light'>
-								Реальные цифры наших проектов
+							<div className='bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-8 md:p-12 text-center'>
+								<h3 className='text-3xl md:text-4xl font-light mb-6 text-white'>
+									Красивый дизайн сегодня может сделать кто угодно
+								</h3>
+								<p className='text-lg text-white/80 mb-4 leading-relaxed'>
+									Студент после курсов, бабушка с Pinterest, искусственный
+									интеллект...
+								</p>
+								<p className='text-base text-white/70 leading-relaxed max-w-2xl mx-auto'>
+									Любой может создать красивые картинки, оформить их в стильный
+									альбом и презентовать так, что вы останетесь в восторге.
+									Проблема не в этом.
+								</p>
+							</div>
+						</motion.div>
+
+						{/* Main Question */}
+						<motion.div
+							initial={{ opacity: 0, y: 40 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.8, delay: 0.3 }}
+							viewport={{ once: true }}
+							className='text-center mb-16 md:mb-24'
+						>
+							<h3 className='text-4xl md:text-5xl font-light mb-8 text-white'>
+								Настоящая проблема — в реализации
+							</h3>
+							<p className='text-lg text-white/80 leading-relaxed mb-4'>
+								Большинство студий работают по старинке: нарисовали проект,
+								получили деньги, дальше — ваши проблемы.
+							</p>
+							<p className='text-base text-white/60 leading-relaxed'>
+								Именно на этапе воплощения начинаются жесткие трудности, которые
+								съедают ваши деньги, время и нервы. И решать их приходится вам
+								самим.
 							</p>
 						</motion.div>
 
-						<div className='grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8'>
-							{[
-								{
-									number: '1663',
-									label: 'м² отремонтировано',
-									delay: 0,
-									icon: '🏠',
-								},
-								{
-									number: '18',
-									label: 'завершенных проектов',
-									delay: 0.1,
-									icon: '✨',
-								},
-								{
-									number: '78М₽',
-									label: 'общий бюджет проектов',
-									delay: 0.2,
-									icon: '💰',
-								},
-							].map((stat, index) => (
-								<motion.div
-									key={index}
-									initial={{ opacity: 0, y: 40 }}
-									whileInView={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.8, delay: stat.delay }}
-									viewport={{ once: true }}
-									className='group'
-								>
-									<div className='relative overflow-hidden rounded-3xl md:rounded-[2rem] border border-white/10 p-6 md:p-8'>
-										{/* Прозрачный фон */}
-										<div className='absolute inset-0 bg-white/5 backdrop-blur-xl'></div>
-
-										{/* Контент */}
-										<div className='relative z-10 text-center'>
-											{/* Иконка */}
-											<motion.div
-												initial={{ scale: 0, rotate: -180 }}
-												whileInView={{ scale: 1, rotate: 0 }}
-												transition={{ duration: 0.6, delay: stat.delay + 0.1 }}
-												viewport={{ once: true }}
-												className='text-4xl md:text-5xl mb-4'
-											>
-												{stat.icon}
-											</motion.div>
-
-											{/* Число */}
-											<motion.div
-												initial={{ scale: 0.5, opacity: 0 }}
-												whileInView={{ scale: 1, opacity: 1 }}
-												transition={{ duration: 0.8, delay: stat.delay + 0.2 }}
-												viewport={{ once: true }}
-												className='text-3xl md:text-4xl lg:text-5xl font-bold mb-3 text-white'
-											>
-												{stat.number}
-											</motion.div>
-
-											{/* Подпись */}
-											<motion.p
-												initial={{ opacity: 0 }}
-												whileInView={{ opacity: 1 }}
-												transition={{ duration: 0.6, delay: stat.delay + 0.4 }}
-												viewport={{ once: true }}
-												className='text-sm md:text-base text-white/80 font-light leading-relaxed'
-											>
-												{stat.label}
-											</motion.p>
-										</div>
-
-										{/* Декоративные элементы */}
-										<div className='absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-white/5 to-transparent rounded-full translate-x-10 -translate-y-10'></div>
-										<div className='absolute bottom-0 left-0 w-16 h-16 bg-gradient-to-tr from-white/3 to-transparent rounded-full -translate-x-8 translate-y-8'></div>
+						{/* Problems Grid */}
+						<div className='grid md:grid-cols-2 gap-8 mb-16 md:mb-24'>
+							{/* Problem 1 */}
+							<motion.div
+								initial={{ opacity: 0, x: -40 }}
+								whileInView={{ opacity: 1, x: 0 }}
+								transition={{ duration: 0.8, delay: 0.1 }}
+								viewport={{ once: true }}
+								className='bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-6 md:p-8'
+							>
+								<div className='relative h-48 md:h-64 mb-6 rounded-2xl overflow-hidden'>
+									<Image
+										src='/assets/case7_ph10.webp'
+										alt='Дорогие материалы'
+										fill
+										className='object-cover'
+									/>
+									<div className='absolute inset-0 bg-black/30' />
+									<div className='absolute top-4 left-4 bg-red-500/20 backdrop-blur-xl rounded-full px-4 py-2'>
+										<span className='text-red-300 text-sm font-medium'>
+											ДОРОГО
+										</span>
 									</div>
-								</motion.div>
-							))}
+								</div>
+								<h4 className='text-xl md:text-2xl font-light mb-4 text-white'>
+									Материалов нет в наличии
+								</h4>
+								<p className='text-white/70 text-sm leading-relaxed'>
+									Половины материалов из проекта просто нет. Это прошлогодние
+									коллекции. Либо переплачивать в 2 раза, либо ездить по всей
+									Казани и искать аналоги...
+								</p>
+							</motion.div>
+
+							{/* Problem 2 */}
+							<motion.div
+								initial={{ opacity: 0, x: 40 }}
+								whileInView={{ opacity: 1, x: 0 }}
+								transition={{ duration: 0.8, delay: 0.2 }}
+								viewport={{ once: true }}
+								className='bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-6 md:p-8'
+							>
+								<div className='relative h-48 md:h-64 mb-6 rounded-2xl overflow-hidden'>
+									<Image
+										src='/assets/case4_ph12.webp'
+										alt='Проблемы со строителями'
+										fill
+										className='object-cover'
+									/>
+									<div className='absolute inset-0 bg-black/30' />
+									<div className='absolute top-4 left-4 bg-orange-500/20 backdrop-blur-xl rounded-full px-4 py-2'>
+										<span className='text-orange-300 text-sm font-medium'>
+											ВОПРОСЫ
+										</span>
+									</div>
+								</div>
+								<h4 className='text-xl md:text-2xl font-light mb-4 text-white'>
+									Куча вопросов от строителей
+								</h4>
+								<p className='text-white/70 text-sm leading-relaxed'>
+									&laquo;Как класть эту плитку?&raquo;, &laquo;Эти двери здесь
+									не откроются&raquo;, &laquo;Сантехника устанавливается
+									по-другому&raquo;... И спросить не у кого — дизайнер свою
+									работу сделал
+								</p>
+							</motion.div>
+
+							{/* Problem 3 */}
+							<motion.div
+								initial={{ opacity: 0, x: -40 }}
+								whileInView={{ opacity: 1, x: 0 }}
+								transition={{ duration: 0.8, delay: 0.3 }}
+								viewport={{ once: true }}
+								className='bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-6 md:p-8'
+							>
+								<div className='relative h-48 md:h-64 mb-6 rounded-2xl overflow-hidden'>
+									<Image
+										src='/assets/case1_ph8.webp'
+										alt='Проблемы с мебелью'
+										fill
+										className='object-cover'
+									/>
+									<div className='absolute inset-0 bg-black/30' />
+									<div className='absolute top-4 left-4 bg-red-500/20 backdrop-blur-xl rounded-full px-4 py-2'>
+										<span className='text-red-300 text-sm font-medium'>
+											НЕ ВЛЕЗЕТ
+										</span>
+									</div>
+								</div>
+								<h4 className='text-xl md:text-2xl font-light mb-4 text-white'>
+									Мебель не подходит
+								</h4>
+								<p className='text-white/70 text-sm leading-relaxed'>
+									&laquo;Холодильник сюда не влезет&raquo;, &laquo;Розетка
+									установлена неправильно&raquo;, &laquo;Столешница упирается в
+									светильник&raquo;... И в итоге интерьер совсем не похож на
+									проект
+								</p>
+							</motion.div>
+
+							{/* Problem 4 */}
+							<motion.div
+								initial={{ opacity: 0, x: 40 }}
+								whileInView={{ opacity: 1, x: 0 }}
+								transition={{ duration: 0.8, delay: 0.4 }}
+								viewport={{ once: true }}
+								className='bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-6 md:p-8'
+							>
+								<div className='relative h-48 md:h-64 mb-6 rounded-2xl overflow-hidden'>
+									<Image
+										src='/assets/case12_ph7.webp'
+										alt='Переплаты и стресс'
+										fill
+										className='object-cover'
+									/>
+									<div className='absolute inset-0 bg-black/30' />
+									<div className='absolute top-4 left-4 bg-purple-500/20 backdrop-blur-xl rounded-full px-4 py-2'>
+										<span className='text-purple-300 text-sm font-medium'>
+											СТРЕСС
+										</span>
+									</div>
+								</div>
+								<h4 className='text-xl md:text-2xl font-light mb-4 text-white'>
+									Переплаты и нервы
+								</h4>
+								<p className='text-white/70 text-sm leading-relaxed'>
+									В итоге: потрачено на 50% больше денег, нервы на пределе, а
+									результат не похож на то, что хотели... Знакомо?
+								</p>
+							</motion.div>
 						</div>
+
+						{/* Solution Intro */}
+						<motion.div
+							initial={{ opacity: 0, y: 40 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.8, delay: 0.5 }}
+							viewport={{ once: true }}
+							className='text-center mb-16 md:mb-24'
+						>
+							<h3 className='text-4xl md:text-5xl font-light mb-8 text-white'>
+								А что если сделать по-другому?
+							</h3>
+							<p className='text-lg text-white/80 leading-relaxed mb-4'>
+								Студия REHOME работает комплексно
+							</p>
+							<p className='text-base text-white/60 leading-relaxed max-w-2xl mx-auto'>
+								Мы создаем не просто красивые картинки, а реальные интерьеры,
+								которые можно воплотить без головной боли
+							</p>
+						</motion.div>
+
+						{/* Solutions */}
+						<div className='space-y-8 mb-16 md:mb-24'>
+							{/* Solution 1 */}
+							<motion.div
+								initial={{ opacity: 0, y: 40 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.8, delay: 0.1 }}
+								viewport={{ once: true }}
+								className='bg-gradient-to-r from-green-500/10 to-emerald-500/10 backdrop-blur-xl rounded-[2rem] border border-green-500/20 p-8 md:p-12'
+							>
+								<div className='grid md:grid-cols-2 gap-8 items-center'>
+									<div>
+										<h4 className='text-2xl md:text-3xl font-light mb-6 text-white'>
+											Работаем только с тем, что есть
+										</h4>
+										<p className='text-white/80 leading-relaxed mb-4'>
+											Перед созданием проекта изучаем наличие всех материалов в
+											Казани. Никаких &laquo;сюрпризов&raquo; с ценами и сроками
+											доставки.
+										</p>
+										<p className='text-green-300 text-sm font-medium'>
+											Экономия: до 300,000 ₽ на материалах
+										</p>
+									</div>
+									<div className='relative h-64 rounded-2xl overflow-hidden'>
+										<Image
+											src='/assets/case11_ph5.webp'
+											alt='Доступные материалы'
+											fill
+											className='object-cover'
+										/>
+									</div>
+								</div>
+							</motion.div>
+
+							{/* Solution 2 */}
+							<motion.div
+								initial={{ opacity: 0, y: 40 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.8, delay: 0.2 }}
+								viewport={{ once: true }}
+								className='bg-gradient-to-r from-blue-500/10 to-cyan-500/10 backdrop-blur-xl rounded-[2rem] border border-blue-500/20 p-8 md:p-12'
+							>
+								<div className='grid md:grid-cols-2 gap-8 items-center'>
+									<div className='relative h-64 rounded-2xl overflow-hidden'>
+										<Image
+											src='/assets/case7_ph8.webp'
+											alt='Контроль ремонта'
+											fill
+											className='object-cover'
+										/>
+									</div>
+									<div>
+										<h4 className='text-2xl md:text-3xl font-light mb-6 text-white'>
+											Авторский надзор
+										</h4>
+										<p className='text-white/80 leading-relaxed mb-4'>
+											Дизайнер присутствует на всех этапах ремонта. Все вопросы
+											строителей решаем на месте, без звонков вам.
+										</p>
+										<p className='text-blue-300 text-sm font-medium'>
+											Экономия времени: ваши нервы в безопасности
+										</p>
+									</div>
+								</div>
+							</motion.div>
+
+							{/* Solution 3 */}
+							<motion.div
+								initial={{ opacity: 0, y: 40 }}
+								whileInView={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.8, delay: 0.3 }}
+								viewport={{ once: true }}
+								className='bg-gradient-to-r from-purple-500/10 to-pink-500/10 backdrop-blur-xl rounded-[2rem] border border-purple-500/20 p-8 md:p-12'
+							>
+								<div className='grid md:grid-cols-2 gap-8 items-center'>
+									<div>
+										<h4 className='text-2xl md:text-3xl font-light mb-6 text-white'>
+											Точные размеры и расчеты
+										</h4>
+										<p className='text-white/80 leading-relaxed mb-4'>
+											Все розетки, выводы воды, размеры мебели рассчитываем до
+											миллиметра. Работаем с проверенными мебельщиками в Казани.
+										</p>
+										<p className='text-purple-300 text-sm font-medium'>
+											Результат: интерьер точно как на картинке
+										</p>
+									</div>
+									<div className='relative h-64 rounded-2xl overflow-hidden'>
+										<Image
+											src='/assets/case8_ph11.webp'
+											alt='Точные расчеты'
+											fill
+											className='object-cover'
+										/>
+									</div>
+								</div>
+							</motion.div>
+						</div>
+
+						{/* Final CTA */}
+						<motion.div
+							initial={{ opacity: 0, y: 40 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							transition={{ duration: 0.8, delay: 0.6 }}
+							viewport={{ once: true }}
+							className='text-center'
+						>
+							<div className='bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-8 md:p-12'>
+								<h3 className='text-3xl md:text-4xl font-light mb-6 text-white'>
+									Что вы выбираете?
+								</h3>
+								<div className='grid md:grid-cols-2 gap-8 text-left mb-8'>
+									<div className='space-y-4'>
+										<h4 className='text-lg font-medium text-red-300 mb-3'>
+											❌ Обычный подход:
+										</h4>
+										<ul className='space-y-2 text-white/70 text-sm'>
+											<li>• Проект, который невозможно реализовать</li>
+											<li>• Постоянные проблемы и переплаты</li>
+											<li>• Результат не похож на проект</li>
+											<li>• Потрачены нервы и время</li>
+										</ul>
+									</div>
+									<div className='space-y-4'>
+										<h4 className='text-lg font-medium text-green-300 mb-3'>
+											✅ Подход REHOME:
+										</h4>
+										<ul className='space-y-2 text-white/70 text-sm'>
+											<li>• Продуманный до мелочей интерьер</li>
+											<li>• Экономия денег и времени</li>
+											<li>• Результат точно как в проекте</li>
+											<li>• Радость от квартиры мечты</li>
+										</ul>
+									</div>
+								</div>
+								<motion.a
+									href='#contact'
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+									className='inline-block bg-white text-black px-12 py-5 rounded-full font-medium text-lg hover:bg-gray-100 transition-all shadow-lg'
+								>
+									Хочу интерьер мечты
+								</motion.a>
+							</div>
+						</motion.div>
 					</div>
 				</section>
 
@@ -554,64 +813,6 @@ export default function Home() {
 					</div>
 				</section>
 
-				{/* About Section */}
-				<section className='py-16 md:py-24 relative'>
-					<div className='container mx-auto px-4 md:px-8'>
-						<div className='grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto'>
-							<motion.div
-								initial={{ opacity: 0, x: -40 }}
-								whileInView={{ opacity: 1, x: 0 }}
-								transition={{ duration: 0.8 }}
-								viewport={{ once: true }}
-								className='relative'
-							>
-								<div className='relative overflow-hidden rounded-3xl'>
-									<Image
-										src='/employee/1.jpg'
-										alt='Команда REHOME - дизайнеры интерьера в Казани'
-										width={600}
-										height={400}
-										className='w-full h-auto object-cover'
-									/>
-								</div>
-							</motion.div>
-
-							<motion.div
-								initial={{ opacity: 0, x: 40 }}
-								whileInView={{ opacity: 1, x: 0 }}
-								transition={{ duration: 0.8, delay: 0.2 }}
-								viewport={{ once: true }}
-							>
-								<h2 className='text-4xl md:text-5xl lg:text-6xl font-light mb-8 text-white'>
-									О НАС
-								</h2>
-								<p className='text-lg text-white/90 mb-6 leading-relaxed font-light'>
-									Проектируем и воплощаем жилые и коммерческие интерьеры с 2020
-									года. За это время мы собрали крепкую команду профессионалов и
-									больших мастеров своего дела, на своем опыте построили систему
-									работы с объектами и полностью оцифровали взаимодействие с
-									клиентами
-								</p>
-								<p className='text-lg text-white/90 mb-6 leading-relaxed font-light'>
-									— подробнее о нашем подходе
-								</p>
-								<p className='text-base text-white/80 mb-8 leading-relaxed font-light'>
-									Наш продукт — стильные интерьеры и качественная реализация в
-									срок под ваш бюджет
-								</p>
-								<motion.a
-									href='/about'
-									whileHover={{ scale: 1.05 }}
-									whileTap={{ scale: 0.95 }}
-									className='inline-block bg-white/10 backdrop-blur-xl text-white px-10 py-4 rounded-full font-medium border border-white/30 hover:bg-white/20 transition-all'
-								>
-									Подробнее о команде
-								</motion.a>
-							</motion.div>
-						</div>
-					</div>
-				</section>
-
 				{/* Portfolio Section */}
 				<section className='py-16 md:py-24 relative'>
 					<div className='container mx-auto px-4 md:px-8'>
@@ -626,7 +827,7 @@ export default function Home() {
 								Портфолио
 							</h2>
 							<p className='text-base md:text-lg text-white/80 max-w-3xl mx-auto leading-relaxed font-light px-4'>
-								Реализованные проекты в Москве
+								Реализованные проекты для клиентов из Казани
 							</p>
 						</motion.div>
 
@@ -1066,7 +1267,6 @@ export default function Home() {
 						pointerEvents: 'auto',
 					}}
 				>
-					{/* Contact Options */}
 					{isChatOpen && (
 						<motion.div
 							initial={{ opacity: 0, scale: 0.8, y: 20 }}
