@@ -406,7 +406,7 @@ export default function Home() {
 						>
 							<div className='bg-white/5 backdrop-blur-xl rounded-[2rem] border border-white/10 p-8 md:p-12 text-center'>
 								<h3 className='text-3xl md:text-4xl font-light mb-6 text-white'>
-									Красивый дизайн сегодня может сделать кто угодно
+									Красивый дизайн сегодня может сделать кто угодно!)
 								</h3>
 								<p className='text-lg text-white/80 mb-4 leading-relaxed'>
 									Студент после курсов, бабушка с Pinterest, искусственный
@@ -615,7 +615,7 @@ export default function Home() {
 											доставки.
 										</p>
 										<p className='text-green-300 text-sm font-medium'>
-											Экономия: до 300,000 ₽ на материалах
+											Экономия: до 300 000 ₽ на материалах
 										</p>
 									</div>
 									<div className='relative h-64 rounded-2xl overflow-hidden'>
@@ -779,7 +779,7 @@ export default function Home() {
 									title: 'Сервис после сдачи проекта',
 									description:
 										'Предоставление консультаций и поддержки после завершения проекта, помощь в уходе за интерьером и поддержание его в первоначальном виде.',
-									image: '/assets/case1_ph12.webp',
+									image: '/assets/case8_ph15.webp',
 								},
 							].map((service, index) => (
 								<motion.div
@@ -864,7 +864,7 @@ export default function Home() {
 									</div>
 									<div className='relative rounded-[2rem] overflow-hidden'>
 										<Image
-											src='/assets/case1_ph12.webp'
+											src='/assets/case1_ph17.webp'
 											alt='Дизайн спальни'
 											fill
 											className='object-cover'
