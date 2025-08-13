@@ -364,9 +364,9 @@ export default function ProjectDetail() {
 						<X size={24} />
 					</button>
 
-					{/* Изображение */}
+					{/* Изображение (вписывается по максимальной стороне без обрезки) */}
 					<div
-						className='w-full h-full flex items-center justify-center'
+						className='relative w-screen h-screen'
 						onClick={e => {
 							e.stopPropagation()
 							nextImage()
@@ -375,9 +375,9 @@ export default function ProjectDetail() {
 						<Image
 							src={project.images[selectedImageIndex]}
 							alt={`${project.title} - фото ${selectedImageIndex + 1}`}
-							width={1920}
-							height={1080}
-							className='w-full h-auto object-contain cursor-pointer'
+							fill
+							sizes='100vw'
+							className='object-contain cursor-pointer'
 							priority
 						/>
 					</div>
